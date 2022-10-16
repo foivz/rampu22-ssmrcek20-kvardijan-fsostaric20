@@ -14,22 +14,17 @@ Ljudi ne žele gubiti nepotrebno vrijeme provjeravajući sadržaj svog hladnjaka
 
 Oznaka | Naziv | Kratki opis | Odgovorni član tima
 ------ | ----- | ----------- | -------------------
-F01 | Prikaz stavki hladnjaka | Aplikacija će omogućiti prikaz stavki u našem hladnjaku | Zlatko Stapić
-F02 | Uređivanje stavki hladnjaka | Aplikacija će omogućiti dodavanje ili uklanjanje stavki hladnjaka. Također će omogućiti dodavanje vlastitih stavki po želji korisnika | ...
-F03 | Prikaz stavki popisa za kupovinu | Aplikacija će omogućiti prikaz stavki popisa za kupovinu | ...
-F04 | Uređivanje stavki popisa za kupovinu | .... | ...
-F05 | Prikaz recepata | .... | ...
-F06 | Uređivanje recepata | .... | ...
-F07 | Pretraživanje recepata | .... | ...
-F08 | Opcija dodavanja nedostajećih namirnica na popis za kupovinu | .... | ...
-F09 | Praćenje osnovnih namirnica | .... | ...
+F01 | Prikaz namirnica u hladnjaka | Aplikacija će omogućiti prikaz namirnica u našem hladnjaku | Karlo Vardijan
+F02 | Uređivanje namirnica u hladnjaka | Aplikacija će omogućiti dodavanje i uklanjanje namirnica u našem hladnjaka | Karlo Vardijan
+F03 | Prikaz popisa za kupovinu | Aplikacija će omogućiti prikaz popisa za kupovinu | Stanko Smrček
+F04 | Uređivanje popisa za kupovinu | Aplikacija će omogućiti dodavanje i uklanjanje namirnica iz popisa za kupovinu | Stanko Smrček
+F05 | Prikaz recepata | Aplikacija će omogućiti prikaz recepata | Filip Šoštarić
+F06 | Uređivanje recepata | Aplikacija će omogućiti dodavanje i uklanjenje recepata| Filip Šoštarić
+F07 | Filtriranje recepata | Aplikacija će omogućiti filtriranje recepata po određenim namirnicama ili namirnicama koje postoje u hladnjaku   | Filip Šoštarić
+F08 | Odabiranje recepta | Aplikacija će omogućiti uklanjanje namirnica iz hladnjaka i dodavanje namirnica na popis za kupovinu kada odaberemo neki recept koji koristi te namirnice | Stanko Smrček
+F09 | Praćenje dabranih namirnica | Aplikacija će sama stavljati odabrane namirnice na popis za kupovinu kada se potroše | Karlo Vardijan
 
 
 ## Tehnologije i oprema
 Za izradu aplikacije koristit će se Android studio te razvojni jezik Kotlin. Uz Kotlin će se koristiti i XML za izradu dizajna aplikacije te kao sustav za verzioniranje koristit će se Git te GitHub.
 
-## Baza podataka i web server
-Nastavnici vam mogu pripremiti MySQL bazu podataka i web server na kojem možete postaviti jednostavne php web servise. Ako želite da vam pripremimo ove sustave obavezno to navedite umjesto ovog teksta s napomenom "Trebamo bazu podataka i pristup serveru za PHP skripte". Alternativno, možete koristiti bilo koji online dostupan sustav kao i studentske licence na pojedinim platformama kao što su Heroku ili Azure.
-
-## .gitignore
-Uzmite u obzir da je u mapi Software .gitignore konfiguriran za nekoliko tehnologija, ali samo ako će projekti biti smješteni direktno u mapu Software ali ne i u neku pod mapu. Nakon odabira konačne tehnologije i projekta obavezno dopunite/premjestite gitignore kako bi vaš projekt zadovoljavao kriterije koji su opisani u ReadMe.md dokumentu dostupnom u mapi Software.
