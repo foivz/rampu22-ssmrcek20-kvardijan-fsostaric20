@@ -1,9 +1,6 @@
 package hr.foi.rampu.fridgium.database
 
-import hr.foi.rampu.fridgium.database.Connector
-import hr.foi.rampu.fridgium.database.Connector.conn
-import hr.foi.rampu.fridgium.database.Connector.password
-import hr.foi.rampu.fridgium.database.Connector.username
+
 import java.sql.*
 import java.util.Properties
 
@@ -14,24 +11,25 @@ object Connector {
         internal var password = "93a9ac41"
         @JvmStatic
         fun main(args: Array<String>) {
-            getConnection()
+            //getConnection()
 
             //executeInsertQuery()
 
-            executeMySQLQuery()
+           //executeMySQLQuery(sql = )
 
 
         }
 
-        fun executeMySQLQuery() {
+        fun executeSearchQuery(sql : String) : ResultSet{
+            getConnection()
             var stmt: Statement? = null
             var resultset: ResultSet? = null
 
             try {
                 stmt = conn!!.createStatement()
-                resultset = stmt!!.executeQuery("SELECT * FROM mjerna_jedinica WHERE id='1'")
+                resultset = stmt!!.executeQuery(sql)
 
-                if (stmt.execute("SELECT * FROM mjerna_jedinica WHERE id='1'")) {
+                if (stmt.execute(sql)) {
                     resultset = stmt.resultSet
                 }
                 while (resultset!!.next()) {
@@ -65,17 +63,19 @@ object Connector {
                     }
 
                     conn = null
+
                 }
             }
+            return resultset!!
         }
 
-        fun executeInsertQuery(){
+        fun executeQuery(sql: String){
+            getConnection()
             var statement : PreparedStatement? = null
-            var sql ="INSERT INTO heroku_d1561a1a0615483.mjerna_jedinica (id,naziv) VALUES (3, 'l');"
             try {
                 statement = conn!!.prepareStatement(sql)
 
-                if(statement.execute("INSERT INTO heroku_d1561a1a0615483.mjerna_jedinica (id,naziv) VALUES (3, 'l');")){
+                if(statement.execute(sql)){
                     println("Uspjeh")
                 }
             } catch (ex: SQLException) {
@@ -83,6 +83,13 @@ object Connector {
                 ex.printStackTrace()
             }
 
+            if (conn != null) {
+                try {
+                    conn!!.close()
+                } catch (sqlEx: SQLException) {
+                }
+
+                conn = null
 
             }
 
@@ -107,3 +114,4 @@ object Connector {
                 ex.printStackTrace()
             }
         }
+}
