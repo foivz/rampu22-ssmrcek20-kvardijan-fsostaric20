@@ -26,7 +26,7 @@ class ShoppingListaAdapter(private val shoppingList: List<Namirnica>) : Recycler
 
         fun bind(namirnica: Namirnica) {
             namirnicaNaziv.text = namirnica.naziv
-            namirnicaKolicina.text = namirnica.kolicina_kupovina.toString()
+            namirnicaKolicina.text = namirnica.kolicina_kupovina.toString() + " " + namirnica.mjernaJedinica.naziv
         }
     }
 
