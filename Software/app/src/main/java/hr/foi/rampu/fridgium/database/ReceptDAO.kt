@@ -4,13 +4,18 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import hr.foi.rampu.fridgium.entities.NamirnicaRecepta
 import hr.foi.rampu.fridgium.entities.Recept
 const val ime: String = "recept"
 const val rec2: String = "naziv"
 @Dao
 interface ReceptDAO {
     @Query ("SELECT * FROM heroku_d1561a1a0615483.$ime")
-    fun getRecepti(): List<Recept>
+    fun getRecepti(): List<Recept>{
+        val sql: String = "SELECT * FROM heroku_d1561a1a0615483.$nam WHERE $repidd = $id"
+        val vrijednosti : MutableList<NamirnicaRecepta> = pretvoriVrijednosti(Connector.executeSearchQuery(sql))
+        return vrijednosti
+    }
 
     @Query ("SELECT * FROM heroku_d1561a1a0615483.$ime WHERE $rec2 LIKE '%:naziv%'")
     fun getRecept(naziv : String): Recept
