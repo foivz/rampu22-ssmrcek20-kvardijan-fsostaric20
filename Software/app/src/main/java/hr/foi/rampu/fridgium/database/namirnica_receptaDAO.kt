@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.entities.NamirnicaRecepta
-import hr.foi.rampu.fridgium.entities.Recept
 
 const val nam: String ="namirnica_recepta"
 const val repid: String ="recept_id"
