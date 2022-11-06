@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/img_ikona_namirnice_hladnjak"
             android:layout_width="100dp"
             android:layout_height="100dp"
             />
