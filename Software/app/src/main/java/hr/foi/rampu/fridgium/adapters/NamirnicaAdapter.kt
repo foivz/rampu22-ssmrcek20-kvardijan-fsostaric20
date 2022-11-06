@@ -19,6 +19,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) : RecyclerVie
 
         fun bind(namirnica: Namirnica){
             imeNamirnice.text = namirnica.naziv
+
         }
 
     }
