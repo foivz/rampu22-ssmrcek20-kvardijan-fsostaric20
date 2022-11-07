@@ -2,6 +2,6 @@
     <style name="Theme.Fridgium" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorSecondary">@color/color_accent</item>
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/color_primary_dark</item>
     </style>
 </resources>

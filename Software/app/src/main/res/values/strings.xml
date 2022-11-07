@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Fridgium</string>
-    <string name="fridge">Fridge</string>
-    <string name="recipes">Recipes</string>
-    <string name="shopping_list">ShoppingList</string>
+    <string name="fridge">hladnjak</string>
+    <string name="recipes">recepti</string>
+    <string name="shopping_list">kupovina</string>
 </resources>

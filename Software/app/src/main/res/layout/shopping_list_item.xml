@@ -14,30 +14,33 @@
 
         <TextView
             android:id="@+id/tv_naziv"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_weight="6"
             android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/tv_kolicina"
-            android:layout_width="125dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_weight="5"
             android:textSize="15sp"/>
 
         <ImageView
             android:id="@+id/img_fridge"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/fridge"
-            android:layout_marginLeft="10dp"/>
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/img_delete"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/delete"
-            android:layout_marginLeft="10dp"/>
+            android:layout_weight="1"
+            android:layout_marginStart="15dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
