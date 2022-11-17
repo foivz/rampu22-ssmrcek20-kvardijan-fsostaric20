@@ -16,16 +16,22 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
     inner class NamirnicaViewHolder(view: View): RecyclerView.ViewHolder(view){
         protected val pogled = view
         private val imeNamirnice: TextView
+        private val kolicinaNamirnice: TextView
         private val ikonicaNamirnice: ImageView
+        private val mjernaJedinicaHladnjak: TextView
         init {
             ikonicaNamirnice = view.findViewById(R.id.img_ikona_namirnice_hladnjak)
             imeNamirnice = view.findViewById(R.id.tv_ime_namirnice)
+            kolicinaNamirnice = view.findViewById(R.id.tv_kolicina_hladnjak)
+            mjernaJedinicaHladnjak = view.findViewById(R.id.tv_mjernaJedinica_hladnjak)
         }
 
         fun bind(namirnica: Namirnica){
             imeNamirnice.text = namirnica.naziv
+            kolicinaNamirnice.text = namirnica.kolicina_hladnjak.toString()
             val draw = ContextCompat.getDrawable(pogled.context,OdaberiIkonicu(namirnica.naziv))
             ikonicaNamirnice.setImageDrawable(draw)
+            mjernaJedinicaHladnjak.text = namirnica.mjernaJedinica.naziv
         }
 
         fun OdaberiIkonicu(naziv: String): Int {

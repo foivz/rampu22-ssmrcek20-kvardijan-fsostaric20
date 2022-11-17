@@ -28,13 +28,13 @@
             <TextView
                 android:id="@+id/tv_ime_namirnice"
                 android:layout_width="0sp"
-                android:layout_weight="4"
+                android:layout_weight="3.5"
                 android:maxLines="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:maxLength="18"
                 android:ellipsize="end"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 tools:text="Nazivnamirniceaaaaaa" />
 
             <Button
@@ -49,14 +49,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_kolicina_hladnjak"
-                android:maxLength="2"
+                android:maxLength="3"
                 android:layout_weight="1"
                 android:text="3"
                 android:gravity="center"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:textSize="14sp"/>
 
-                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_mjernaJedinica_hladnjak"
+                android:maxLength="3"
+                android:layout_weight="1.2"
+                android:text="kg"
+                android:gravity="center"
+                android:layout_marginEnd="10dp"
+                android:textSize="14sp"/>
 
             <Button
                 android:id="@+id/button_dodaj"
