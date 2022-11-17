@@ -4,4 +4,6 @@
     <string name="recipes">recepti</string>
     <string name="shopping_list">kupovina</string>
     <string name="poruka_greske_hladnjak">Namirnice hladnjaka trenutno nisu dostupne :(</string>
+    <string name="oduzimanje_kolicine">-</string>
+    <string name="dodavanje_kolicine">+</string>
 </resources>
