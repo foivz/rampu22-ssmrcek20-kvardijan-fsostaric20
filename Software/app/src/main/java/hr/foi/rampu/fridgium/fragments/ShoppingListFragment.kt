@@ -8,13 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
-import hr.foi.rampu.fridgium.helpers.MockDataLoader
+import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnice
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ShoppingListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -31,27 +37,73 @@ class ShoppingListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        loadingCircle = view.findViewById(R.id.pb_shopping_list_loading)
         recyclerView = view.findViewById(R.id.rv_shopping_list)
         emptyTextView = view.findViewById(R.id.empty_text_view)
         emptyImageView = view.findViewById(R.id.empty_image_view)
-        val probniPodaci = MockDataLoader.DajProbnePodatke()
-        if(probniPodaci.isEmpty()){
-            recyclerView.visibility = View.GONE
-            emptyTextView.visibility = View.VISIBLE
-            emptyImageView.visibility = View.VISIBLE
-        }
-        else{
-            recyclerView.visibility = View.VISIBLE
-            emptyTextView.visibility = View.GONE
-            emptyImageView.visibility = View.GONE
-            recyclerView.adapter = ShoppingListaAdapter(MockDataLoader.DajProbnePodatke())
-            recyclerView.layoutManager = LinearLayoutManager(view.context)
-            val divider = MaterialDividerItemDecoration(view.context,LinearLayoutManager.VERTICAL)
-            divider.dividerInsetStart = 20
-            divider.dividerInsetEnd = 20
-            divider.isLastItemDecorated = false
-            recyclerView.addItemDecoration(divider)
-        }
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        loadNamirnice()
+    }
 
+    private fun loadNamirnice() {
+        recyclerView.visibility = View.INVISIBLE
+        emptyTextView.visibility = View.INVISIBLE
+        emptyImageView.visibility = View.INVISIBLE
+        loadingCircle.visibility = View.VISIBLE
+
+        rest.dohvatiNamirnice().enqueue(
+            object : Callback<RestNamirnicaResponse> {
+                override fun onResponse(call: Call<RestNamirnicaResponse>?, response: Response<RestNamirnicaResponse>?) {
+                    if (response?.isSuccessful == true) {
+                        val responseBody = response.body()
+                        val namirnice = responseBody.results
+
+                        val namirnicePrave = arrayListOf<Namirnica>()
+                        for(namirnica in namirnice){
+                            if(namirnica.kolicina_kupovina > 0){
+                                namirnicePrave.add(namirnica)
+                            }
+                        }
+
+                        if(namirnicePrave.isEmpty()){
+                            recyclerView.visibility = View.INVISIBLE
+                            emptyTextView.visibility = View.VISIBLE
+                            emptyImageView.visibility = View.VISIBLE
+                            loadingCircle.visibility = View.INVISIBLE
+                        }
+                        else{
+                            loadingCircle.visibility = View.INVISIBLE
+                            recyclerView.visibility = View.VISIBLE
+                            emptyTextView.visibility = View.INVISIBLE
+                            emptyImageView.visibility = View.INVISIBLE
+                            recyclerView.adapter = ShoppingListaAdapter(namirnicePrave)
+                            recyclerView.layoutManager = LinearLayoutManager(view!!.context)
+                            val divider = MaterialDividerItemDecoration(view!!.context,LinearLayoutManager.VERTICAL)
+                            divider.dividerInsetStart = 20
+                            divider.dividerInsetEnd = 20
+                            divider.isLastItemDecorated = false
+                            recyclerView.addItemDecoration(divider)
+                        }
+
+                    } else {
+                        displayRestServiceErrorMessage()
+                        loadingCircle.isVisible = false
+                    }
+                }
+
+                override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
+                    displayRestServiceErrorMessage()
+                    loadingCircle.isVisible = false
+                }
+            }
+        )
+    }
+
+    private fun displayRestServiceErrorMessage() {
+        Toast.makeText(
+            context,
+            "Došlo je do greške",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

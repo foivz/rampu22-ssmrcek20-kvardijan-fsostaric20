@@ -22,25 +22,24 @@
         android:id="@+id/empty_image_view"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
         android:contentDescription="@string/shopping_cart"
-        android:visibility="gone"
+        android:paddingBottom="10dp"
         android:scaleX="-1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/shopping_list"
-        app:tint="@color/color_primary_light"
-        android:layout_marginBottom="20dp"
-        android:paddingBottom="10dp"
-        />
+        app:tint="@color/color_primary_light" />
 
     <TextView
         android:id="@+id/empty_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_items"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/empty_image_view" />
