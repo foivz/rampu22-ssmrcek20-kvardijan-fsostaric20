@@ -13,5 +13,4 @@ object MockDataLoader {
         Namirnica(3, "Maslac", 300,
             MjernaJedinica(3, "g"), 0),
     )
-
 }
