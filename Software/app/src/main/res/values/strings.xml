@@ -3,4 +3,5 @@
     <string name="fridge">hladnjak</string>
     <string name="recipes">recepti</string>
     <string name="shopping_list">kupovina</string>
+    <string name="news_list_item_image_desc" />
 </resources>

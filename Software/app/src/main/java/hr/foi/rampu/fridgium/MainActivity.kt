@@ -7,7 +7,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import hr.foi.rampu.fridgium.adapters.MainPagerAdapter
 import hr.foi.rampu.fridgium.fragments.FridgeFragment
-import hr.foi.rampu.fridgium.fragments.RecepiesFragment
+import hr.foi.rampu.fridgium.fragments.RecipesFragment
 import hr.foi.rampu.fridgium.fragments.ShoppingListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             MainPagerAdapter.FragmentItem(
                 R.string.recipes,
                 R.drawable.recipes,
-                RecepiesFragment::class
+                RecipesFragment::class
             )
         )
         mainPagerAdapter.addFragment(
