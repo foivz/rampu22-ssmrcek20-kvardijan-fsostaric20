@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,11 +14,14 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
 import hr.foi.rampu.fridgium.helpers.MockDataLoader
+import hr.foi.rampu.fridgium.rest.RestNamirnice
 
 class ShoppingListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyTextView: TextView
     private lateinit var emptyImageView: ImageView
+    private lateinit var loadingCircle: ProgressBar
+    private val rest = RestNamirnice.namirnicaServis
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
