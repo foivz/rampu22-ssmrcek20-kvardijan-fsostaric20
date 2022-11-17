@@ -6,4 +6,6 @@
     <string name="poruka_greske_hladnjak">Namirnice hladnjaka trenutno nisu dostupne :(</string>
     <string name="oduzimanje_kolicine">-</string>
     <string name="dodavanje_kolicine">+</string>
+    <string name="shopping_cart">shopping cart</string>
+    <string name="add_items">Dodaj namirnice u listu za kupovinu!</string>
 </resources>
