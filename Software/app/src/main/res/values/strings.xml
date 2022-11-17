@@ -8,4 +8,5 @@
     <string name="dodavanje_kolicine">+</string>
     <string name="shopping_cart">shopping cart</string>
     <string name="add_items">Dodaj namirnice u listu za kupovinu!</string>
+    <string name="tekst_toast_recept_err">Servis nije dostupan.</string>
 </resources>

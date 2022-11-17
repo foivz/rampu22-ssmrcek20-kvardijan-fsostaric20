@@ -36,10 +36,9 @@ class RecipesFragment : Fragment() {
     }
 
     private fun displayWebServiceErrorMessage() {
-        val text="Servis nije dostupan."
         Toast.makeText(
             context,
-            text,
+            getString(R.string.tekst_toast_recept_err),
             Toast.LENGTH_LONG
         ).show()
     }
