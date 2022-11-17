@@ -3,4 +3,6 @@
     <string name="fridge">hladnjak</string>
     <string name="recipes">recepti</string>
     <string name="shopping_list">kupovina</string>
+    <string name="shopping_cart">shopping cart</string>
+    <string name="add_items">Dodaj namirnice u listu za kupovinu!</string>
 </resources>

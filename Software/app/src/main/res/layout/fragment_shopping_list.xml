@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ShoppingListFragment">
@@ -9,11 +10,23 @@
         android:id="@+id/rv_shopping_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/empty_image_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:scaleX="-1"
+        app:srcCompat="@drawable/shopping_list"
+        app:tint="@color/color_primary_light"
+        android:contentDescription="@string/shopping_cart" />
+
     <TextView
-        android:id="@+id/empty_view"
+        android:id="@+id/empty_text_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:visibility="gone"
-        android:text="Dodaj namirnice u listu" />
+        android:text="@string/add_items" />
 </FrameLayout>

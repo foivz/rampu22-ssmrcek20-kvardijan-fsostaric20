@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,8 @@ import hr.foi.rampu.fridgium.helpers.MockDataLoader
 
 class ShoppingListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var emptyView: TextView
+    private lateinit var emptyTextView: TextView
+    private lateinit var emptyImageView: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,15 +28,18 @@ class ShoppingListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.rv_shopping_list)
-        emptyView = view.findViewById(R.id.empty_view)
+        emptyTextView = view.findViewById(R.id.empty_text_view)
+        emptyImageView = view.findViewById(R.id.empty_image_view)
         val probniPodaci = MockDataLoader.DajProbnePodatke()
         if(probniPodaci.isEmpty()){
             recyclerView.visibility = View.GONE
-            emptyView.visibility = View.VISIBLE
+            emptyTextView.visibility = View.VISIBLE
+            emptyImageView.visibility = View.VISIBLE
         }
         else{
             recyclerView.visibility = View.VISIBLE
-            emptyView.visibility = View.GONE
+            emptyTextView.visibility = View.GONE
+            emptyImageView.visibility = View.GONE
             recyclerView.adapter = ShoppingListaAdapter(MockDataLoader.DajProbnePodatke())
             recyclerView.layoutManager = LinearLayoutManager(view.context)
             val divider = MaterialDividerItemDecoration(view.context,LinearLayoutManager.VERTICAL)
