@@ -3,4 +3,5 @@
     <string name="fridge">hladnjak</string>
     <string name="recipes">recepti</string>
     <string name="shopping_list">kupovina</string>
+    <string name="poruka_greske_hladnjak">Namirnice hladnjaka trenutno nisu dostupne :(</string>
 </resources>

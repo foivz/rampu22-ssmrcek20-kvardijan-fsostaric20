@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 
-class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) : RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
+class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
+    RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
 
     inner class NamirnicaViewHolder(view: View): RecyclerView.ViewHolder(view){
         protected val pogled = view
