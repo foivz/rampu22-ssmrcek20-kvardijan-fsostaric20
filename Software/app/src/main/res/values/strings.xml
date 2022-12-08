@@ -9,4 +9,7 @@
     <string name="shopping_cart">shopping cart</string>
     <string name="add_items">Dodaj namirnice u listu za kupovinu!</string>
     <string name="tekst_toast_recept_err">Servis nije dostupan.</string>
+    <string name="naziv">Naziv:</string>
+    <string name="koli_ina">Količina:</string>
+    <string name="mjerna_jedinica">Mjerna jedinica:</string>
 </resources>

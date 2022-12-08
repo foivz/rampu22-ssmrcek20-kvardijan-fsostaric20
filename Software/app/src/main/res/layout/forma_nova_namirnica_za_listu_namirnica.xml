@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/nova_lista_za_kupovinu_naziv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/naziv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nova_lista_za_kupovinu_naziv2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_naziv"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/nova_lista_za_kupovinu_kolicina"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/koli_ina"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_naziv2"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".55" />
+
+    <EditText
+        android:id="@+id/nova_lista_za_kupovinu_kolicina2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_kolicina"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".55" />
+
+    <TextView
+        android:id="@+id/nova_lista_za_kupovinu_mjr"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/mjerna_jedinica"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_naziv2"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".4" />
+
+    <Spinner
+        android:id="@+id/nova_lista_za_kupovinu_mjr_spn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_mjr"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
