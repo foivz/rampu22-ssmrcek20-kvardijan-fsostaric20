@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.DodavanjeKolicineNamirnicaDialogHelper
+import hr.foi.rampu.fridgium.helpers.OduzimanjeKolicineNamirnicaDialogHelper
 
 class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
     RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
@@ -39,16 +40,41 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     .from(pogled.context)
                     .inflate(R.layout.dodaj_namirnicu_dialog, null)
 
+                val pomagacDodavanjaKolicine = DodavanjeKolicineNamirnicaDialogHelper(
+                    dodajKolicinuNamirniceDialog)
+
                 AlertDialog.Builder(pogled.context)
                     .setView(dodajKolicinuNamirniceDialog)
                     .setTitle(imeNamirnice.text)
                     .setPositiveButton(R.string.dodaj_kolicinu_namirnice){_, _->
-
+                        val pozicija = this.adapterPosition
+                        val odabranaNamirnica = namirnicaList[pozicija]
+                        pomagacDodavanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
                     }
                     .show()
 
-                val pomagacDodavanjaKolicine = DodavanjeKolicineNamirnicaDialogHelper(dodajKolicinuNamirniceDialog)
                 pomagacDodavanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+            }
+
+            gumbOduzmi.setOnClickListener{
+                val oduzmiKolicinuNamirniceDialog = LayoutInflater
+                    .from(pogled.context)
+                    .inflate(R.layout.oduzmi_namirnicu_dialog,null)
+
+                val pomagacOduzimanjaKolicine = OduzimanjeKolicineNamirnicaDialogHelper(
+                    oduzmiKolicinuNamirniceDialog)
+
+                AlertDialog.Builder(pogled.context)
+                    .setView(oduzmiKolicinuNamirniceDialog)
+                    .setTitle(imeNamirnice.text)
+                    .setPositiveButton(R.string.oduzmi_kolicinu_namirnice){_, _->
+                        val pozicija = this.adapterPosition
+                        val odabranaNamirnica = namirnicaList[pozicija]
+                        pomagacOduzimanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
+                    }
+                    .show()
+
+                pomagacOduzimanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
             }
         }
 

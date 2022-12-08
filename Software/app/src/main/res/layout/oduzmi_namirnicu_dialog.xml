@@ -8,11 +8,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@id/et_dodaj_kolicinu_namirnice"
-        android:text="Odaberite količinu koju želite dodati:"/>
-    
+        android:labelFor="@id/et_oduzmi_kolicinu_namirnice"
+        android:text="Odaberite količinu koju želite oduzeti:"/>
+
     <EditText
-        android:id="@+id/et_dodaj_kolicinu_namirnice"
+        android:id="@+id/et_oduzmi_kolicinu_namirnice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
