@@ -1,14 +1,17 @@
 package hr.foi.rampu.fridgium.adapters
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.helpers.DodavanjeKolicineNamirnicaDialogHelper
 
 class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
     RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
@@ -19,11 +22,34 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
         private val kolicinaNamirnice: TextView
         private val ikonicaNamirnice: ImageView
         private val mjernaJedinicaHladnjak: TextView
+
+        private val gumbDodaj : Button
+        private val gumbOduzmi : Button
+
         init {
             ikonicaNamirnice = view.findViewById(R.id.img_ikona_namirnice_hladnjak)
             imeNamirnice = view.findViewById(R.id.tv_ime_namirnice)
             kolicinaNamirnice = view.findViewById(R.id.tv_kolicina_hladnjak)
             mjernaJedinicaHladnjak = view.findViewById(R.id.tv_mjernaJedinica_hladnjak)
+            gumbDodaj = view.findViewById(R.id.button_dodaj)
+            gumbOduzmi = view.findViewById(R.id.button_oduzimaj)
+
+            gumbDodaj.setOnClickListener{
+                val dodajKolicinuNamirniceDialog = LayoutInflater
+                    .from(pogled.context)
+                    .inflate(R.layout.dodaj_namirnicu_dialog, null)
+
+                AlertDialog.Builder(pogled.context)
+                    .setView(dodajKolicinuNamirniceDialog)
+                    .setTitle(imeNamirnice.text)
+                    .setPositiveButton(R.string.dodaj_kolicinu_namirnice){_, _->
+
+                    }
+                    .show()
+
+                val pomagacDodavanjaKolicine = DodavanjeKolicineNamirnicaDialogHelper(dodajKolicinuNamirniceDialog)
+                pomagacDodavanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+            }
         }
 
         fun bind(namirnica: Namirnica){

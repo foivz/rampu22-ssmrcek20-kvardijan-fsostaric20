@@ -39,9 +39,10 @@ class FridgeFragment : Fragment() {
         hladnjakLoading = view.findViewById(R.id.hladnjak_loading)
 
         recyclerView = view.findViewById(R.id.rv_namirnice_hladnjaka)
-        //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
+        recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
+        promjeniZaslon(false)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
-        ucitajSadrzajHladnjaka()
+        //ucitajSadrzajHladnjaka()
     }
 
     private fun ucitajSadrzajHladnjaka(){
