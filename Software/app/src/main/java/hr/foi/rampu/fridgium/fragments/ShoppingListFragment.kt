@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +14,10 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
+import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.rest.RestMJedinica
+import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
@@ -30,7 +30,9 @@ class ShoppingListFragment : Fragment() {
     private lateinit var emptyImageView: ImageView
     private lateinit var loadingCircle: ProgressBar
     private lateinit var btnCreateNamirnica: FloatingActionButton
+    private lateinit var spinNamirnica: Spinner
     private val rest = RestNamirnice.namirnicaServis
+    private val restMJedinica = RestMJedinica.mJedinicaServis
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,18 +50,44 @@ class ShoppingListFragment : Fragment() {
         loadNamirnice()
         btnCreateNamirnica = view.findViewById(R.id.btn_dodaj_nove_namirnice_u_listu_za_kupovinu)
         btnCreateNamirnica.setOnClickListener {
-            showDialog()
+            showDialog(view)
         }
     }
 
-    private fun showDialog() {
+    private fun showDialog(view: View) {
+        spinNamirnica = view.findViewById(R.id.nova_lista_za_kupovinu_mjr_spn)
         val newTaskDialogView = LayoutInflater
             .from(context)
             .inflate(R.layout.forma_nova_namirnica_za_listu_namirnica, null)
         AlertDialog.Builder(context)
             .setView(newTaskDialogView)
             .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
+
             .show()
+
+        restMJedinica.dohvatiMJedinice().enqueue(
+            object : Callback<RestMJedinicaResponse>{
+                override fun onResponse(
+                    call: Call<RestMJedinicaResponse>?,
+                    response: Response<RestMJedinicaResponse>?
+                ) {
+                    if(response?.isSuccessful == true){
+                        val responseBody = response.body()
+                        val mJedinice = responseBody.results
+                        val spinnerAdapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, mJedinice)
+                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        spinNamirnica.adapter = spinnerAdapter
+                    } else {
+                        displayRestServiceErrorMessage()
+                    }
+                }
+
+                override fun onFailure(call: Call<RestMJedinicaResponse>?, t: Throwable?) {
+                    displayRestServiceErrorMessage()
+                }
+            }
+        )
+
     }
 
     private fun loadNamirnice() {
