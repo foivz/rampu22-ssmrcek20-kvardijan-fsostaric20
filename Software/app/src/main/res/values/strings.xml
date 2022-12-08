@@ -12,4 +12,5 @@
     <string name="naziv">Naziv:</string>
     <string name="koli_ina">Količina:</string>
     <string name="mjerna_jedinica">Mjerna jedinica:</string>
+    <string name="nova_namirnica_lista_za_kupovinu">Dodaj novu namirnicu u listu</string>
 </resources>

@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
 import hr.foi.rampu.fridgium.entities.Namirnica
@@ -27,6 +29,7 @@ class ShoppingListFragment : Fragment() {
     private lateinit var emptyTextView: TextView
     private lateinit var emptyImageView: ImageView
     private lateinit var loadingCircle: ProgressBar
+    private lateinit var btnCreateNamirnica: FloatingActionButton
     private val rest = RestNamirnice.namirnicaServis
 
     override fun onCreateView(
@@ -43,6 +46,20 @@ class ShoppingListFragment : Fragment() {
         emptyImageView = view.findViewById(R.id.empty_image_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         loadNamirnice()
+        btnCreateNamirnica = view.findViewById(R.id.btn_dodaj_nove_namirnice_u_listu_za_kupovinu)
+        btnCreateNamirnica.setOnClickListener {
+            showDialog()
+        }
+    }
+
+    private fun showDialog() {
+        val newTaskDialogView = LayoutInflater
+            .from(context)
+            .inflate(R.layout.forma_nova_namirnica_za_listu_namirnica, null)
+        AlertDialog.Builder(context)
+            .setView(newTaskDialogView)
+            .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
+            .show()
     }
 
     private fun loadNamirnice() {
