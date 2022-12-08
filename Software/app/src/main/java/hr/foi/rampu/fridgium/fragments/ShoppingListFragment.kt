@@ -16,6 +16,7 @@ import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.helpers.NovaNamirnicaListaZaKupovinuHelper
 import hr.foi.rampu.fridgium.rest.RestMJedinica
 import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
@@ -30,9 +31,8 @@ class ShoppingListFragment : Fragment() {
     private lateinit var emptyImageView: ImageView
     private lateinit var loadingCircle: ProgressBar
     private lateinit var btnCreateNamirnica: FloatingActionButton
-    private lateinit var spinNamirnica: Spinner
     private val rest = RestNamirnice.namirnicaServis
-    private val restMJedinica = RestMJedinica.mJedinicaServis
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,39 +55,25 @@ class ShoppingListFragment : Fragment() {
     }
 
     private fun showDialog(view: View) {
-        spinNamirnica = view.findViewById(R.id.nova_lista_za_kupovinu_mjr_spn)
-        val newTaskDialogView = LayoutInflater
-            .from(context)
-            .inflate(R.layout.forma_nova_namirnica_za_listu_namirnica, null)
-        AlertDialog.Builder(context)
-            .setView(newTaskDialogView)
-            .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
+        val novaNamirnicaListaZaKupovinuHelper = LayoutInflater.from(context).inflate(R.layout.forma_nova_namirnica_za_listu_namirnica,null)
+        val helper = NovaNamirnicaListaZaKupovinuHelper(novaNamirnicaListaZaKupovinuHelper)
 
+        AlertDialog.Builder(context)
+            .setView(novaNamirnicaListaZaKupovinuHelper)
+            .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
+            .setPositiveButton(getString(R.string.dodaj)) { _, _ ->
+                val novaNamirnica = helper.napraviNamirnicu()
+                val nova = helper.pretraziNamirnice(novaNamirnica.naziv)
+                if(nova){
+                    helper.DodajUBazu(novaNamirnica)
+                }else{
+                    helper.AzurirajUbazi(novaNamirnica)
+                }
+
+            }
             .show()
 
-        restMJedinica.dohvatiMJedinice().enqueue(
-            object : Callback<RestMJedinicaResponse>{
-                override fun onResponse(
-                    call: Call<RestMJedinicaResponse>?,
-                    response: Response<RestMJedinicaResponse>?
-                ) {
-                    if(response?.isSuccessful == true){
-                        val responseBody = response.body()
-                        val mJedinice = responseBody.results
-                        val spinnerAdapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, mJedinice)
-                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        spinNamirnica.adapter = spinnerAdapter
-                    } else {
-                        displayRestServiceErrorMessage()
-                    }
-                }
-
-                override fun onFailure(call: Call<RestMJedinicaResponse>?, t: Throwable?) {
-                    displayRestServiceErrorMessage()
-                }
-            }
-        )
-
+        helper.napuniSpinner()
     }
 
     private fun loadNamirnice() {
