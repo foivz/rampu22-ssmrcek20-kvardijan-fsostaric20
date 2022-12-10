@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
 import hr.foi.rampu.fridgium.entities.Namirnica
@@ -28,6 +30,7 @@ class FridgeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var hladnjakLoading: ProgressBar
     private lateinit var hladnjakPrazanTekst: TextView
+    private lateinit var dodajNamirnicuUFrizider: FloatingActionButton
     private val rest = RestNamirnice.namirnicaServis
 
     override fun onCreateView(
@@ -42,10 +45,15 @@ class FridgeFragment : Fragment() {
         hladnjakLoading = view.findViewById(R.id.hladnjak_loading)
         hladnjakPrazanTekst = view.findViewById(R.id.tv_hladnjak_prazan)
         recyclerView = view.findViewById(R.id.rv_namirnice_hladnjaka)
+        dodajNamirnicuUFrizider = view.findViewById(R.id.fab_dodaj_namirnicu_u_hladnjak)
         //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
         //promjeniZaslon(false)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         ucitajSadrzajHladnjaka()
+
+        dodajNamirnicuUFrizider.setOnClickListener{
+            prikaziDialogDodavanjaNamirnice()
+        }
     }
 
     private fun ucitajSadrzajHladnjaka(){
@@ -102,6 +110,17 @@ class FridgeFragment : Fragment() {
     private fun promjeniZaslon(ucitavanje: Boolean){
         recyclerView.isVisible = !ucitavanje
         hladnjakLoading.isVisible = ucitavanje
+    }
+
+    private fun prikaziDialogDodavanjaNamirnice(){
+        val dodajNamirnicuDialog = LayoutInflater
+            .from(context)
+            .inflate(R.layout.dodaj_namirnicu_u_frizider_dialog, null)
+
+        AlertDialog.Builder(context)
+            .setView(dodajNamirnicuDialog)
+            .setTitle("Dodavanje namirnice")
+            .show()
     }
 }
 

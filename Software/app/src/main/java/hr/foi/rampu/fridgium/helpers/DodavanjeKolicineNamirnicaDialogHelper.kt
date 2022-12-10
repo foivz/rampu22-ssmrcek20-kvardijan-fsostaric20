@@ -22,7 +22,7 @@ class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
     }
 
     fun azurirajNamirnicu(namirnica: Namirnica){
-        val kol = namirnica.kolicina_hladnjak + trenutnaKolicina.text.toString().toInt()
+        val kol = namirnica.kolicina_hladnjak + trenutnaKolicina.text.toString().toFloat()
         val azuriranaNamirnica = Namirnica(
             namirnica.id,
             namirnica.naziv,
