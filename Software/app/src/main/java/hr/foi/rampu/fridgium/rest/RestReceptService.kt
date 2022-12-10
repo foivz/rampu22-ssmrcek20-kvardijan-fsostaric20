@@ -6,4 +6,6 @@ import retrofit2.http.GET
 interface RestReceptService {
     @GET("recepti")
     fun getRecept() : Call<RestReceptResponse>
+
+
 }

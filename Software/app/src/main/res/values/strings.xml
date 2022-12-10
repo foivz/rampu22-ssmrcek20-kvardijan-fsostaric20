@@ -9,4 +9,6 @@
     <string name="shopping_cart">shopping cart</string>
     <string name="add_items">Dodaj namirnice u listu za kupovinu!</string>
     <string name="tekst_toast_recept_err">Servis nije dostupan.</string>
+    <string name="prika_i_vi_e">Prikaži više</string>
+    <string name="slika_jela">Slika jela</string>
 </resources>
