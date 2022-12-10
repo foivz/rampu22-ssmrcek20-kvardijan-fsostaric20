@@ -87,6 +87,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                             }
                         }
                         if(postoji){
+                            novaNamirnica.kolicina_hladnjak = -1
                             AzurirajUbazi(novaNamirnica)
                         } else{
                             DodajUBazu(novaNamirnica)
@@ -104,8 +105,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
     }
 
     fun DodajUBazu(namirnica: Namirnica) {
-        val novaNamirnica=UnosNamirniceShopping(namirnica.naziv,namirnica.mjernaJedinica.id,namirnica.kolicina_hladnjak,namirnica.kolicina_kupovina)
-        rest.dodajNamirnicu(novaNamirnica).enqueue(
+        rest.dodajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
@@ -122,8 +122,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
     }
 
     fun AzurirajUbazi(namirnica: Namirnica) {
-        val novaNamirnica= AzurirajNamirniceShopping(namirnica.kolicina_kupovina,namirnica.naziv)
-        rest.azurirajNamirnicu(novaNamirnica).enqueue(
+        rest.azurirajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {

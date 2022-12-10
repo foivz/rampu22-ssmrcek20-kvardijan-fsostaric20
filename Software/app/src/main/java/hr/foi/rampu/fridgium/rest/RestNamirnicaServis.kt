@@ -1,7 +1,6 @@
 package hr.foi.rampu.fridgium.rest
 
-import hr.foi.rampu.fridgium.entities.AzurirajNamirniceShopping
-import hr.foi.rampu.fridgium.entities.UnosNamirniceShopping
+import hr.foi.rampu.fridgium.entities.Namirnica
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -10,9 +9,9 @@ interface RestNamirnicaServis {
     fun dohvatiNamirnice(): Call<RestNamirnicaResponse>
     @Headers("Content-Type: application/json")
     @POST("namirnice")
-    fun dodajNamirnicu(@Body unosNamirniceShopping: UnosNamirniceShopping): Call<Boolean>
+    fun dodajNamirnicu(@Body namirnica: Namirnica): Call<Boolean>
     @PUT("namirnice")
-    fun azurirajNamirnicu(@Body azurirajNamirniceShopping: AzurirajNamirniceShopping): Call<Boolean>
+    fun azurirajNamirnicu(@Body namirnica: Namirnica): Call<Boolean>
     @DELETE("namirnice/{naziv}")
     fun izbrisiNamirnicu(@Path("naziv") naziv: String): Call<Boolean>
 }

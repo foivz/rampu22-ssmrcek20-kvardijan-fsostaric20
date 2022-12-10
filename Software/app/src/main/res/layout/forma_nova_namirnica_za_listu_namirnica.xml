@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_naziv"
-        android:inputType="text"/>
+        android:inputType="textCapSentences"/>
 
     <TextView
         android:id="@+id/nova_lista_za_kupovinu_kolicina"
@@ -40,7 +40,7 @@
         android:id="@+id/nova_lista_za_kupovinu_kolicina2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nova_lista_za_kupovinu_kolicina"
         app:layout_constraintWidth_default="percent"

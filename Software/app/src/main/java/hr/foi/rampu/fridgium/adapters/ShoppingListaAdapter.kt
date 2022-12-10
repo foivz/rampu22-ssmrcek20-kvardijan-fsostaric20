@@ -22,6 +22,7 @@ class ShoppingListaAdapter(private val shoppingList: List<Namirnica>) : Recycler
             namirnicaKolicina = view.findViewById(R.id.tv_kolicina)
             namirnicaDelete = view.findViewById(R.id.img_delete)
             namirnicaFridge = view.findViewById(R.id.img_fridge)
+
         }
 
         fun bind(namirnica: Namirnica) {
