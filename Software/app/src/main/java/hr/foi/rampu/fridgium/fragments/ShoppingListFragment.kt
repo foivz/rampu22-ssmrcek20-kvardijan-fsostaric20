@@ -65,7 +65,8 @@ class ShoppingListFragment : Fragment() {
             .setPositiveButton(getString(R.string.dodaj)) { _, _ ->
                 val novaNamirnica = helper.napraviNamirnicu()
                 helper.pretraziNamirnice(novaNamirnica)
-                loadNamirnice()
+                val shoppingAdapter = (recyclerView.adapter as ShoppingListaAdapter)
+                shoppingAdapter.dodajNamirnicu(novaNamirnica)
             }
             .show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context,R.color.color_accent))

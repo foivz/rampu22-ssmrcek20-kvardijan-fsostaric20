@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 
-class ShoppingListaAdapter(private val shoppingList: List<Namirnica>) : RecyclerView.Adapter<ShoppingListaAdapter.ShoppingListViewHolder>() {
+class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : RecyclerView.Adapter<ShoppingListaAdapter.ShoppingListViewHolder>() {
     inner class ShoppingListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val namirnicaNaziv: TextView
@@ -43,4 +43,21 @@ class ShoppingListaAdapter(private val shoppingList: List<Namirnica>) : Recycler
     }
 
     override fun getItemCount() = shoppingList.size
+
+    fun dodajNamirnicu(namirnica: Namirnica) {
+        var index = -1
+        for (namirnicaList in shoppingList){
+            if(namirnicaList.naziv == namirnica.naziv){
+                index = shoppingList.indexOf(namirnicaList)
+                shoppingList.removeAt(index)
+                notifyItemRemoved(index)
+                break
+            }
+        }
+        if(index == -1){
+            index = shoppingList.size
+        }
+        shoppingList.add(index,namirnica)
+        notifyItemInserted(index)
+    }
 }
