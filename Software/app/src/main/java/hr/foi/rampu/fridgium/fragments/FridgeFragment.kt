@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
-import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.DodavanjeNamirniceHladnjakHelper
 import hr.foi.rampu.fridgium.helpers.MockDataLoader
@@ -125,13 +124,20 @@ class FridgeFragment : Fragment() {
 
     private fun prikaziDialogDodavanjaNamirnice(){
         val restMJ = RestMJedinica.mJedinicaServis
+
         val dodajNamirnicuDialog = LayoutInflater
             .from(context)
             .inflate(R.layout.dodaj_namirnicu_u_frizider_dialog, null)
 
+        val pomagacDodavanjaNamirnica = DodavanjeNamirniceHladnjakHelper(dodajNamirnicuDialog)
+
         AlertDialog.Builder(context)
             .setView(dodajNamirnicuDialog)
             .setTitle("Dodavanje namirnice")
+            .setPositiveButton("Dodaj namirnicu"){ _, _ ->
+                val novaNamirnica = pomagacDodavanjaNamirnica.izgradiObjektNoveNamirnice()
+                pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica)
+            }
             .show()
 
         restMJ.dohvatiMJedinice().enqueue(
@@ -144,7 +150,6 @@ class FridgeFragment : Fragment() {
                         val responseBody = response.body()
                         val listaMjernihJedinica = responseBody.results
 
-                        val pomagacDodavanjaNamirnica = DodavanjeNamirniceHladnjakHelper(dodajNamirnicuDialog)
                         pomagacDodavanjaNamirnica.popuniSpinner(listaMjernihJedinica)
                     }
                 }

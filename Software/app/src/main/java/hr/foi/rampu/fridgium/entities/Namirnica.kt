@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Namirnica(
     val id: Int,
     val naziv: String,
-    val kolicina_hladnjak: Float,
+    var kolicina_hladnjak: Float,
     @SerializedName("mjerna_jedinica_id") val mjernaJedinica: MjernaJedinica,
-    val kolicina_kupovina: Float
+    var kolicina_kupovina: Float
 )
