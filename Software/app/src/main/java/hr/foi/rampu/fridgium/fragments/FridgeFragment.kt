@@ -16,8 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
+import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.helpers.DodavanjeNamirniceHladnjakHelper
 import hr.foi.rampu.fridgium.helpers.MockDataLoader
+import hr.foi.rampu.fridgium.rest.RestMJedinica
+import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
@@ -107,12 +111,20 @@ class FridgeFragment : Fragment() {
             Toast.LENGTH_LONG).show()
     }
 
+    private fun pokaziPorukuGreskeSpinneraMjernihJedinica(){
+        Toast.makeText(
+            context,
+            getString(R.string.poruka_greske_spinner_mj),
+            Toast.LENGTH_LONG).show()
+    }
+
     private fun promjeniZaslon(ucitavanje: Boolean){
         recyclerView.isVisible = !ucitavanje
         hladnjakLoading.isVisible = ucitavanje
     }
 
     private fun prikaziDialogDodavanjaNamirnice(){
+        val restMJ = RestMJedinica.mJedinicaServis
         val dodajNamirnicuDialog = LayoutInflater
             .from(context)
             .inflate(R.layout.dodaj_namirnicu_u_frizider_dialog, null)
@@ -121,6 +133,28 @@ class FridgeFragment : Fragment() {
             .setView(dodajNamirnicuDialog)
             .setTitle("Dodavanje namirnice")
             .show()
+
+        restMJ.dohvatiMJedinice().enqueue(
+            object : Callback<RestMJedinicaResponse>{
+                override fun onResponse(
+                    call: Call<RestMJedinicaResponse>?,
+                    response: Response<RestMJedinicaResponse>?
+                ) {
+                    if (response != null) {
+                        val responseBody = response.body()
+                        val listaMjernihJedinica = responseBody.results
+
+                        val pomagacDodavanjaNamirnica = DodavanjeNamirniceHladnjakHelper(dodajNamirnicuDialog)
+                        pomagacDodavanjaNamirnica.popuniSpinner(listaMjernihJedinica)
+                    }
+                }
+
+                override fun onFailure(call: Call<RestMJedinicaResponse>?, t: Throwable?) {
+                    pokaziPorukuGreskeSpinneraMjernihJedinica()
+                }
+
+            }
+        )
     }
 }
 
