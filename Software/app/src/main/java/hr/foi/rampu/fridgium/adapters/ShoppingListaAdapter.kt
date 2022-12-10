@@ -3,26 +3,46 @@ package hr.foi.rampu.fridgium.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.helpers.NovaNamirnicaListaZaKupovinuHelper
 
 class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : RecyclerView.Adapter<ShoppingListaAdapter.ShoppingListViewHolder>() {
     inner class ShoppingListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val namirnicaNaziv: TextView
         private val namirnicaKolicina: TextView
-        private val namirnicaDelete: ImageView
-        private val namirnicaFridge: ImageView
+        private val namirnicaDelete: ImageButton
+        private val namirnicaFridge: ImageButton
 
         init {
             namirnicaNaziv = view.findViewById(R.id.tv_naziv)
             namirnicaKolicina = view.findViewById(R.id.tv_kolicina)
             namirnicaDelete = view.findViewById(R.id.img_delete)
             namirnicaFridge = view.findViewById(R.id.img_fridge)
+            val novaNamirnicaListaZaKupovinuHelper = LayoutInflater.from(view.context).inflate(R.layout.forma_nova_namirnica_za_listu_namirnica,null)
+            val helper = NovaNamirnicaListaZaKupovinuHelper(novaNamirnicaListaZaKupovinuHelper)
 
+            namirnicaFridge.setOnClickListener{
+                val pozicija = this.adapterPosition
+                val namirnica = shoppingList[pozicija]
+                val novaNamirnica = Namirnica(namirnica.id,namirnica.naziv,namirnica.kolicina_kupovina+namirnica.kolicina_hladnjak,namirnica.mjernaJedinica,0f)
+                helper.AzurirajUbazi(novaNamirnica)
+                shoppingList.removeAt(pozicija)
+                notifyItemRemoved(pozicija)
+            }
+            namirnicaDelete.setOnClickListener {
+                val pozicija = this.adapterPosition
+                val namirnica = shoppingList[pozicija]
+                val novaNamirnica = Namirnica(namirnica.id,namirnica.naziv,-1f,namirnica.mjernaJedinica,0f)
+                helper.AzurirajUbazi(novaNamirnica)
+                shoppingList.removeAt(pozicija)
+                notifyItemRemoved(pozicija)
+            }
         }
 
         fun bind(namirnica: Namirnica) {
