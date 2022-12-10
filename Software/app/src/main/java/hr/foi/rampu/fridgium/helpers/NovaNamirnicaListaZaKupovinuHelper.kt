@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import hr.foi.rampu.fridgium.R
+import hr.foi.rampu.fridgium.entities.AzurirajNamirniceShopping
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.entities.UnosNamirniceShopping
@@ -71,8 +72,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
         return Namirnica(0, namirnicaNaziv, 0, odabranaJedinica, namirnicaKolicina)
     }
 
-    fun pretraziNamirnice(naziv: String) : Boolean {
-        var nova :Boolean = true
+    fun pretraziNamirnice(novaNamirnica: Namirnica) {
         rest.dohvatiNamirnice().enqueue(
             object : Callback<RestNamirnicaResponse> {
                 override fun onResponse(
@@ -80,13 +80,19 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                     response: Response<RestNamirnicaResponse>?
                 ) {
                     if (response?.isSuccessful == true) {
+                        var postoji = false
                         val responseBody = response.body()
                         val namirnice = responseBody.results
                         for (namirnica in namirnice) {
-                            if (namirnica.naziv == naziv) {
-                                nova = false
-                                return
+                            if (namirnica.naziv == novaNamirnica.naziv) {
+                                postoji = true
+                                break;
                             }
+                        }
+                        if(postoji){
+                            AzurirajUbazi(novaNamirnica)
+                        } else{
+                            DodajUBazu(novaNamirnica)
                         }
                     } else {
                         displayRestServiceErrorMessage()
@@ -98,7 +104,6 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                 }
             }
         )
-        return nova
     }
 
     fun DodajUBazu(namirnica: Namirnica) {
@@ -120,6 +125,20 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
     }
 
     fun AzurirajUbazi(namirnica: Namirnica) {
-        TODO("Not yet implemented")
+        val novaNamirnica= AzurirajNamirniceShopping(namirnica.kolicina_kupovina,namirnica.naziv)
+        rest.azurirajNamirnicu(novaNamirnica).enqueue(
+            object : Callback<Boolean> {
+                override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                    if (response != null) {
+                        Log.d("BAZA",response.message().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                    displayRestServiceErrorMessage()
+                }
+
+            }
+        )
     }
 }

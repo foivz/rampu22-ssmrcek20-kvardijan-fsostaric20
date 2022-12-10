@@ -64,13 +64,8 @@ class ShoppingListFragment : Fragment() {
             .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
             .setPositiveButton(getString(R.string.dodaj)) { _, _ ->
                 val novaNamirnica = helper.napraviNamirnicu()
-                val nova = helper.pretraziNamirnice(novaNamirnica.naziv)
-                if(nova){
-                    helper.DodajUBazu(novaNamirnica)
-                }else{
-                    helper.AzurirajUbazi(novaNamirnica)
-                }
-
+                helper.pretraziNamirnice(novaNamirnica)
+                loadNamirnice()
             }
             .show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context,R.color.color_accent))
