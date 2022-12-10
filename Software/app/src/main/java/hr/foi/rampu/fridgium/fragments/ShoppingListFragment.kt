@@ -2,29 +2,27 @@ package hr.foi.rampu.fridgium.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
-import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.NovaNamirnicaListaZaKupovinuHelper
-import hr.foi.rampu.fridgium.rest.RestMJedinica
-import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class ShoppingListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -53,6 +51,16 @@ class ShoppingListFragment : Fragment() {
         btnCreateNamirnica.setOnClickListener {
             showDialog(view)
         }
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
+                    btnCreateNamirnica.hide()
+                }
+                else btnCreateNamirnica.show()
+            }
+        })
     }
 
     private fun showDialog(view: View) {
