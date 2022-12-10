@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
+import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.MockDataLoader
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnice
@@ -25,6 +27,7 @@ class FridgeFragment : Fragment() {
     private val probneNamirnice = MockDataLoader.DajProbnePodatke()
     private lateinit var recyclerView: RecyclerView
     private lateinit var hladnjakLoading: ProgressBar
+    private lateinit var hladnjakPrazanTekst: TextView
     private val rest = RestNamirnice.namirnicaServis
 
     override fun onCreateView(
@@ -37,7 +40,7 @@ class FridgeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         hladnjakLoading = view.findViewById(R.id.hladnjak_loading)
-
+        hladnjakPrazanTekst = view.findViewById(R.id.tv_hladnjak_prazan)
         recyclerView = view.findViewById(R.id.rv_namirnice_hladnjaka)
         //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
         //promjeniZaslon(false)
@@ -57,8 +60,23 @@ class FridgeFragment : Fragment() {
                     if (response?.isSuccessful == true){
                         val responseBody = response.body()
                         val namirnice = responseBody.results
-                        recyclerView.adapter = NamirnicaAdapter(namirnice)
+                        val namirniceHladnjaka = mutableListOf<Namirnica>()
 
+                        for (namirnica in namirnice){
+                            if (namirnica.kolicina_hladnjak > 0){
+                                namirniceHladnjaka.add(namirnica)
+                            }
+                        }
+
+                        if (namirniceHladnjaka.isEmpty()){
+                            recyclerView.visibility = View.INVISIBLE
+                            hladnjakPrazanTekst.visibility = View.VISIBLE
+                        }else{
+                            recyclerView.visibility = View.VISIBLE
+                            hladnjakPrazanTekst.visibility = View.INVISIBLE
+
+                            recyclerView.adapter = NamirnicaAdapter(namirniceHladnjaka)
+                        }
                         hladnjakLoading.isVisible = false
                     }else{
                         pokaziPorukuGreske()

@@ -9,6 +9,6 @@
     <string name="shopping_cart">shopping cart</string>
     <string name="add_items">Dodaj namirnice u listu za kupovinu!</string>
     <string name="tekst_toast_recept_err">Servis nije dostupan.</string>
-    <string name="dodaj_kolicinu_namirnice">Dodaj kolicinu namirnice</string>
-    <string name="oduzmi_kolicinu_namirnice">Oduzmi kolicinu namirnice</string>
+    <string name="dodaj_kolicinu_namirnice">Dodaj količinu namirnice</string>
+    <string name="oduzmi_kolicinu_namirnice">Oduzmi količinu namirnice</string>
 </resources>
