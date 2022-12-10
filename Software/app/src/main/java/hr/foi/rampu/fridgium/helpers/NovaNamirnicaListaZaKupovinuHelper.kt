@@ -7,10 +7,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import hr.foi.rampu.fridgium.R
-import hr.foi.rampu.fridgium.entities.AzurirajNamirniceShopping
-import hr.foi.rampu.fridgium.entities.MjernaJedinica
-import hr.foi.rampu.fridgium.entities.Namirnica
-import hr.foi.rampu.fridgium.entities.UnosNamirniceShopping
+import hr.foi.rampu.fridgium.entities.*
 import hr.foi.rampu.fridgium.rest.RestMJedinica
 import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
@@ -127,6 +124,24 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
     fun AzurirajUbazi(namirnica: Namirnica) {
         val novaNamirnica= AzurirajNamirniceShopping(namirnica.kolicina_kupovina,namirnica.naziv)
         rest.azurirajNamirnicu(novaNamirnica).enqueue(
+            object : Callback<Boolean> {
+                override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                    if (response != null) {
+                        Log.d("BAZA",response.message().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                    displayRestServiceErrorMessage()
+                }
+
+            }
+        )
+    }
+
+    fun IzrbisiUbazi(namirnica: Namirnica) {
+        val novaNamirnica= namirnica.naziv
+        rest.izbrisiNamirnicu(novaNamirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
