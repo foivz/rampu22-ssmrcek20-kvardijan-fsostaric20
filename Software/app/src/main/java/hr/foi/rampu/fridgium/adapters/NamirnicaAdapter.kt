@@ -53,7 +53,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     }
                     .show()
 
-                pomagacDodavanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+                //pomagacDodavanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
             }
 
             gumbOduzmi.setOnClickListener{
@@ -74,7 +74,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     }
                     .show()
 
-                pomagacOduzimanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+                //pomagacOduzimanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
             }
         }
 

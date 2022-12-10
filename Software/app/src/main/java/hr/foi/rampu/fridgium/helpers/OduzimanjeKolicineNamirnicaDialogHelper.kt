@@ -20,7 +20,7 @@ class OduzimanjeKolicineNamirnicaDialogHelper(view: View) {
             namirnica.naziv,
             kol,
             namirnica.mjernaJedinica,
-            namirnica.kolicina_kupovina,
+            -1f,
         )
 
         //tuj napravi upit prema bazi
