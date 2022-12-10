@@ -63,10 +63,10 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
 
     fun napraviNamirnicu(): Namirnica {
         val namirnicaNaziv = naziv.text.toString()
-        val namirnicaKolicina = kolicina.text.toString().toInt();
+        val namirnicaKolicina = kolicina.text.toString().toFloat();
         val odabranaJedinica = spinNamirnica.selectedItem as MjernaJedinica
 
-        return Namirnica(0, namirnicaNaziv, 0, odabranaJedinica, namirnicaKolicina)
+        return Namirnica(0, namirnicaNaziv, 0f, odabranaJedinica, namirnicaKolicina)
     }
 
     fun pretraziNamirnice(novaNamirnica: Namirnica) {
@@ -87,7 +87,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                             }
                         }
                         if(postoji){
-                            novaNamirnica.kolicina_hladnjak = -1
+                            novaNamirnica.kolicina_hladnjak = -1f
                             AzurirajUbazi(novaNamirnica)
                         } else{
                             DodajUBazu(novaNamirnica)
