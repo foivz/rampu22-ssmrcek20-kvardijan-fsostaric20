@@ -4,6 +4,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface RestMJedinicaServis {
-    @GET("mjerna_jedinica")
+    @GET("mjernejedinice")
     fun dohvatiMJedinice(): Call<RestMJedinicaResponse>
 }

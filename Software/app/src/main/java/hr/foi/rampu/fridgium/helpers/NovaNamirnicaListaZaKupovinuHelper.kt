@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.helpers
 
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -8,6 +9,7 @@ import android.widget.Toast
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.entities.UnosNamirniceShopping
 import hr.foi.rampu.fridgium.rest.RestMJedinica
 import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
@@ -66,7 +68,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
         val namirnicaKolicina = kolicina.text.toString().toInt();
         val odabranaJedinica = spinNamirnica.selectedItem as MjernaJedinica
 
-        return Namirnica(null, namirnicaNaziv, 0, odabranaJedinica, namirnicaKolicina)
+        return Namirnica(0, namirnicaNaziv, 0, odabranaJedinica, namirnicaKolicina)
     }
 
     fun pretraziNamirnice(naziv: String) : Boolean {
@@ -100,7 +102,21 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
     }
 
     fun DodajUBazu(namirnica: Namirnica) {
-        rest.dodajNamirnicu(namirnica)
+        val novaNamirnica=UnosNamirniceShopping(namirnica.naziv,namirnica.mjernaJedinica.id,namirnica.kolicina_hladnjak,namirnica.kolicina_kupovina)
+        rest.dodajNamirnicu(novaNamirnica).enqueue(
+            object : Callback<Boolean> {
+                override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                    if (response != null) {
+                        Log.d("BAZA",response.message().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                    displayRestServiceErrorMessage()
+                }
+
+            }
+        )
     }
 
     fun AzurirajUbazi(namirnica: Namirnica) {
