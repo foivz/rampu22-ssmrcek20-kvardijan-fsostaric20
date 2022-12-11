@@ -14,4 +14,7 @@
     <string name="mjerna_jedinica">Mjerna jedinica:</string>
     <string name="nova_namirnica_lista_za_kupovinu">Dodaj novu namirnicu u listu</string>
     <string name="dodaj">dodaj</string>
+    <string name="dodaj_kolicinu_namirnice">Dodaj količinu namirnice</string>
+    <string name="oduzmi_kolicinu_namirnice">Oduzmi količinu namirnice</string>
+    <string name="poruka_greske_spinner_mj">Greška kod dohvaćanja mjernih jedinica</string>
 </resources>

@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,13 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
+import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.helpers.DodavanjeNamirniceHladnjakHelper
 import hr.foi.rampu.fridgium.helpers.MockDataLoader
+import hr.foi.rampu.fridgium.rest.RestMJedinica
+import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
@@ -25,6 +32,8 @@ class FridgeFragment : Fragment() {
     private val probneNamirnice = MockDataLoader.DajProbnePodatke()
     private lateinit var recyclerView: RecyclerView
     private lateinit var hladnjakLoading: ProgressBar
+    private lateinit var hladnjakPrazanTekst: TextView
+    private lateinit var dodajNamirnicuUFrizider: FloatingActionButton
     private val rest = RestNamirnice.namirnicaServis
 
     override fun onCreateView(
@@ -37,11 +46,17 @@ class FridgeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         hladnjakLoading = view.findViewById(R.id.hladnjak_loading)
-
+        hladnjakPrazanTekst = view.findViewById(R.id.tv_hladnjak_prazan)
         recyclerView = view.findViewById(R.id.rv_namirnice_hladnjaka)
+        dodajNamirnicuUFrizider = view.findViewById(R.id.fab_dodaj_namirnicu_u_hladnjak)
         //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
+        //promjeniZaslon(false)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         ucitajSadrzajHladnjaka()
+
+        dodajNamirnicuUFrizider.setOnClickListener{
+            prikaziDialogDodavanjaNamirnice()
+        }
     }
 
     private fun ucitajSadrzajHladnjaka(){
@@ -56,8 +71,23 @@ class FridgeFragment : Fragment() {
                     if (response?.isSuccessful == true){
                         val responseBody = response.body()
                         val namirnice = responseBody.results
-                        recyclerView.adapter = NamirnicaAdapter(namirnice)
+                        val namirniceHladnjaka = mutableListOf<Namirnica>()
 
+                        for (namirnica in namirnice){
+                            if (namirnica.kolicina_hladnjak > 0){
+                                namirniceHladnjaka.add(namirnica)
+                            }
+                        }
+
+                        if (namirniceHladnjaka.isEmpty()){
+                            recyclerView.visibility = View.INVISIBLE
+                            hladnjakPrazanTekst.visibility = View.VISIBLE
+                        }else{
+                            recyclerView.visibility = View.VISIBLE
+                            hladnjakPrazanTekst.visibility = View.INVISIBLE
+
+                            recyclerView.adapter = NamirnicaAdapter(namirniceHladnjaka)
+                        }
                         hladnjakLoading.isVisible = false
                     }else{
                         pokaziPorukuGreske()
@@ -80,9 +110,56 @@ class FridgeFragment : Fragment() {
             Toast.LENGTH_LONG).show()
     }
 
+    private fun pokaziPorukuGreskeSpinneraMjernihJedinica(){
+        Toast.makeText(
+            context,
+            getString(R.string.poruka_greske_spinner_mj),
+            Toast.LENGTH_LONG).show()
+    }
+
     private fun promjeniZaslon(ucitavanje: Boolean){
         recyclerView.isVisible = !ucitavanje
         hladnjakLoading.isVisible = ucitavanje
+    }
+
+    private fun prikaziDialogDodavanjaNamirnice(){
+        val restMJ = RestMJedinica.mJedinicaServis
+
+        val dodajNamirnicuDialog = LayoutInflater
+            .from(context)
+            .inflate(R.layout.dodaj_namirnicu_u_frizider_dialog, null)
+
+        val pomagacDodavanjaNamirnica = DodavanjeNamirniceHladnjakHelper(dodajNamirnicuDialog)
+
+        AlertDialog.Builder(context)
+            .setView(dodajNamirnicuDialog)
+            .setTitle("Dodavanje namirnice")
+            .setPositiveButton("Dodaj namirnicu"){ _, _ ->
+                val novaNamirnica = pomagacDodavanjaNamirnica.izgradiObjektNoveNamirnice()
+                pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica)
+            }
+            .show()
+
+        restMJ.dohvatiMJedinice().enqueue(
+            object : Callback<RestMJedinicaResponse>{
+                override fun onResponse(
+                    call: Call<RestMJedinicaResponse>?,
+                    response: Response<RestMJedinicaResponse>?
+                ) {
+                    if (response != null) {
+                        val responseBody = response.body()
+                        val listaMjernihJedinica = responseBody.results
+
+                        pomagacDodavanjaNamirnica.popuniSpinner(listaMjernihJedinica)
+                    }
+                }
+
+                override fun onFailure(call: Call<RestMJedinicaResponse>?, t: Throwable?) {
+                    pokaziPorukuGreskeSpinneraMjernihJedinica()
+                }
+
+            }
+        )
     }
 }
 
