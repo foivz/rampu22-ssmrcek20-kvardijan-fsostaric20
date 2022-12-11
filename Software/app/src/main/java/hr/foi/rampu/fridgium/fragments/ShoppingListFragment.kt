@@ -71,10 +71,15 @@ class ShoppingListFragment : Fragment() {
             .setView(novaNamirnicaListaZaKupovinuHelper)
             .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
             .setPositiveButton(getString(R.string.dodaj)) { _, _ ->
-                val novaNamirnica = helper.napraviNamirnicu()
-                helper.pretraziNamirnice(novaNamirnica)
                 val shoppingAdapter = (recyclerView.adapter as ShoppingListaAdapter)
-                shoppingAdapter.dodajNamirnicu(novaNamirnica)
+                if(shoppingAdapter.itemCount == 0){
+                    loadingCircle.visibility = View.INVISIBLE
+                    recyclerView.visibility = View.VISIBLE
+                    emptyTextView.visibility = View.INVISIBLE
+                    emptyImageView.visibility = View.INVISIBLE
+                }
+                val novaNamirnica = helper.napraviNamirnicu()
+                helper.pretraziNamirnice(novaNamirnica,shoppingAdapter)
             }
             .show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context,R.color.color_accent))
@@ -112,14 +117,14 @@ class ShoppingListFragment : Fragment() {
                             recyclerView.visibility = View.VISIBLE
                             emptyTextView.visibility = View.INVISIBLE
                             emptyImageView.visibility = View.INVISIBLE
-                            recyclerView.adapter = ShoppingListaAdapter(namirnicePrave)
-                            recyclerView.layoutManager = LinearLayoutManager(view!!.context)
-                            val divider = MaterialDividerItemDecoration(view!!.context,LinearLayoutManager.VERTICAL)
-                            divider.dividerInsetStart = 20
-                            divider.dividerInsetEnd = 20
-                            divider.isLastItemDecorated = false
-                            recyclerView.addItemDecoration(divider)
                         }
+                        recyclerView.adapter = ShoppingListaAdapter(namirnicePrave)
+                        recyclerView.layoutManager = LinearLayoutManager(view!!.context)
+                        val divider = MaterialDividerItemDecoration(view!!.context,LinearLayoutManager.VERTICAL)
+                        divider.dividerInsetStart = 20
+                        divider.dividerInsetEnd = 20
+                        divider.isLastItemDecorated = false
+                        recyclerView.addItemDecoration(divider)
 
                     } else {
                         displayRestServiceErrorMessage()

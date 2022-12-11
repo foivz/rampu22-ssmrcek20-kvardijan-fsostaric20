@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import hr.foi.rampu.fridgium.R
+import hr.foi.rampu.fridgium.adapters.ShoppingListaAdapter
 import hr.foi.rampu.fridgium.entities.*
 import hr.foi.rampu.fridgium.rest.RestMJedinica
 import hr.foi.rampu.fridgium.rest.RestMJedinicaResponse
@@ -69,7 +70,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
         return Namirnica(0, namirnicaNaziv, 0f, odabranaJedinica, namirnicaKolicina)
     }
 
-    fun pretraziNamirnice(novaNamirnica: Namirnica) {
+    fun pretraziNamirnice(novaNamirnica: Namirnica, shoppingAdapter: ShoppingListaAdapter) {
         rest.dohvatiNamirnice().enqueue(
             object : Callback<RestNamirnicaResponse> {
                 override fun onResponse(
@@ -83,15 +84,20 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                         for (namirnica in namirnice) {
                             if (namirnica.naziv == novaNamirnica.naziv) {
                                 postoji = true
+                                namirnica.kolicina_kupovina = novaNamirnica.kolicina_kupovina
+                                shoppingAdapter.dodajNamirnicu(namirnica)
                                 break;
                             }
                         }
                         if(postoji){
                             novaNamirnica.kolicina_hladnjak = -1f
                             AzurirajUbazi(novaNamirnica)
+                            novaNamirnica.kolicina_hladnjak = 0f
                         } else{
                             DodajUBazu(novaNamirnica)
+                            shoppingAdapter.dodajNamirnicu(novaNamirnica)
                         }
+
                     } else {
                         displayRestServiceErrorMessage()
                     }
@@ -138,7 +144,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
         )
     }
 
-    fun IzrbisiUbazi(namirnica: Namirnica) {
+    fun IzbrisiUbazi(namirnica: Namirnica) {
         val novaNamirnica= namirnica.naziv
         rest.izbrisiNamirnicu(novaNamirnica).enqueue(
             object : Callback<Boolean> {

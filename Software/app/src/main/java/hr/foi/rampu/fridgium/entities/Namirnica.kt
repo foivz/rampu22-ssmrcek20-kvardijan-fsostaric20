@@ -7,5 +7,5 @@ data class Namirnica(
     val naziv: String,
     var kolicina_hladnjak: Float,
     @SerializedName("mjerna_jedinica_id") val mjernaJedinica: MjernaJedinica,
-    val kolicina_kupovina: Float
+    var kolicina_kupovina: Float
 )
