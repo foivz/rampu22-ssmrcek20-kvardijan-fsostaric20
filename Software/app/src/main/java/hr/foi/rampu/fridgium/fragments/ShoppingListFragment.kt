@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
@@ -30,6 +31,7 @@ class ShoppingListFragment : Fragment() {
     private lateinit var emptyImageView: ImageView
     private lateinit var loadingCircle: ProgressBar
     private lateinit var btnCreateNamirnica: FloatingActionButton
+    private lateinit var refresh: SwipeRefreshLayout
     private val rest = RestNamirnice.namirnicaServis
 
 
@@ -41,6 +43,7 @@ class ShoppingListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        refresh = view.findViewById(R.id.swr_shopping_list)
         loadingCircle = view.findViewById(R.id.pb_shopping_list_loading)
         recyclerView = view.findViewById(R.id.rv_shopping_list)
         emptyTextView = view.findViewById(R.id.empty_text_view)
@@ -61,6 +64,11 @@ class ShoppingListFragment : Fragment() {
                 else btnCreateNamirnica.show()
             }
         })
+
+        refresh.setOnRefreshListener {
+            loadNamirnice()
+            refresh.isRefreshing = false
+        }
     }
 
     private fun showDialog(view: View) {
