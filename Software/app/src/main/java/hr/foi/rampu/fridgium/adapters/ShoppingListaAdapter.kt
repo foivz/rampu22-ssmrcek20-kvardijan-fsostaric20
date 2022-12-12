@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
@@ -34,6 +35,11 @@ class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : R
                 helper.AzurirajUbazi(novaNamirnica)
                 shoppingList.removeAt(pozicija)
                 notifyItemRemoved(pozicija)
+                Toast.makeText(
+                    view.context,
+                    "Namirnica je dodana u hladnjak",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             namirnicaDelete.setOnClickListener {
                 val pozicija = this.adapterPosition
