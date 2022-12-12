@@ -43,31 +43,48 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         spinNamirnica.adapter = spinnerAdapter
                     } else {
-                        displayRestServiceErrorMessage()
+                        prikazGreskeSaServerom()
                     }
                 }
 
                 override fun onFailure(call: Call<RestMJedinicaResponse>?, t: Throwable?) {
-                    displayRestServiceErrorMessage()
+                    prikazGreskeSaServerom()
                 }
             }
         )
     }
 
-    private fun displayRestServiceErrorMessage() {
+    private fun prikazGreskeSaServerom() {
         Toast.makeText(
             view.context,
-            "Došlo je do greške",
+            "Došlo je do greške sa servisom!",
             Toast.LENGTH_LONG
         ).show()
     }
 
+    private fun prikazGreskeUpisa() {
+        Toast.makeText(
+            view.context,
+            "Upišite sve podatke!",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    fun provjeriNamirnicu() : Boolean{
+        if (naziv.text.isEmpty() || kolicina.text.isEmpty()) {
+            prikazGreskeUpisa()
+            return false
+        } else return true
+    }
+
     fun napraviNamirnicu(): Namirnica {
+
         val namirnicaNaziv = naziv.text.toString()
         val namirnicaKolicina = kolicina.text.toString().toFloat();
         val odabranaJedinica = spinNamirnica.selectedItem as MjernaJedinica
 
         return Namirnica(0, namirnicaNaziv, 0f, odabranaJedinica, namirnicaKolicina)
+
     }
 
     fun pretraziNamirnice(novaNamirnica: Namirnica, shoppingAdapter: ShoppingListaAdapter) {
@@ -89,22 +106,22 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
                                 break;
                             }
                         }
-                        if(postoji){
+                        if (postoji) {
                             novaNamirnica.kolicina_hladnjak = -1f
                             AzurirajUbazi(novaNamirnica)
                             novaNamirnica.kolicina_hladnjak = 0f
-                        } else{
+                        } else {
                             DodajUBazu(novaNamirnica)
                             shoppingAdapter.dodajNamirnicu(novaNamirnica)
                         }
 
                     } else {
-                        displayRestServiceErrorMessage()
+                        prikazGreskeSaServerom()
                     }
                 }
 
                 override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
-                    displayRestServiceErrorMessage()
+                    prikazGreskeSaServerom()
                 }
             }
         )
@@ -115,12 +132,12 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    displayRestServiceErrorMessage()
+                    prikazGreskeSaServerom()
                 }
 
             }
@@ -132,12 +149,12 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    displayRestServiceErrorMessage()
+                    prikazGreskeSaServerom()
                 }
 
             }
@@ -145,17 +162,17 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
     }
 
     fun IzbrisiUbazi(namirnica: Namirnica) {
-        val novaNamirnica= namirnica.naziv
+        val novaNamirnica = namirnica.naziv
         rest.izbrisiNamirnicu(novaNamirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    displayRestServiceErrorMessage()
+                    prikazGreskeSaServerom()
                 }
 
             }

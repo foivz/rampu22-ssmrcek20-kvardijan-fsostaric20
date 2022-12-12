@@ -60,8 +60,7 @@ class ShoppingListFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
                     btnCreateNamirnica.hide()
-                }
-                else btnCreateNamirnica.show()
+                } else btnCreateNamirnica.show()
             }
         })
 
@@ -72,25 +71,29 @@ class ShoppingListFragment : Fragment() {
     }
 
     private fun showDialog(view: View) {
-        val novaNamirnicaListaZaKupovinuHelper = LayoutInflater.from(context).inflate(R.layout.forma_nova_namirnica_za_listu_namirnica,null)
+        val novaNamirnicaListaZaKupovinuHelper = LayoutInflater.from(context)
+            .inflate(R.layout.forma_nova_namirnica_za_listu_namirnica, null)
         val helper = NovaNamirnicaListaZaKupovinuHelper(novaNamirnicaListaZaKupovinuHelper)
 
         val dialog: AlertDialog = AlertDialog.Builder(context)
             .setView(novaNamirnicaListaZaKupovinuHelper)
             .setTitle(getString(R.string.nova_namirnica_lista_za_kupovinu))
             .setPositiveButton(getString(R.string.dodaj)) { _, _ ->
-                val shoppingAdapter = (recyclerView.adapter as ShoppingListaAdapter)
-                if(shoppingAdapter.itemCount == 0){
-                    loadingCircle.visibility = View.INVISIBLE
-                    recyclerView.visibility = View.VISIBLE
-                    emptyTextView.visibility = View.INVISIBLE
-                    emptyImageView.visibility = View.INVISIBLE
+                if (helper.provjeriNamirnicu()) {
+                    val shoppingAdapter = (recyclerView.adapter as ShoppingListaAdapter)
+                    if (shoppingAdapter.itemCount == 0) {
+                        loadingCircle.visibility = View.INVISIBLE
+                        recyclerView.visibility = View.VISIBLE
+                        emptyTextView.visibility = View.INVISIBLE
+                        emptyImageView.visibility = View.INVISIBLE
+                    }
+                    val novaNamirnica = helper.napraviNamirnicu()
+                    helper.pretraziNamirnice(novaNamirnica, shoppingAdapter)
                 }
-                val novaNamirnica = helper.napraviNamirnicu()
-                helper.pretraziNamirnice(novaNamirnica,shoppingAdapter)
             }
             .show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context,R.color.color_accent))
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
         helper.napuniSpinner()
     }
 
@@ -102,25 +105,27 @@ class ShoppingListFragment : Fragment() {
 
         rest.dohvatiNamirnice().enqueue(
             object : Callback<RestNamirnicaResponse> {
-                override fun onResponse(call: Call<RestNamirnicaResponse>?, response: Response<RestNamirnicaResponse>?) {
+                override fun onResponse(
+                    call: Call<RestNamirnicaResponse>?,
+                    response: Response<RestNamirnicaResponse>?
+                ) {
                     if (response?.isSuccessful == true) {
                         val responseBody = response.body()
                         val namirnice = responseBody.results
 
                         val namirnicePrave = arrayListOf<Namirnica>()
-                        for(namirnica in namirnice){
-                            if(namirnica.kolicina_kupovina > 0){
+                        for (namirnica in namirnice) {
+                            if (namirnica.kolicina_kupovina > 0) {
                                 namirnicePrave.add(namirnica)
                             }
                         }
 
-                        if(namirnicePrave.isEmpty()){
+                        if (namirnicePrave.isEmpty()) {
                             recyclerView.visibility = View.INVISIBLE
                             emptyTextView.visibility = View.VISIBLE
                             emptyImageView.visibility = View.VISIBLE
                             loadingCircle.visibility = View.INVISIBLE
-                        }
-                        else{
+                        } else {
                             loadingCircle.visibility = View.INVISIBLE
                             recyclerView.visibility = View.VISIBLE
                             emptyTextView.visibility = View.INVISIBLE
@@ -128,7 +133,10 @@ class ShoppingListFragment : Fragment() {
                         }
                         recyclerView.adapter = ShoppingListaAdapter(namirnicePrave)
                         recyclerView.layoutManager = LinearLayoutManager(view!!.context)
-                        val divider = MaterialDividerItemDecoration(view!!.context,LinearLayoutManager.VERTICAL)
+                        val divider = MaterialDividerItemDecoration(
+                            view!!.context,
+                            LinearLayoutManager.VERTICAL
+                        )
                         divider.dividerInsetStart = 20
                         divider.dividerInsetEnd = 20
                         divider.isLastItemDecorated = false
