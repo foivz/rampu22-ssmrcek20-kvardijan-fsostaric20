@@ -26,6 +26,7 @@ import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class FridgeFragment : Fragment() {
 
@@ -35,6 +36,7 @@ class FridgeFragment : Fragment() {
     private lateinit var hladnjakPrazanTekst: TextView
     private lateinit var dodajNamirnicuUFrizider: FloatingActionButton
     private val rest = RestNamirnice.namirnicaServis
+    private lateinit var osvjezi: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +51,7 @@ class FridgeFragment : Fragment() {
         hladnjakPrazanTekst = view.findViewById(R.id.tv_hladnjak_prazan)
         recyclerView = view.findViewById(R.id.rv_namirnice_hladnjaka)
         dodajNamirnicuUFrizider = view.findViewById(R.id.fab_dodaj_namirnicu_u_hladnjak)
+        osvjezi = view.findViewById(R.id.srl_hladnjak)
         //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
         //promjeniZaslon(false)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
@@ -56,6 +59,11 @@ class FridgeFragment : Fragment() {
 
         dodajNamirnicuUFrizider.setOnClickListener{
             prikaziDialogDodavanjaNamirnice()
+        }
+
+        osvjezi.setOnRefreshListener {
+            ucitajSadrzajHladnjaka()
+            osvjezi.isRefreshing = false
         }
     }
 
