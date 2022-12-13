@@ -12,6 +12,8 @@ interface RestNamirnicaServis {
     fun dodajNamirnicu(@Body namirnica: Namirnica): Call<Boolean>
     @PUT("namirnice")
     fun azurirajNamirnicu(@Body namirnica: Namirnica): Call<Boolean>
+    @PUT("namirnice/{naziv}")
+    fun azurirajNamirnicuNazivMJ(@Path("naziv") naziv: String, @Body namirnica: Namirnica): Call<Boolean>
     @DELETE("namirnice/{naziv}")
     fun izbrisiNamirnicu(@Path("naziv") naziv: String): Call<Boolean>
 }

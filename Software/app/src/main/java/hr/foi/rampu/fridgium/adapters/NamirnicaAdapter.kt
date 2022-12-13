@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
@@ -85,13 +84,14 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     val pomagacUredivanjaNamirnice = UredivanjeNamirniceDialogHelper(urediNamirnicuDialog)
                     val pozicija = this.adapterPosition
                     val odabranaNamirnica = namirnicaList[pozicija]
+                    val azuriranaNamirnica = odabranaNamirnica
                     val nazivNamirnice = odabranaNamirnica.naziv
 
                     AlertDialog.Builder(view.context)
                         .setView(urediNamirnicuDialog)
                         .setTitle("Uredi namirnicu $nazivNamirnice")
                         .setPositiveButton("Uredi"){ _, _ ->
-
+                            pomagacUredivanjaNamirnice.azurirajPodatke(azuriranaNamirnica)
                         }
                         .setNegativeButton("Odustani"){ dialog, _ ->
                             dialog.cancel()
