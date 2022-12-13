@@ -11,4 +11,6 @@
     <string name="tekst_toast_recept_err">Servis nije dostupan.</string>
     <string name="prika_i_vi_e">Prikaži više</string>
     <string name="slika_jela">Slika jela</string>
+    <string name="vracanje_na_fragment_recept">vracanje na fragment recept</string>
+    <string name="slika_recepta">Slika recepta</string>
 </resources>

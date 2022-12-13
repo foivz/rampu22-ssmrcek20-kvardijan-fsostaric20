@@ -40,7 +40,6 @@ class RecipesFragment : Fragment() {
 
 
 
-
     }
 
 
@@ -150,5 +149,7 @@ class RecipesFragment : Fragment() {
             }
         })
     }
+
+
 
 }
