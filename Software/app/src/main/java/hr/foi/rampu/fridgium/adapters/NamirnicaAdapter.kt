@@ -1,6 +1,7 @@
 package hr.foi.rampu.fridgium.adapters
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,32 +77,31 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     .show()
 
                 //pomagacOduzimanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
-                view.setOnLongClickListener{
+            }
 
-                    val urediNamirnicuDialog = LayoutInflater
-                        .from(pogled.context)
-                        .inflate(R.layout.uredivanje_naziva_mj_namirnice_dialog,null)
-                    val pomagacUredivanjaNamirnice = UredivanjeNamirniceDialogHelper(urediNamirnicuDialog)
-                    val pozicija = this.adapterPosition
-                    val odabranaNamirnica = namirnicaList[pozicija]
-                    val azuriranaNamirnica = odabranaNamirnica
-                    val nazivNamirnice = odabranaNamirnica.naziv
+            view.setOnLongClickListener{
+                val urediNamirnicuDialog = LayoutInflater
+                    .from(pogled.context)
+                    .inflate(R.layout.uredivanje_naziva_mj_namirnice_dialog,null)
+                val pomagacUredivanjaNamirnice = UredivanjeNamirniceDialogHelper(urediNamirnicuDialog)
+                val pozicija = this.adapterPosition
+                val odabranaNamirnica = namirnicaList[pozicija]
+                val nazivNamirnice = odabranaNamirnica.naziv
 
-                    AlertDialog.Builder(view.context)
-                        .setView(urediNamirnicuDialog)
-                        .setTitle("Uredi namirnicu $nazivNamirnice")
-                        .setPositiveButton("Uredi"){ _, _ ->
-                            pomagacUredivanjaNamirnice.azurirajPodatke(azuriranaNamirnica)
-                        }
-                        .setNegativeButton("Odustani"){ dialog, _ ->
-                            dialog.cancel()
-                        }
-                        .show()
+                AlertDialog.Builder(view.context)
+                    .setView(urediNamirnicuDialog)
+                    .setTitle("Uredi namirnicu $nazivNamirnice")
+                    .setPositiveButton("Uredi"){ _, _ ->
+                        pomagacUredivanjaNamirnice.azurirajPodatke(odabranaNamirnica)
+                    }
+                    .setNegativeButton("Odustani"){ dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .show()
 
-                    pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
-                    pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)
-                    return@setOnLongClickListener true
-                }
+                pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
+                pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)
+                return@setOnLongClickListener true
             }
         }
 

@@ -27,11 +27,11 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         nazivNamirnice.setText(naziv)
     }
 
-    fun azurirajPodatke(odabranaNamirnica: Namirnica){
-        val azurnaNamirnica = odabranaNamirnica
+    fun azurirajPodatke(namirnica: Namirnica){
+        val azurnaNamirnica = namirnica
         azurnaNamirnica.mjernaJedinica = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
         azurnaNamirnica.naziv = nazivNamirnice.text.toString()
-        rest.azurirajNamirnicuNazivMJ(odabranaNamirnica.naziv, odabranaNamirnica).enqueue(
+        rest.azurirajNamirnicuNazivMJ(azurnaNamirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
@@ -47,7 +47,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         )
     }
 
-    fun popuniMJSpinner(mjerneJedinice: List<MjernaJedinica>, odabranaNamirnica: Namirnica){
+    fun popuniMJSpinner(mjerneJedinice: List<MjernaJedinica>, namirnicaZaSpinner: Namirnica){
         val spinnerAdapter = ArrayAdapter(
             pogled.context,
             android.R.layout.simple_spinner_item,
@@ -57,7 +57,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         mjernaJedinicaSpinner.adapter = spinnerAdapter
         var index = 0
         for (mj in mjerneJedinice){
-            if (mj == odabranaNamirnica.mjernaJedinica){
+            if (mj == namirnicaZaSpinner.mjernaJedinica){
                 break
             }else{
                 index++
@@ -66,7 +66,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         mjernaJedinicaSpinner.setSelection(index)
     }
 
-    fun dohvatiMJ(odabranaNamirnica: Namirnica){
+    fun dohvatiMJ(namirnica: Namirnica){
         restMJ.dohvatiMJedinice().enqueue(
             object : Callback<RestMJedinicaResponse> {
                 override fun onResponse(
@@ -77,7 +77,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
                         val responseBody = response.body()
                         val listaMjernihJedinica = responseBody.results
 
-                        popuniMJSpinner(listaMjernihJedinica, odabranaNamirnica)
+                        popuniMJSpinner(listaMjernihJedinica, namirnica)
                     }
                 }
 
