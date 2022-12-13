@@ -87,10 +87,25 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
         }
 
         fun OdaberiIkonicu(naziv: String): Int {
-            return when(naziv){
-                "Jaje" -> R.drawable.egg_svgrepo_com
-                "Maslac" -> R.drawable.butter_svgrepo_com
-                "Mlijeko" -> R.drawable.milk_svgrepo_com
+            return when(naziv.lowercase()){
+                "jaje" -> R.drawable.egg_svgrepo_com
+                "maslac" -> R.drawable.butter_svgrepo_com
+                "mlijeko" -> R.drawable.milk_svgrepo_com
+                "jabuka" -> R.drawable.apple_svgrepo_com
+                "banana" -> R.drawable.banana_svgrepo_com
+                "kruh" -> R.drawable.bread_svgrepo_com
+                "kukuruz" -> R.drawable.corn_svgrepo_com
+                "luk" -> R.drawable.onion_svgrepo_com
+                "naranča" -> R.drawable.orange_svgrepo_com
+                "krumpir" -> R.drawable.potato_svgrepo_com
+                "kobasica" -> R.drawable.sausage_svgrepo_com
+                "kečap" -> R.drawable.sauce_ketchup_svgrepo_com
+                "senf" -> R.drawable.mustard_svgrepo_com
+                "majoneza" -> R.drawable.mayonnaise_condiment_svgrepo_com
+                "brašno" -> R.drawable.flour_svgrepo_com
+                "šećer" -> R.drawable.sugar_svgrepo_com
+                "limun" -> R.drawable.lemon_svgrepo_com
+                "paprika" -> R.drawable.paprika_svgrepo_com
                 else -> R.drawable.ic_baseline_dining_24
             }
         }
