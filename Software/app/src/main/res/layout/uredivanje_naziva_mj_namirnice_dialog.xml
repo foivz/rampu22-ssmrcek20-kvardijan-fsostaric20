@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/et_naziv_namirnice_uredi"
+        android:visibility="visible"
         android:text="Naziv namirnice:"/>
 
     <EditText
@@ -16,16 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:visibility="visible"
         android:importantForAutofill="no"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         android:labelFor="@id/spn_kategorija_namirnice_uredi"
         android:text="Mjerna jedinica namirnice:" />
+
     <Spinner
         android:id="@+id/spn_kategorija_namirnice_uredi"
         android:layout_width="match_parent"
+        android:visibility="visible"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

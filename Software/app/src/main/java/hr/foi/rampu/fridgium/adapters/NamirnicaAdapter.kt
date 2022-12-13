@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.DodavanjeKolicineNamirnicaDialogHelper
 import hr.foi.rampu.fridgium.helpers.OduzimanjeKolicineNamirnicaDialogHelper
+import hr.foi.rampu.fridgium.helpers.UredivanjeNamirniceDialogHelper
 
 class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
     RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
@@ -75,6 +77,31 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     .show()
 
                 //pomagacOduzimanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+                view.setOnLongClickListener{
+
+                    val urediNamirnicuDialog = LayoutInflater
+                        .from(pogled.context)
+                        .inflate(R.layout.uredivanje_naziva_mj_namirnice_dialog,null)
+                    val pomagacUredivanjaNamirnice = UredivanjeNamirniceDialogHelper(urediNamirnicuDialog)
+                    val pozicija = this.adapterPosition
+                    val odabranaNamirnica = namirnicaList[pozicija]
+                    val nazivNamirnice = odabranaNamirnica.naziv
+
+                    AlertDialog.Builder(view.context)
+                        .setView(urediNamirnicuDialog)
+                        .setTitle("Uredi namirnicu $nazivNamirnice")
+                        .setPositiveButton("Uredi"){ _, _ ->
+
+                        }
+                        .setNegativeButton("Odustani"){ dialog, _ ->
+                            dialog.cancel()
+                        }
+                        .show()
+
+                    pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
+                    pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)
+                    return@setOnLongClickListener true
+                }
             }
         }
 
