@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -149,7 +150,7 @@ class FridgeFragment : Fragment() {
 
         val pomagacDodavanjaNamirnica = DodavanjeNamirniceHladnjakHelper(dodajNamirnicuDialog)
 
-        AlertDialog.Builder(context)
+        val dialogDodajNamirnicu = AlertDialog.Builder(context)
             .setView(dodajNamirnicuDialog)
             .setTitle("Dodavanje namirnice")
             .setPositiveButton("Dodaj namirnicu"){ _, _ ->
@@ -157,6 +158,7 @@ class FridgeFragment : Fragment() {
                 pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica)
             }
             .show()
+        dialogDodajNamirnicu.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.color_accent))
 
         restMJ.dohvatiMJedinice().enqueue(
             object : Callback<RestMJedinicaResponse>{

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
@@ -11,11 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <SurfaceView
+            android:id="@+id/sv_boja_favorit"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
+
         <ImageView
             android:id="@+id/img_ikona_namirnice_hladnjak"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:contentDescription="Slika namirnice"
+            android:padding="3dp"
             />
 
         <LinearLayout

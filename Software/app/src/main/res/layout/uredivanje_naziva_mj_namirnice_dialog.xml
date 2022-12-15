@@ -16,9 +16,10 @@
         android:id="@+id/et_naziv_namirnice_uredi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:importantForAutofill="no"
         android:inputType="text"
-        android:visibility="visible"
-        android:importantForAutofill="no"/>
+        android:minHeight="48dp"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="match_parent"
@@ -30,7 +31,35 @@
     <Spinner
         android:id="@+id/spn_kategorija_namirnice_uredi"
         android:layout_width="match_parent"
-        android:visibility="visible"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/et_minimalna_kolicina_favorit"
+            android:visibility="visible"
+            android:text="Min količina:"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:id="@+id/et_minimalna_kolicina_favorit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:visibility="visible"
+            android:text="25"
+            android:minHeight="48dp"
+            android:importantForAutofill="no"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

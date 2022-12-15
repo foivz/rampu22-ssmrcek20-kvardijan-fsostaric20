@@ -2,10 +2,7 @@ package hr.foi.rampu.fridgium.helpers
 
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
@@ -22,6 +19,9 @@ class UredivanjeNamirniceDialogHelper(view: View) {
     val mjernaJedinicaSpinner = view.findViewById<Spinner>(R.id.spn_kategorija_namirnice_uredi)
     val restMJ = RestMJedinica.mJedinicaServis
     val rest = RestNamirnice.namirnicaServis
+
+    val pomagacFavorita = FavoritiHelper(pogled)
+    val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
 
     fun popuniNaziv(naziv: String){
         nazivNamirnice.setText(naziv)
@@ -87,5 +87,13 @@ class UredivanjeNamirniceDialogHelper(view: View) {
 
             }
         )
+    }
+
+    fun DodajiliMakniFavorit(nazivNamirnice: String){
+        if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
+            pomagacFavorita.MakniIzFavorita(nazivNamirnice)
+        }else{
+            pomagacFavorita.DodajUFavorite(nazivNamirnice, minKol.text.toString().toFloat())
+        }
     }
 }

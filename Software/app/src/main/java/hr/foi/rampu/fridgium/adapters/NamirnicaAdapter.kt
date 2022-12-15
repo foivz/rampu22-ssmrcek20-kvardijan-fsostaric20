@@ -1,8 +1,10 @@
 package hr.foi.rampu.fridgium.adapters
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -13,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.DodavanjeKolicineNamirnicaDialogHelper
+import hr.foi.rampu.fridgium.helpers.FavoritiHelper
 import hr.foi.rampu.fridgium.helpers.OduzimanjeKolicineNamirnicaDialogHelper
 import hr.foi.rampu.fridgium.helpers.UredivanjeNamirniceDialogHelper
+
 
 class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
     RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
@@ -29,6 +33,8 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
         private val gumbDodaj : Button
         private val gumbOduzmi : Button
 
+        private val oznakaFavorita: SurfaceView
+        val pomagacFavorita: FavoritiHelper
         init {
             ikonicaNamirnice = view.findViewById(R.id.img_ikona_namirnice_hladnjak)
             imeNamirnice = view.findViewById(R.id.tv_ime_namirnice)
@@ -36,6 +42,8 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
             mjernaJedinicaHladnjak = view.findViewById(R.id.tv_mjernaJedinica_hladnjak)
             gumbDodaj = view.findViewById(R.id.button_dodaj)
             gumbOduzmi = view.findViewById(R.id.button_oduzimaj)
+            oznakaFavorita = view.findViewById(R.id.sv_boja_favorit)
+            pomagacFavorita = FavoritiHelper(view)
 
             gumbDodaj.setOnClickListener{
                 val dodajKolicinuNamirniceDialog = LayoutInflater
@@ -45,7 +53,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                 val pomagacDodavanjaKolicine = DodavanjeKolicineNamirnicaDialogHelper(
                     dodajKolicinuNamirniceDialog)
 
-                AlertDialog.Builder(pogled.context)
+                val dialogDodaj = AlertDialog.Builder(pogled.context)
                     .setView(dodajKolicinuNamirniceDialog)
                     .setTitle(imeNamirnice.text)
                     .setPositiveButton(R.string.dodaj_kolicinu_namirnice){_, _->
@@ -54,8 +62,8 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                         pomagacDodavanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
                     }
                     .show()
-
-                //pomagacDodavanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+                dialogDodaj.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogDodaj.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
             }
 
             gumbOduzmi.setOnClickListener{
@@ -66,7 +74,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                 val pomagacOduzimanjaKolicine = OduzimanjeKolicineNamirnicaDialogHelper(
                     oduzmiKolicinuNamirniceDialog)
 
-                AlertDialog.Builder(pogled.context)
+                val dialogOduzmi = AlertDialog.Builder(pogled.context)
                     .setView(oduzmiKolicinuNamirniceDialog)
                     .setTitle(imeNamirnice.text)
                     .setPositiveButton(R.string.oduzmi_kolicinu_namirnice){_, _->
@@ -75,8 +83,8 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                         pomagacOduzimanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
                     }
                     .show()
-
-                //pomagacOduzimanjaKolicine.popuniKolicinu(kolicinaNamirnice.text.toString().toInt())
+                dialogOduzmi.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogOduzmi.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
             }
 
             view.setOnLongClickListener{
@@ -88,19 +96,31 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                 val odabranaNamirnica = namirnicaList[pozicija]
                 val nazivNamirnice = odabranaNamirnica.naziv
 
-                AlertDialog.Builder(view.context)
+                var favBtn = "Dodaj Favorit"
+                Log.d("FAV", "PROVJERAVAM " + imeNamirnice.text.toString())
+                if (pomagacFavorita.ProvjeriFavorit(imeNamirnice.text.toString())) favBtn = "Makni Favorit"
+
+                val dialogEdit = AlertDialog.Builder(view.context)
                     .setView(urediNamirnicuDialog)
                     .setTitle("Uredi namirnicu $nazivNamirnice")
                     .setPositiveButton("Uredi"){ _, _ ->
                         pomagacUredivanjaNamirnice.azurirajPodatke(odabranaNamirnica)
                     }
+                    .setNeutralButton(favBtn){ dialog, _ ->
+                        Log.d("FAV", favBtn)
+                        pomagacUredivanjaNamirnice.DodajiliMakniFavorit(nazivNamirnice)
+                    }
                     .setNegativeButton("Odustani"){ dialog, _ ->
                         dialog.cancel()
                     }
                     .show()
+                dialogEdit.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogEdit.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogEdit.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
 
                 pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
                 pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)
+
                 return@setOnLongClickListener true
             }
         }
@@ -111,6 +131,8 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
             val draw = ContextCompat.getDrawable(pogled.context,OdaberiIkonicu(namirnica.naziv))
             ikonicaNamirnice.setImageDrawable(draw)
             mjernaJedinicaHladnjak.text = namirnica.mjernaJedinica.naziv
+            if (pomagacFavorita.ProvjeriFavorit(namirnica.naziv)) oznakaFavorita.setBackgroundColor(
+                Color.YELLOW)
         }
 
         fun OdaberiIkonicu(naziv: String): Int {
