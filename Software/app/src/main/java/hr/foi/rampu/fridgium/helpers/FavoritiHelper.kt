@@ -31,8 +31,10 @@ class FavoritiHelper(view: View) {
         var provjeriPostojanost = -1f
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             provjeriPostojanost = getFloat(nazivNamirnice, -1f)
-
         }
+/*        Toast.makeText(
+            pogled.context, "Namirnica $nazivNamirnice ime zadan $provjeriPostojanost", Toast.LENGTH_SHORT)
+            .show()*/
         return provjeriPostojanost != -1f
     }
 }

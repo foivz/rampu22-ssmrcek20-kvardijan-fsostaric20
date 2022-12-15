@@ -62,6 +62,8 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                         pomagacDodavanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
                     }
                     .show()
+
+
                 dialogDodaj.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
                 dialogDodaj.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
             }
@@ -110,16 +112,13 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                         Log.d("FAV", favBtn)
                         pomagacUredivanjaNamirnice.DodajiliMakniFavorit(nazivNamirnice)
                     }
-                    .setNegativeButton("Odustani"){ dialog, _ ->
-                        dialog.cancel()
-                    }
                     .show()
                 dialogEdit.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
-                dialogEdit.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
                 dialogEdit.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
 
                 pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
                 pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)
+                pomagacUredivanjaNamirnice.DodajiliMakniMinKolUpis(nazivNamirnice)
 
                 return@setOnLongClickListener true
             }
@@ -131,8 +130,12 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
             val draw = ContextCompat.getDrawable(pogled.context,OdaberiIkonicu(namirnica.naziv))
             ikonicaNamirnice.setImageDrawable(draw)
             mjernaJedinicaHladnjak.text = namirnica.mjernaJedinica.naziv
-            if (pomagacFavorita.ProvjeriFavorit(namirnica.naziv)) oznakaFavorita.setBackgroundColor(
-                Color.YELLOW)
+            if (pomagacFavorita.ProvjeriFavorit(namirnica.naziv)) {
+                    oznakaFavorita.setBackgroundColor(Color.YELLOW)
+            }
+            else{
+                    oznakaFavorita.setBackgroundColor(Color.WHITE)
+            }
         }
 
         fun OdaberiIkonicu(naziv: String): Int {

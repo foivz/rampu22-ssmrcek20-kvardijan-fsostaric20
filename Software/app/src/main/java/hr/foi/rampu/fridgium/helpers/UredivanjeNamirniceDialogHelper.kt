@@ -22,6 +22,8 @@ class UredivanjeNamirniceDialogHelper(view: View) {
 
     val pomagacFavorita = FavoritiHelper(pogled)
     val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
+    val minKolLablela = view.findViewById<TextView>(R.id.et_minimalna_kolicina_favorit_tekst)
+    val favoritiNaslov = view.findViewById<TextView>(R.id.tv_postavke_favorita)
 
     fun popuniNaziv(naziv: String){
         nazivNamirnice.setText(naziv)
@@ -94,6 +96,14 @@ class UredivanjeNamirniceDialogHelper(view: View) {
             pomagacFavorita.MakniIzFavorita(nazivNamirnice)
         }else{
             pomagacFavorita.DodajUFavorite(nazivNamirnice, minKol.text.toString().toFloat())
+        }
+    }
+
+    fun DodajiliMakniMinKolUpis(nazivNamirnice: String){
+        if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
+            minKol.visibility = View.GONE
+            minKolLablela.visibility = View.GONE
+            favoritiNaslov.visibility = View.GONE
         }
     }
 }
