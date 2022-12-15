@@ -22,7 +22,11 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
                 Log.d("errorimidolaze", "Tu samerr")
                 namirnicaRecept = view.findViewById(R.id.PV_Namirnica)
                 bojaDostupnost = view.findViewById(R.id.SV_boja_prikazi_vise_item)
+
+
             }
+
+
 
             fun bind(namirnica: NamirnicaPrikaz) {
                 var string = ""
