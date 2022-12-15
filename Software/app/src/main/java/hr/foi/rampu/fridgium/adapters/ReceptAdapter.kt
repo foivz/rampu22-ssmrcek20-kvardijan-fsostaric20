@@ -1,7 +1,6 @@
 package hr.foi.rampu.fridgium.adapters
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,11 +10,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Recept
+import hr.foi.rampu.fridgium.rest.RestRecept
+import retrofit2.Call
+import retrofit2.Response
 
 
 class ReceptAdapter(private val ReceptList: List<Recept>) :
@@ -70,14 +73,26 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
         private fun dialogObrisi(view: View){
             val prikaziVise = LayoutInflater.from(view.context)
                 .inflate(R.layout.fragment_prikazi_vise_recept, null)
-            dialog = AlertDialog.Builder(view.context).setView(prikaziVise).setPositiveButton("Obriši",obrisi()).show()
+            dialog = AlertDialog.Builder(view.context).setView(prikaziVise).setPositiveButton("Obriši"){_,_->
+                Log.d("dolazemierrori", "AAA obrisal bum ga")
+                val recept : Recept = ReceptList[this.adapterPosition]
+                val servis = RestRecept.ReceptService
+                servis.deleteRecept(recept.id).enqueue(object : retrofit2.Callback<Boolean>{
+                    override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                        Toast.makeText(view.context,"Recept ${recept.naziv} izbrisan", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                        Toast.makeText(view.context,"Došlo je do pogreške kod brisanja", Toast.LENGTH_SHORT).show()
+                    }
+                })
+
+            }.show()
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
                 ContextCompat.getColor(view.context, R.color.color_accent))
         }
 
-        private fun obrisi(): DialogInterface.OnClickListener? {
-            return null
-        }
+
 
 
 
@@ -103,13 +118,13 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
         private fun otvoriDialog(recept: Recept, view: View){
 
 
-                dialog = inflateDialog(view)
-                val opisReceptPV = dialog.findViewById<TextView>(R.id.tv_opis_recepta_prikazi_vise)
-                val nazivReceptPV = dialog.findViewById<TextView>(R.id.tvIme_Recepta)
-                nazivReceptPV.text = recept.naziv
-                opisReceptPV.text = recept.opis
+            dialog = inflateDialog(view)
+            val opisReceptPV = dialog.findViewById<TextView>(R.id.tv_opis_recepta_prikazi_vise)
+            val nazivReceptPV = dialog.findViewById<TextView>(R.id.tvIme_Recepta)
+            nazivReceptPV.text = recept.naziv
+            opisReceptPV.text = recept.opis
 
-                Log.d("errorimidolaze","${recept.namirnice}")
+            Log.d("errorimidolaze","${recept.namirnice}")
 
         }
 
