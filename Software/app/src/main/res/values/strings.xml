@@ -17,4 +17,9 @@
     <string name="dodaj_kolicinu_namirnice">Dodaj količinu namirnice</string>
     <string name="oduzmi_kolicinu_namirnice">Oduzmi količinu namirnice</string>
     <string name="poruka_greske_spinner_mj">Greška kod dohvaćanja mjernih jedinica</string>
+    <string name="prika_i_vi_e">Prikaži više</string>
+    <string name="slika_jela">Slika jela</string>
+    <string name="vracanje_na_fragment_recept">vracanje na fragment recept</string>
+    <string name="slika_recepta">Slika recepta</string>
+    <string name="tu_sam">tu sam</string>
 </resources>
