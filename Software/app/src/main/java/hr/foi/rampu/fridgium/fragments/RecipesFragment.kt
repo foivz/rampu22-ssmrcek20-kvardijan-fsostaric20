@@ -133,7 +133,7 @@ class RecipesFragment : Fragment() {
                     val responseBody = response.body()
                     val namirnice = responseBody.results
                     for(n in namirnice){
-                        val np = NamirnicaPrikaz(n.id,n.naziv,n.kolicina_hladnjak,n.mjernaJedinica,n.kolicina_kupovina,0)
+                        val np = NamirnicaPrikaz(n.id,n.naziv,n.kolicina_hladnjak,n.mjernaJedinica,n.kolicina_kupovina,0f)
 
                         popisnamirnica.add(np)
                     }
