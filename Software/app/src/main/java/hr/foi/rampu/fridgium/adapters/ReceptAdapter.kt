@@ -2,12 +2,14 @@ package hr.foi.rampu.fridgium.adapters
 
 import android.app.AlertDialog
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Recept
@@ -21,7 +23,9 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
         private val namirniceRecept: TextView
         private val bojaRecept: SurfaceView
         private val btnPrikaziVise:Button
-
+        private lateinit var recyclerView: RecyclerView
+        private lateinit var dialog: AlertDialog
+        private lateinit var noviView : View
 
         init {
             nazivRecept = view.findViewById(R.id.tv_naziv_recept)
@@ -31,14 +35,13 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             btnPrikaziVise = view.findViewById(R.id.btn_prikazi_vise)
             btnPrikaziVise.setOnClickListener{
                 val recept : Recept = ReceptList[this.adapterPosition]
-                val prikaziVise = LayoutInflater.from(view.context).inflate(R.layout.fragment_prikazi_vise_recept, null)
-                val recyclerView = view.findViewById<RecyclerView>(R.id.PV_recyclerview_namirnice)
-                val dialog = AlertDialog.Builder(view.context).setView(prikaziVise).show()
-                val opisReceptPV = dialog.findViewById<TextView>(R.id.tv_opis_recepta_prikazi_vise)
-                val nazivReceptPV = dialog.findViewById<TextView>(R.id.tvIme_Recepta)
-                nazivReceptPV.text = recept.naziv
-                opisReceptPV.text = recept.opis
+                otvoriDialog(recept, view)
+                Log.d("errorimidolaze","${ReceptPrikaziViseAdapter(recept.namirnice).itemCount}")
+                recyclerView = dialog.findViewById(R.id.PV_recyclerview_namirnice)
+                recyclerView.layoutManager = LinearLayoutManager(dialog.context)
                 recyclerView.adapter = ReceptPrikaziViseAdapter(recept.namirnice)
+
+                Log.d("errorimidolaze", "${recyclerView.adapter}")
 
             }
         }
@@ -62,6 +65,28 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
 
         }
 
+        private fun otvoriDialog(recept: Recept, view: View){
+
+
+                dialog = inflateDialog(view)
+                val opisReceptPV = dialog.findViewById<TextView>(R.id.tv_opis_recepta_prikazi_vise)
+                val nazivReceptPV = dialog.findViewById<TextView>(R.id.tvIme_Recepta)
+                nazivReceptPV.text = recept.naziv
+                opisReceptPV.text = recept.opis
+
+                Log.d("errorimidolaze","${recept.namirnice}")
+
+        }
+
+        private fun inflateDialog(view: View): AlertDialog {
+            val prikaziVise = LayoutInflater.from(view.context)
+                .inflate(R.layout.fragment_prikazi_vise_recept, null)
+            noviView = prikaziVise
+            return AlertDialog.Builder(view.context).setView(prikaziVise).show()
+
+
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceptViewHolder {
@@ -78,5 +103,6 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
     override fun getItemCount(): Int {
         return ReceptList.size
     }
+
 
 }

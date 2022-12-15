@@ -1,9 +1,10 @@
 package hr.foi.rampu.fridgium.adapters
 
 
-import android.graphics.Color.GREEN
-import android.hardware.camera2.params.RggbChannelVector.RED
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -15,25 +16,26 @@ import hr.foi.rampu.fridgium.entities.NamirnicaPrikaz
 class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
     RecyclerView.Adapter<ReceptPrikaziViseAdapter.ReceptPrikaziViseViewHolder>() {
         inner class ReceptPrikaziViseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            private val naslovRecept: TextView
-            private val opisRecept: TextView
             private var namirnicaRecept : TextView
+            private var bojaDostupnost : SurfaceView
             init {
-                naslovRecept = view.findViewById(R.id.tvIme_Recepta)
-                opisRecept = view.findViewById(R.id.tv_opis_recepta_prikazi_vise)
+                Log.d("errorimidolaze", "Tu samerr")
                 namirnicaRecept = view.findViewById(R.id.PV_Namirnica)
+                bojaDostupnost = view.findViewById(R.id.SV_boja_prikazi_vise_item)
             }
 
             fun bind(namirnica: NamirnicaPrikaz) {
-
+                var string = ""
                 if(namirnica.kolicina>namirnica.kolicina_hladnjak){
-                    namirnicaRecept.text = namirnica.naziv
-                    namirnicaRecept.highlightColor = RED
+                     string += "${namirnica.naziv} \nKoličina u frižideru: ${namirnica.kolicina_hladnjak}${namirnica.mjernaJedinica.naziv} \nKoličina potrebna: ${namirnica.kolicina}${namirnica.mjernaJedinica.naziv}"
+                    bojaDostupnost.setBackgroundColor(Color.RED)
                 }else{
-                    namirnicaRecept.text = namirnica.naziv
-                    namirnicaRecept.highlightColor = GREEN
+                    string += "${namirnica.naziv} \nKoličina u frižideru: ${namirnica.kolicina_hladnjak}${namirnica.mjernaJedinica.naziv
+                    } \nKoličina potrebna: ${namirnica.kolicina}${namirnica.mjernaJedinica.naziv
+                    }"
+                    bojaDostupnost.setBackgroundColor(Color.GREEN)
                 }
-
+                namirnicaRecept.text = string
             }
 
         }
@@ -45,12 +47,13 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
             return ReceptPrikaziViseViewHolder(receptView)
         }
 
+        override fun onBindViewHolder(holder: ReceptPrikaziViseViewHolder, position: Int) {
+            holder.bind(namirnice[position])
+        }
+
         override fun getItemCount(): Int {
             return namirnice.size
         }
 
-        override fun onBindViewHolder(holder: ReceptPrikaziViseViewHolder, position: Int) {
-            holder.bind(namirnice[position])
-        }
 
 }
