@@ -27,7 +27,7 @@ class FavoritiHelper(view: View) {
         }
     }
 
-    fun ProvjeriFavorit(nazivNamirnice: String): Boolean{
+    fun ProvjeriFavorit(nazivNamirnice: String): Boolean{ //kaze dal je u favoritima il ne
         var provjeriPostojanost = -1f
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             provjeriPostojanost = getFloat(nazivNamirnice, -1f)
@@ -36,5 +36,13 @@ class FavoritiHelper(view: View) {
             pogled.context, "Namirnica $nazivNamirnice ime zadan $provjeriPostojanost", Toast.LENGTH_SHORT)
             .show()*/
         return provjeriPostojanost != -1f
+    }
+
+    fun DajVrijednostFavorita(nazivNamirnice: String): Float{ //vraca granicu favorita u frizideru
+        var vrijednost = -1f
+        pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
+            vrijednost = getFloat(nazivNamirnice, -1f)
+        }
+        return vrijednost
     }
 }
