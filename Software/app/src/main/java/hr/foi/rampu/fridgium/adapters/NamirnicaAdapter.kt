@@ -62,9 +62,10 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     }
                     .show()
 
-
-                dialogDodaj.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
-                dialogDodaj.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogDodaj.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogDodaj.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
             }
 
             gumbOduzmi.setOnClickListener{
@@ -84,8 +85,11 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                         pomagacOduzimanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
                     }
                     .show()
-                dialogOduzmi.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
-                dialogOduzmi.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+
+                dialogOduzmi.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogOduzmi.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
             }
 
             view.setOnLongClickListener{
@@ -112,8 +116,10 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                         pomagacUredivanjaNamirnice.dodajiliMakniFavorit(nazivNamirnice)
                     }
                     .show()
-                dialogEdit.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
-                dialogEdit.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogEdit.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                dialogEdit.getButton(AlertDialog.BUTTON_NEUTRAL)
+                    .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
 
                 pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
                 pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)

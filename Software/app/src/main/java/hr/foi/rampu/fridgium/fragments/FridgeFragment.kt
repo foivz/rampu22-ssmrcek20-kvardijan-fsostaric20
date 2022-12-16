@@ -70,7 +70,8 @@ class FridgeFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
+                if (!recyclerView.canScrollVertically(1)
+                    && recyclerView.canScrollVertically(-1)) {
                     dodajNamirnicuUFrizider.hide()
                 }
                 else dodajNamirnicuUFrizider.show()
@@ -158,7 +159,8 @@ class FridgeFragment : Fragment() {
                 pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica)
             }
             .show()
-        dialogDodajNamirnicu.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.color_accent))
+        dialogDodajNamirnicu.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.color_accent))
 
         restMJ.dohvatiMJedinice().enqueue(
             object : Callback<RestMJedinicaResponse>{
