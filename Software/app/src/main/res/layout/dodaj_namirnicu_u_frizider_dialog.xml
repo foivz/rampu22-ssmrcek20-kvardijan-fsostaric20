@@ -1,48 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="15dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@id/et_naziv_nove_namirnice"
-        android:text="@string/unesi_naziv_namirnice" />
+        android:padding="15dp"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
 
-    <EditText
-        android:id="@+id/et_naziv_nove_namirnice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/et_naziv_nove_namirnice"
+            android:text="@string/unesi_naziv_namirnice" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/et_kolicina_nove_namirnice"
-        android:text="@string/odaberite_koli_inu_namirnice_koju_elite_dodati"/>
+        <EditText
+            android:id="@+id/et_naziv_nove_namirnice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/et_kolicina_nove_namirnice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:minHeight="48dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/et_kolicina_nove_namirnice"
+            android:text="@string/odaberite_koli_inu_namirnice_koju_elite_dodati"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/spn_kategorija_nove_namirnice"
-        android:text="@string/odaberi_mjernu_jedinicu_namirnice" />
+        <EditText
+            android:id="@+id/et_kolicina_nove_namirnice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp" />
 
-    <Spinner
-        android:id="@+id/spn_kategorija_nove_namirnice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/spn_kategorija_nove_namirnice"
+            android:text="@string/odaberi_mjernu_jedinicu_namirnice" />
 
-</LinearLayout>
+        <Spinner
+            android:id="@+id/spn_kategorija_nove_namirnice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+    </LinearLayout>
+
+</ScrollView>
