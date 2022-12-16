@@ -12,8 +12,8 @@ import hr.foi.rampu.fridgium.fragments.ShoppingListFragment
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var tabLayout: TabLayout
-    lateinit var viewPager2: ViewPager2
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager2: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

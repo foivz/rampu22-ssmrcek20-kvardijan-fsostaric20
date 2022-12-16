@@ -5,7 +5,7 @@ import hr.foi.rampu.fridgium.entities.Namirnica
 
 object MockDataLoader {
 
-    fun DajProbnePodatke(): List<Namirnica> = listOf(
+    fun dajProbnePodatke(): List<Namirnica> = listOf(
         Namirnica(1, "Jaje", 3f,
             MjernaJedinica(1, "Komad"), 5f),
         Namirnica(2, "Mlijeko", 1f,

@@ -13,14 +13,10 @@ import retrofit2.Response
 
 class OduzimanjeKolicineNamirnicaDialogHelper(view: View) {
 
-    val trenutnaKolicina = view.findViewById<EditText>(R.id.et_oduzmi_kolicinu_namirnice)
+    private val trenutnaKolicina: EditText = view.findViewById(R.id.et_oduzmi_kolicinu_namirnice)
     private val rest = RestNamirnice.namirnicaServis
-    val pogled = view
+    private val pogled = view
     val pomagacFavorita = FavoritiHelper(pogled)
-
-    fun popuniKolicinu(kolicina: Int){
-        trenutnaKolicina.setText(kolicina.toString())
-    }
 
     fun azurirajNamirnicu(namirnica: Namirnica){
         val kol = namirnica.kolicina_hladnjak - trenutnaKolicina.text.toString().toFloat()

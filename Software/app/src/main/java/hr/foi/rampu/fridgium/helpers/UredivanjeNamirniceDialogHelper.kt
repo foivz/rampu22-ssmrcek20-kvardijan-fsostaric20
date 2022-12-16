@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.helpers
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -15,25 +16,23 @@ import retrofit2.Response
 
 class UredivanjeNamirniceDialogHelper(view: View) {
     val pogled = view
-    val nazivNamirnice = view.findViewById<EditText>(R.id.et_naziv_namirnice_uredi)
-    val mjernaJedinicaSpinner = view.findViewById<Spinner>(R.id.spn_kategorija_namirnice_uredi)
-    val restMJ = RestMJedinica.mJedinicaServis
+    private val nazivNamirnice: EditText = view.findViewById(R.id.et_naziv_namirnice_uredi)
+    private val mjernaJedinicaSpinner: Spinner = view.findViewById(R.id.spn_kategorija_namirnice_uredi)
+    private val restMJ = RestMJedinica.mJedinicaServis
     val rest = RestNamirnice.namirnicaServis
 
-    val pomagacFavorita = FavoritiHelper(pogled)
-    val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
-    val minKolLablela = view.findViewById<TextView>(R.id.et_minimalna_kolicina_favorit_tekst)
-    val favoritiNaslov = view.findViewById<TextView>(R.id.tv_postavke_favorita)
+    private val pomagacFavorita = FavoritiHelper(pogled)
+    private val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
+    private val minKolLablela = view.findViewById<TextView>(R.id.et_minimalna_kolicina_favorit_tekst)
 
     fun popuniNaziv(naziv: String){
         nazivNamirnice.setText(naziv)
     }
 
-    fun azurirajPodatke(namirnica: Namirnica){
-        val azurnaNamirnica = namirnica
-        azurnaNamirnica.mjernaJedinica = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
-        azurnaNamirnica.naziv = nazivNamirnice.text.toString()
-        rest.azurirajNamirnicuNazivMJ(azurnaNamirnica).enqueue(
+    fun azurirajPodatke(namirnica: Namirnica) {
+        namirnica.mjernaJedinica = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
+        namirnica.naziv = nazivNamirnice.text.toString()
+        rest.azurirajNamirnicuNazivMJ(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
@@ -42,7 +41,8 @@ class UredivanjeNamirniceDialogHelper(view: View) {
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Neuspjesno azuriranje", Toast.LENGTH_LONG).show()
+                    Toast.makeText(pogled.context, "Neuspjesno azuriranje", Toast.LENGTH_LONG)
+                        .show()
                 }
 
             }
@@ -91,19 +91,20 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         )
     }
 
-    fun DodajiliMakniFavorit(nazivNamirnice: String){
-        if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
-            pomagacFavorita.MakniIzFavorita(nazivNamirnice)
+    fun dodajiliMakniFavorit(nazivNamirnice: String){
+        if (pomagacFavorita.provjeriFavorit(nazivNamirnice)){
+            pomagacFavorita.makniIzFavorita(nazivNamirnice)
         }else{
-            pomagacFavorita.DodajUFavorite(nazivNamirnice, minKol.text.toString().toFloat())
+            pomagacFavorita.dodajUFavorite(nazivNamirnice, minKol.text.toString().toFloat())
         }
     }
 
-    fun DodajiliMakniMinKolUpis(nazivNamirnice: String){
-        if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
-            val vrijednost = pomagacFavorita.DajVrijednostFavorita(nazivNamirnice).toString()
+    @SuppressLint("SetTextI18n")
+    fun dodajiliMakniMinKolUpis(nazivNamirnice: String){
+        if (pomagacFavorita.provjeriFavorit(nazivNamirnice)){
+            val vrijednost = pomagacFavorita.dajVrijednostFavorita(nazivNamirnice).toString()
             minKol.visibility = View.GONE
-            minKolLablela.setText("Minimalna količina u hladnjaku je trenutno $vrijednost")
+            minKolLablela.text = "Minimalna količina u hladnjaku je trenutno $vrijednost"
         }
     }
 }

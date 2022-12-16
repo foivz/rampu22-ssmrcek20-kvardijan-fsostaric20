@@ -10,6 +10,7 @@ import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
+import hr.foi.rampu.fridgium.rest.RestNamirnicaServis
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +22,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     private val nazivNamirnice = view.findViewById<EditText>(R.id.et_naziv_nove_namirnice)
     private val kolicinaNamirnice = view.findViewById<EditText>(R.id.et_kolicina_nove_namirnice)
     val pogled = view
-    val rest = RestNamirnice.namirnicaServis
+    val rest: RestNamirnicaServis = RestNamirnice.namirnicaServis
     val pomagacFavorita = FavoritiHelper(pogled)
 
     fun popuniSpinner(mjerneJedinice: List<MjernaJedinica>) {

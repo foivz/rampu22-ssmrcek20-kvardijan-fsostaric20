@@ -11,5 +11,5 @@ object RestNamirnicaRecepta {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val namirnicaReceptaServis = instance.create(RestNamirnicaReceptaServis::class.java)
+        val namirnicaReceptaServis: RestNamirnicaReceptaServis = instance.create(RestNamirnicaReceptaServis::class.java)
     }

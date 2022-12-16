@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
+import hr.foi.rampu.fridgium.rest.RestNamirnicaServis
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,9 +14,9 @@ import retrofit2.Response
 
 class FavoritiHelper(view: View) {
     val pogled = view
-    val rest = RestNamirnice.namirnicaServis
+    val rest: RestNamirnicaServis = RestNamirnice.namirnicaServis
 
-    fun DodajUFavorite(nazivNamirnice: String, minimalnaKolicina: Float){
+    fun dodajUFavorite(nazivNamirnice: String, minimalnaKolicina: Float){
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             edit().putFloat(nazivNamirnice, minimalnaKolicina).apply()
             Toast.makeText(
@@ -26,7 +27,7 @@ class FavoritiHelper(view: View) {
         }
     }
 
-    fun MakniIzFavorita(nazivNamirnice: String){
+    fun makniIzFavorita(nazivNamirnice: String){
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
                 edit().remove(nazivNamirnice).apply()
                 Toast.makeText(
@@ -35,7 +36,7 @@ class FavoritiHelper(view: View) {
         }
     }
 
-    fun ProvjeriFavorit(nazivNamirnice: String): Boolean{ //kaze dal je u favoritima il ne
+    fun provjeriFavorit(nazivNamirnice: String): Boolean{ //kaze dal je u favoritima il ne
         var provjeriPostojanost = -1f
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             provjeriPostojanost = getFloat(nazivNamirnice, -1f)
@@ -114,7 +115,7 @@ class FavoritiHelper(view: View) {
         )
     }
 
-    fun DajVrijednostFavorita(nazivNamirnice: String): Float{ //vraca granicu favorita u frizideru
+    fun dajVrijednostFavorita(nazivNamirnice: String): Float{ //vraca granicu favorita u frizideru
         var vrijednost = -1f
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             vrijednost = getFloat(nazivNamirnice, -1f)

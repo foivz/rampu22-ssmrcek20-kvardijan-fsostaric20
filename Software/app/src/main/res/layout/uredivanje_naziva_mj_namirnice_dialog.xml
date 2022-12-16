@@ -9,7 +9,7 @@
         android:id="@+id/tv_postavke_uredivanja"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Uređivanje namirnice"
+        android:text="@string/ure_ivanje_namirnice"
         android:textStyle="bold"
         android:textSize="17sp"
         android:layout_marginBottom="10dp"/>
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:labelFor="@id/et_naziv_namirnice_uredi"
         android:visibility="visible"
-        android:text="Naziv namirnice:"/>
+        android:text="@string/naziv_namirnice"/>
 
     <EditText
         android:id="@+id/et_naziv_namirnice_uredi"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         android:labelFor="@id/spn_kategorija_namirnice_uredi"
-        android:text="Mjerna jedinica namirnice:" />
+        android:text="@string/mjerna_jedinica_namirnice" />
 
     <Spinner
         android:id="@+id/spn_kategorija_namirnice_uredi"
@@ -48,7 +48,7 @@
         android:id="@+id/tv_postavke_favorita"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Postavke favorita"
+        android:text="@string/postavke_favorita"
         android:layout_marginTop="30dp"
         android:textStyle="bold"
         android:textSize="17sp"/>
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/et_minimalna_kolicina_favorit"
             android:visibility="visible"
-            android:text="Min količina :"
+            android:text="@string/min_koli_ina"
             android:layout_weight="1"/>
 
         <EditText
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:visibility="visible"
-            android:text="25"
+            android:text="@string/_0"
             android:minHeight="48dp"
             android:importantForAutofill="no"
             android:layout_weight="1"

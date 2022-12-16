@@ -24,7 +24,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
     RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
 
     inner class NamirnicaViewHolder(view: View): RecyclerView.ViewHolder(view){
-        protected val pogled = view
+        private val pogled = view
         private val imeNamirnice: TextView
         private val kolicinaNamirnice: TextView
         private val ikonicaNamirnice: ImageView
@@ -34,7 +34,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
         private val gumbOduzmi : Button
 
         private val oznakaFavorita: SurfaceView
-        val pomagacFavorita: FavoritiHelper
+        private val pomagacFavorita: FavoritiHelper
         init {
             ikonicaNamirnice = view.findViewById(R.id.img_ikona_namirnice_hladnjak)
             imeNamirnice = view.findViewById(R.id.tv_ime_namirnice)
@@ -100,7 +100,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
 
                 var favBtn = "Dodaj Favorit"
                 Log.d("FAV", "PROVJERAVAM " + imeNamirnice.text.toString())
-                if (pomagacFavorita.ProvjeriFavorit(imeNamirnice.text.toString())) favBtn = "Makni Favorit"
+                if (pomagacFavorita.provjeriFavorit(imeNamirnice.text.toString())) favBtn = "Makni Favorit"
 
                 val dialogEdit = AlertDialog.Builder(view.context)
                     .setView(urediNamirnicuDialog)
@@ -108,9 +108,9 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
                     .setPositiveButton("Uredi"){ _, _ ->
                         pomagacUredivanjaNamirnice.azurirajPodatke(odabranaNamirnica)
                     }
-                    .setNeutralButton(favBtn){ dialog, _ ->
+                    .setNeutralButton(favBtn){ _, _ ->
                         Log.d("FAV", favBtn)
-                        pomagacUredivanjaNamirnice.DodajiliMakniFavorit(nazivNamirnice)
+                        pomagacUredivanjaNamirnice.dodajiliMakniFavorit(nazivNamirnice)
                     }
                     .show()
                 dialogEdit.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
@@ -118,7 +118,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
 
                 pomagacUredivanjaNamirnice.popuniNaziv(nazivNamirnice)
                 pomagacUredivanjaNamirnice.dohvatiMJ(odabranaNamirnica)
-                pomagacUredivanjaNamirnice.DodajiliMakniMinKolUpis(nazivNamirnice)
+                pomagacUredivanjaNamirnice.dodajiliMakniMinKolUpis(nazivNamirnice)
 
                 return@setOnLongClickListener true
             }
@@ -127,10 +127,10 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
         fun bind(namirnica: Namirnica){
             imeNamirnice.text = namirnica.naziv
             kolicinaNamirnice.text = namirnica.kolicina_hladnjak.toString()
-            val draw = ContextCompat.getDrawable(pogled.context,OdaberiIkonicu(namirnica.naziv))
+            val draw = ContextCompat.getDrawable(pogled.context,odaberiIkonicu(namirnica.naziv))
             ikonicaNamirnice.setImageDrawable(draw)
             mjernaJedinicaHladnjak.text = namirnica.mjernaJedinica.naziv
-            if (pomagacFavorita.ProvjeriFavorit(namirnica.naziv)) {
+            if (pomagacFavorita.provjeriFavorit(namirnica.naziv)) {
                     oznakaFavorita.setBackgroundColor(Color.YELLOW)
             }
             else{
@@ -138,7 +138,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
             }
         }
 
-        fun OdaberiIkonicu(naziv: String): Int {
+        private fun odaberiIkonicu(naziv: String): Int {
             return when(naziv.lowercase()){
                 "jaje" -> R.drawable.egg_svgrepo_com
                 "maslac" -> R.drawable.butter_svgrepo_com

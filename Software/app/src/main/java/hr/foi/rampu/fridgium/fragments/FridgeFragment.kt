@@ -31,7 +31,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class FridgeFragment : Fragment() {
 
-    private val probneNamirnice = MockDataLoader.DajProbnePodatke()
+    private val probneNamirnice = MockDataLoader.dajProbnePodatke()
     private lateinit var recyclerView: RecyclerView
     private lateinit var hladnjakLoading: ProgressBar
     private lateinit var hladnjakPrazanTekst: TextView

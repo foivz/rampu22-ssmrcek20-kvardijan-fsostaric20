@@ -9,35 +9,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/et_naziv_nove_namirnice"
-        android:text="Unesi ime namirnice:" />
+        android:text="@string/unesi_naziv_namirnice" />
+
     <EditText
         android:id="@+id/et_naziv_nove_namirnice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:importantForAutofill="no"
-        android:inputType="text" />
+        android:inputType="text"
+        android:minHeight="48dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/et_kolicina_nove_namirnice"
-        android:text="Odaberite količinu namirnice koju želite dodati:"/>
+        android:text="@string/odaberite_koli_inu_namirnice_koju_elite_dodati"/>
 
     <EditText
         android:id="@+id/et_kolicina_nove_namirnice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
-        android:importantForAutofill="no"/>
+        android:minHeight="48dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/spn_kategorija_nove_namirnice"
-        android:text="Odaberi mjernu jedinicu namirnice:" />
+        android:text="@string/odaberi_mjernu_jedinicu_namirnice" />
+
     <Spinner
         android:id="@+id/spn_kategorija_nove_namirnice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
 
 </LinearLayout>
