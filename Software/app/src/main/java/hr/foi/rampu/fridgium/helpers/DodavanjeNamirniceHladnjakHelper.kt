@@ -22,6 +22,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     private val kolicinaNamirnice = view.findViewById<EditText>(R.id.et_kolicina_nove_namirnice)
     val pogled = view
     val rest = RestNamirnice.namirnicaServis
+    val pomagacFavorita = FavoritiHelper(pogled)
 
     fun popuniSpinner(mjerneJedinice: List<MjernaJedinica>) {
         val spinnerAdapter = ArrayAdapter(
@@ -67,8 +68,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
                         Log.d("BAZA",response.message().toString())
-                        //IZMJENI ENTRY ZA FAVORITA U LOCAL STORAGE
-                        //KOLICINA FAVORITA CHECK
+                        pomagacFavorita.dodajFavoritNaShoppingListu(namirnica.naziv)
                     }
                 }
 

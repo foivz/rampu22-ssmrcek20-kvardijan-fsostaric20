@@ -101,9 +101,9 @@ class UredivanjeNamirniceDialogHelper(view: View) {
 
     fun DodajiliMakniMinKolUpis(nazivNamirnice: String){
         if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
+            val vrijednost = pomagacFavorita.DajVrijednostFavorita(nazivNamirnice).toString()
             minKol.visibility = View.GONE
-            minKolLablela.visibility = View.GONE
-            favoritiNaslov.visibility = View.GONE
+            minKolLablela.setText("Minimalna količina u hladnjaku je trenutno $vrijednost")
         }
     }
 }
