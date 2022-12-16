@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
@@ -19,12 +21,15 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RecipesFragment : Fragment() {
+    private lateinit var loading: ProgressBar
     private lateinit var recyclerView: RecyclerView
     private val servis = RestRecept.ReceptService
     private val servisnr = RestNamirnicaRecepta.namirnicaReceptaServis
     private val servisn = RestNamirnice.namirnicaServis
     private var popisnamirnica: MutableList<NamirnicaPrikaz> = arrayListOf()
     private var popisrecepta: MutableList<Recept> = arrayListOf()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +40,7 @@ class RecipesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.rv_recepti)
+        loading = view.findViewById(R.id.fragment_recept_loading)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         loadNamirnice()
 
@@ -98,6 +104,7 @@ class RecipesFragment : Fragment() {
                                         if (brojac == recept.size) {
                                             Log.d("async", "ZAVRSIL2")
                                             recyclerView.adapter = ReceptAdapter(popisrecepta)
+                                            prikaziLoading(true)
                                         }
                                     }
 
@@ -106,6 +113,7 @@ class RecipesFragment : Fragment() {
                                         t: Throwable?
                                     ) {
                                         displayWebServiceErrorMessage()
+                                        prikaziLoading(true)
                                     }
                                 })
 
@@ -129,6 +137,7 @@ class RecipesFragment : Fragment() {
     }
 
     private fun loadNamirnice() {
+        prikaziLoading(false)
         servisn.dohvatiNamirnice().enqueue(object : Callback<RestNamirnicaResponse> {
             override fun onResponse(
                 call: Call<RestNamirnicaResponse>?,
@@ -162,5 +171,8 @@ class RecipesFragment : Fragment() {
         })
     }
 
+    fun prikaziLoading(bool : Boolean){
+        loading.isVisible = !bool
+    }
 
 }
