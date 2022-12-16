@@ -14,10 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
-import hr.foi.rampu.fridgium.helpers.DodavanjeKolicineNamirnicaDialogHelper
-import hr.foi.rampu.fridgium.helpers.FavoritiHelper
-import hr.foi.rampu.fridgium.helpers.OduzimanjeKolicineNamirnicaDialogHelper
-import hr.foi.rampu.fridgium.helpers.UredivanjeNamirniceDialogHelper
+import hr.foi.rampu.fridgium.helpers.*
 
 
 class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
@@ -35,6 +32,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
 
         private val oznakaFavorita: SurfaceView
         private val pomagacFavorita: FavoritiHelper
+        private val pomagacPrikaza: DisplayHelper
         init {
             ikonicaNamirnice = view.findViewById(R.id.img_ikona_namirnice_hladnjak)
             imeNamirnice = view.findViewById(R.id.tv_ime_namirnice)
@@ -44,6 +42,7 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
             gumbOduzmi = view.findViewById(R.id.button_oduzimaj)
             oznakaFavorita = view.findViewById(R.id.sv_boja_favorit)
             pomagacFavorita = FavoritiHelper(view)
+            pomagacPrikaza = DisplayHelper()
 
             gumbDodaj.setOnClickListener{
                 val dodajKolicinuNamirniceDialog = LayoutInflater
@@ -126,14 +125,17 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
 
         fun bind(namirnica: Namirnica){
             imeNamirnice.text = namirnica.naziv
-            kolicinaNamirnice.text = namirnica.kolicina_hladnjak.toString()
+            if (pomagacPrikaza.provjeriBroj(namirnica.kolicina_hladnjak)){
+                kolicinaNamirnice.text = pomagacPrikaza.dajBroj(namirnica.kolicina_hladnjak).toString()
+            }else{
+                kolicinaNamirnice.text = namirnica.kolicina_hladnjak.toString()
+            }
             val draw = ContextCompat.getDrawable(pogled.context,odaberiIkonicu(namirnica.naziv))
             ikonicaNamirnice.setImageDrawable(draw)
             mjernaJedinicaHladnjak.text = namirnica.mjernaJedinica.naziv
             if (pomagacFavorita.provjeriFavorit(namirnica.naziv)) {
                     oznakaFavorita.setBackgroundColor(Color.YELLOW)
-            }
-            else{
+            } else{
                     oznakaFavorita.setBackgroundColor(Color.WHITE)
             }
         }

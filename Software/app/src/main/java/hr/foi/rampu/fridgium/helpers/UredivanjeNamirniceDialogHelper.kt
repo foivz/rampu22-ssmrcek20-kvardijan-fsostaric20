@@ -22,6 +22,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
     val rest = RestNamirnice.namirnicaServis
 
     private val pomagacFavorita = FavoritiHelper(pogled)
+    private val pomagacPrikaza = DisplayHelper()
     private val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
     private val minKolLablela = view.findViewById<TextView>(R.id.et_minimalna_kolicina_favorit_tekst)
 
@@ -102,9 +103,15 @@ class UredivanjeNamirniceDialogHelper(view: View) {
     @SuppressLint("SetTextI18n")
     fun dodajiliMakniMinKolUpis(nazivNamirnice: String){
         if (pomagacFavorita.provjeriFavorit(nazivNamirnice)){
-            val vrijednost = pomagacFavorita.dajVrijednostFavorita(nazivNamirnice).toString()
+            val vrijednost = pomagacFavorita.dajVrijednostFavorita(nazivNamirnice)
             minKol.visibility = View.GONE
-            minKolLablela.text = "Minimalna količina u hladnjaku je trenutno $vrijednost"
+            if (pomagacPrikaza.provjeriBroj(vrijednost)){
+                val vrijednostInt = pomagacPrikaza.dajBroj(vrijednost)
+                minKolLablela.text = "Minimalna količina u hladnjaku je trenutno $vrijednostInt"
+            }else{
+                minKolLablela.text = "Minimalna količina u hladnjaku je trenutno $vrijednost"
+            }
+
         }
     }
 }
