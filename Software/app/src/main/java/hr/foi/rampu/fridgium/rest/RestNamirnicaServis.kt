@@ -7,9 +7,15 @@ import retrofit2.http.*
 interface RestNamirnicaServis {
     @GET("namirnice")
     fun dohvatiNamirnice(): Call<RestNamirnicaResponse>
+
     @Headers("Content-Type: application/json")
+
+    @GET("namirnica/{naziv}")
+    fun dohvatiNamirnicu(@Path("naziv") naziv: String): Call<RestNamirnicaResponse>
+
     @POST("namirnice")
     fun dodajNamirnicu(@Body namirnica: Namirnica): Call<Boolean>
+
     @PUT("namirnice")
     fun azurirajNamirnicu(@Body namirnica: Namirnica): Call<Boolean>
 

@@ -16,6 +16,7 @@ class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
     val trenutnaKolicina = view.findViewById<EditText>(R.id.et_dodaj_kolicinu_namirnice)
     private val rest = RestNamirnice.namirnicaServis
     val pogled = view
+    val pomagacFavorita = FavoritiHelper(pogled)
 
     fun popuniKolicinu(kolicina: Int){
         trenutnaKolicina.setText(kolicina.toString())
@@ -36,6 +37,7 @@ class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
                         Log.d("BAZA",response.message().toString())
+                        pomagacFavorita.dodajFavoritNaShoppingListu(azuriranaNamirnica.naziv)
                     }
                 }
 

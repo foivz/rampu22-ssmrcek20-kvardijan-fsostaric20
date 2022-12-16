@@ -67,6 +67,8 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
                         Log.d("BAZA",response.message().toString())
+                        //IZMJENI ENTRY ZA FAVORITA U LOCAL STORAGE
+                        //KOLICINA FAVORITA CHECK
                     }
                 }
 
