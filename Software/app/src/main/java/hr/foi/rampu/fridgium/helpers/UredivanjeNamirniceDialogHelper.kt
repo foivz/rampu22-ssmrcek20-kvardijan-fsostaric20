@@ -33,6 +33,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
     fun azurirajPodatke(namirnica: Namirnica) {
         namirnica.mjernaJedinica = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
         namirnica.naziv = nazivNamirnice.text.toString()
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar{it.uppercaseChar()}
         rest.azurirajNamirnicuNazivMJ(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {

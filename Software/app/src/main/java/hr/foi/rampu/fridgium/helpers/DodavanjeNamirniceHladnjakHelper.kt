@@ -47,6 +47,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     }
 
     fun dodajNamirnicuUBazu(namirnica: Namirnica) {
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar{it.uppercaseChar()}
         rest.dodajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
@@ -64,6 +65,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     }
 
     fun azurirajNamirnicuUBazi(namirnica: Namirnica) {
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar{it.uppercaseChar()}
         rest.azurirajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
