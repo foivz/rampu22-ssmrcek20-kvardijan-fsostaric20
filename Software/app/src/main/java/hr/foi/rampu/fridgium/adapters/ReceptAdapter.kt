@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Recept
+import hr.foi.rampu.fridgium.rest.RestNamirnicaRecepta
 import hr.foi.rampu.fridgium.rest.RestRecept
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 
@@ -76,16 +78,29 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             dialog = AlertDialog.Builder(view.context).setView(prikaziVise).setPositiveButton("Obriši"){_,_->
                 Log.d("dolazemierrori", "AAA obrisal bum ga")
                 val recept : Recept = ReceptList[this.adapterPosition]
+                val servisn = RestNamirnicaRecepta.namirnicaReceptaServis
                 val servis = RestRecept.ReceptService
-                servis.deleteRecept(recept.id).enqueue(object : retrofit2.Callback<Boolean>{
-                    override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
-                        Toast.makeText(view.context,"Recept ${recept.naziv} izbrisan", Toast.LENGTH_SHORT).show()
-                    }
+                    servisn.deleteNamirniceRecepta(recept.id).enqueue(object : Callback<Boolean>{
+                        override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                            Log.d("brisanje","Namirnice ${recept.naziv} obrisane")
 
-                    override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                        Toast.makeText(view.context,"Došlo je do pogreške kod brisanja", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                            servis.deleteRecept(recept.id).enqueue(object : Callback<Boolean>{
+                                override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                                    Toast.makeText(view.context,"Recept ${recept.naziv} izbrisan", Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                                    Toast.makeText(view.context,"Došlo je do pogreške kod brisanja", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        }
+
+                        override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                            Log.d("brisanje","GREŠKA")
+                        }
+
+                    })
+
 
             }.show()
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(

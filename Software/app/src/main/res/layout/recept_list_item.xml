@@ -29,7 +29,9 @@
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="20sp"
-            tools:text="" />
+            tools:text=""/>
+            <!-- TODO: Dodati padding na tekst i druge elemente-->
+
 
         <TextView
             android:id="@+id/tv_opis_recept"
