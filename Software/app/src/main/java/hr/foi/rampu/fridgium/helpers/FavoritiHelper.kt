@@ -26,6 +26,7 @@ class FavoritiHelper(view: View) {
             )
                 .show()
         }
+        dodajFavoritNaShoppingListu(nazivNamirnice)
     }
 
     fun makniIzFavorita(nazivNamirnice: String) {
