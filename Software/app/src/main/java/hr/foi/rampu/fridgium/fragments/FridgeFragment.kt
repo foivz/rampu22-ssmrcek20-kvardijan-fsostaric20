@@ -28,6 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import hr.foi.rampu.fridgium.helpers.FavoritiHelper
 
 class FridgeFragment : Fragment() {
 
@@ -81,7 +82,7 @@ class FridgeFragment : Fragment() {
 
     private fun ucitajSadrzajHladnjaka(){
         promjeniZaslon(true)
-
+        val pomagacFavorita = FavoritiHelper(requireView())
         rest.dohvatiNamirnice().enqueue(
             object : Callback<RestNamirnicaResponse>{
                 override fun onResponse(
@@ -94,7 +95,7 @@ class FridgeFragment : Fragment() {
                         val namirniceHladnjaka = mutableListOf<Namirnica>()
 
                         for (namirnica in namirnice){
-                            if (namirnica.kolicina_hladnjak > 0){
+                            if (namirnica.kolicina_hladnjak > 0 || pomagacFavorita.provjeriFavorit(namirnica.naziv)){
                                 namirniceHladnjaka.add(namirnica)
                             }
                         }
