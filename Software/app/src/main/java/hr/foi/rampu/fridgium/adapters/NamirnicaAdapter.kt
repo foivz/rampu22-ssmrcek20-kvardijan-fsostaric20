@@ -95,6 +95,10 @@ class NamirnicaAdapter(private val namirnicaList: MutableList<Namirnica>) :
                 "šećer" -> R.drawable.sugar_svgrepo_com
                 "limun" -> R.drawable.lemon_svgrepo_com
                 "paprika" -> R.drawable.paprika_svgrepo_com
+                "riba" -> R.drawable.fish_svgrepo_com
+                "svinjetina" -> R.drawable.pork_svgrepo_com
+                "piletina" -> R.drawable.chicken_svgrepo_com
+                "rajčica" -> R.drawable.tomato_svgrepo_com
                 else -> R.drawable.ic_baseline_dining_24
             }
         }
