@@ -18,7 +18,7 @@ class OduzimanjeKolicineNamirnicaDialogHelper(view: View) {
     private val pogled = view
     val pomagacFavorita = FavoritiHelper(pogled)
 
-    fun azurirajNamirnicu(namirnica: Namirnica){
+    fun azurirajNamirnicu(namirnica: Namirnica) {
         var kol = namirnica.kolicina_hladnjak - trenutnaKolicina.text.toString().toFloat()
         if (kol < 0f) kol = 0f
         val azuriranaNamirnica = Namirnica(
@@ -33,7 +33,7 @@ class OduzimanjeKolicineNamirnicaDialogHelper(view: View) {
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                         pomagacFavorita.dodajFavoritNaShoppingListu(azuriranaNamirnica.naziv)
                     }
                 }
@@ -45,7 +45,7 @@ class OduzimanjeKolicineNamirnicaDialogHelper(view: View) {
         )
     }
 
-    fun prikaziPorukuGreske(){
-        Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
+    fun prikaziPorukuGreske() {
+        Toast.makeText(pogled.context, "Ažuriranje neuspješno", Toast.LENGTH_LONG).show()
     }
 }

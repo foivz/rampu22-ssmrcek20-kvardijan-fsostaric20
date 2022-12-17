@@ -47,18 +47,18 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     }
 
     fun dodajNamirnicuUBazu(namirnica: Namirnica) {
-        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar{it.uppercaseChar()}
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar { it.uppercaseChar() }
         if (namirnica.kolicina_hladnjak < 0f) namirnica.kolicina_hladnjak = 0f
         rest.dodajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
+                    Toast.makeText(pogled.context, "Dodavanje neuspješno", Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -66,58 +66,56 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     }
 
     fun azurirajNamirnicuUBazi(namirnica: Namirnica) {
-        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar{it.uppercaseChar()}
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar { it.uppercaseChar() }
         if (namirnica.kolicina_hladnjak < 0f) namirnica.kolicina_hladnjak = 0f
         rest.azurirajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                         pomagacFavorita.dodajFavoritNaShoppingListu(namirnica.naziv)
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
+                    Toast.makeText(pogled.context, "Ažuriranje neušpjesno", Toast.LENGTH_LONG).show()
                 }
 
             }
         )
     }
 
-    fun provjeriNamirnicu(novaNamirnica: Namirnica){
-       rest.dohvatiNamirnice().enqueue(
-           object : Callback<RestNamirnicaResponse>{
-               override fun onResponse(
-                   call: Call<RestNamirnicaResponse>?,
-                   response: Response<RestNamirnicaResponse>?
-               ) {
-                   if (response?.isSuccessful == true) {
-                       var postoji = false
-                       val responseBody = response.body()
-                       val namirnice = responseBody.results
-                       for (namirnica in namirnice) {
-                           if (namirnica.naziv == novaNamirnica.naziv) {
-                               postoji = true
-                               break
-                           }
-                       }
-                       if(postoji){
-                           novaNamirnica.kolicina_kupovina = -1f
-                           azurirajNamirnicuUBazi(novaNamirnica)
-                       } else{
-                           dodajNamirnicuUBazu(novaNamirnica)
-                       }
-                   } else {
-                       Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
-                   }
-               }
+    fun provjeriNamirnicu(novaNamirnica: Namirnica) {
+        rest.dohvatiNamirnice().enqueue(
+            object : Callback<RestNamirnicaResponse> {
+                override fun onResponse(
+                    call: Call<RestNamirnicaResponse>?,
+                    response: Response<RestNamirnicaResponse>?
+                ) {
+                    if (response?.isSuccessful == true) {
+                        var postoji = false
+                        val responseBody = response.body()
+                        val namirnice = responseBody.results
+                        for (namirnica in namirnice) {
+                            if (namirnica.naziv == novaNamirnica.naziv) {
+                                postoji = true
+                                break
+                            }
+                        }
+                        if (postoji) {
+                            novaNamirnica.kolicina_kupovina = -1f
+                            azurirajNamirnicuUBazi(novaNamirnica)
+                        } else {
+                            dodajNamirnicuUBazu(novaNamirnica)
+                        }
+                    }
+                }
 
-               override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
-                   Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
-               }
+                override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
+                    Toast.makeText(pogled.context, "Dodavanje neušpjesno", Toast.LENGTH_LONG).show()
+                }
 
-           }
-       )
+            }
+        )
     }
 }

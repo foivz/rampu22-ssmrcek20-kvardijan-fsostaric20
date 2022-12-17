@@ -16,45 +16,43 @@ class FavoritiHelper(view: View) {
     val pogled = view
     val rest: RestNamirnicaServis = RestNamirnice.namirnicaServis
 
-    fun dodajUFavorite(nazivNamirnice: String, minimalnaKolicina: Float){
+    fun dodajUFavorite(nazivNamirnice: String, minimalnaKolicina: Float) {
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             edit().putFloat(nazivNamirnice, minimalnaKolicina).apply()
             Toast.makeText(
                 pogled.context,
                 "Namirnica $nazivNamirnice je dodana u favorite s kolicinom $minimalnaKolicina",
-                Toast.LENGTH_LONG)
+                Toast.LENGTH_LONG
+            )
                 .show()
         }
     }
 
-    fun makniIzFavorita(nazivNamirnice: String){
+    fun makniIzFavorita(nazivNamirnice: String) {
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
-                edit().remove(nazivNamirnice).apply()
-                Toast.makeText(
-                    pogled.context, "Namirnica $nazivNamirnice je maknuta iz favorita", Toast.LENGTH_LONG)
-                    .show()
+            edit().remove(nazivNamirnice).apply()
+            Toast.makeText(
+                pogled.context,
+                "Namirnica $nazivNamirnice je maknuta iz favorita",
+                Toast.LENGTH_LONG
+            )
+                .show()
         }
     }
 
-    fun provjeriFavorit(nazivNamirnice: String): Boolean{ //kaze dal je u favoritima il ne
+    fun provjeriFavorit(nazivNamirnice: String): Boolean { //kaze dal je u favoritima il ne
         var provjeriPostojanost = -1f
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             provjeriPostojanost = getFloat(nazivNamirnice, -1f)
         }
-/*        Toast.makeText(
-            pogled.context, "Namirnica $nazivNamirnice ime zadan $provjeriPostojanost", Toast.LENGTH_SHORT)
-            .show()*/
         return provjeriPostojanost != -1f
     }
 
-    fun dodajFavoritNaShoppingListu(nazivNamirnice: String){   //dodaje na shopping listu namirnicu
-        var minKolicina = -1f
+    fun dodajFavoritNaShoppingListu(nazivNamirnice: String) {   //dodaje na shopping listu namirnicu
+        val minKolicina = dajVrijednostFavorita(nazivNamirnice)
 
-        pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
-            minKolicina = getFloat(nazivNamirnice, -1f)
-        }
-        if (minKolicina != -1f){
-            var mojaNamirnica : Namirnica
+        if (minKolicina != -1f) {
+            var mojaNamirnica: Namirnica
             rest.dohvatiNamirnicu(nazivNamirnice).enqueue(
                 object : Callback<RestNamirnicaResponse> {
                     override fun onResponse(
@@ -64,18 +62,10 @@ class FavoritiHelper(view: View) {
                         if (response != null) {
                             val rezultati = response.body()
                             mojaNamirnica = rezultati.results[0]
-
-                            Log.d("BAZA",rezultati.toString())
-                            Log.d("BAZA",rezultati.results.toString())
-                            Log.d("BAZA",mojaNamirnica.toString())
-                            Log.d("BAZA",mojaNamirnica.toString() + "ovo je moja namirnica")
-                            Log.d("BAZA","kolicina u hladnjaku je " + mojaNamirnica.kolicina_hladnjak
-                                    + " kolicina min je " + minKolicina + " kolicina kupovina je " + mojaNamirnica.kolicina_kupovina)
-                            if (mojaNamirnica.kolicina_hladnjak < minKolicina){
+                            if (mojaNamirnica.kolicina_hladnjak < minKolicina) {
                                 val razlika = minKolicina - mojaNamirnica.kolicina_hladnjak
-                                val kolicinaZaDodati : Float
-                                if(razlika > mojaNamirnica.kolicina_kupovina){
-                                    Log.d("BAZA","TU SAM")
+                                val kolicinaZaDodati: Float
+                                if (razlika > mojaNamirnica.kolicina_kupovina) {
                                     kolicinaZaDodati = razlika - mojaNamirnica.kolicina_kupovina
                                     dodajKolicinuUShoppingListu(mojaNamirnica, kolicinaZaDodati)
                                 }
@@ -83,9 +73,13 @@ class FavoritiHelper(view: View) {
 
                         }
                     }
+
                     override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
                         Toast.makeText(
-                            pogled.context, "Neuspjesno azuriranje namirnice u shopping listi", Toast.LENGTH_SHORT)
+                            pogled.context,
+                            "Neuspješno ažuriranje namirnice u shopping listi",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
 
@@ -94,28 +88,31 @@ class FavoritiHelper(view: View) {
         }
     }
 
-    fun dodajKolicinuUShoppingListu(mojaNamirnica : Namirnica, razlika: Float){
+    fun dodajKolicinuUShoppingListu(mojaNamirnica: Namirnica, razlika: Float) {
         mojaNamirnica.kolicina_hladnjak = -1f
         mojaNamirnica.kolicina_kupovina += razlika
 
         rest.azurirajNamirnicu(mojaNamirnica).enqueue(
-            object : Callback<Boolean>{
+            object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
                     Toast.makeText(
-                        pogled.context, "Neuspjesno azuriranje namirnice u shopping listi", Toast.LENGTH_SHORT)
+                        pogled.context,
+                        "Neuspješno ažuriranje namirnice u shopping listi",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
         )
     }
 
-    fun dajVrijednostFavorita(nazivNamirnice: String): Float{ //vraca granicu favorita u frizideru
+    fun dajVrijednostFavorita(nazivNamirnice: String): Float { //vraca granicu favorita u frizideru
         var vrijednost = -1f
         pogled.context?.getSharedPreferences("favoriti_preferences", Context.MODE_PRIVATE)?.apply {
             vrijednost = getFloat(nazivNamirnice, -1f)
