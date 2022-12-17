@@ -114,7 +114,11 @@ class NamirnicaAdapter(private val namirnicaList: MutableList<Namirnica>) :
                 .setPositiveButton(R.string.dodaj_kolicinu_namirnice) { _, _ ->
                     val pozicija = this.adapterPosition
                     val odabranaNamirnica = namirnicaList[pozicija]
-                    pomagacDodavanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
+                    val azurnaNamirnica = pomagacDodavanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
+                    namirnicaList.removeAt(pozicija)
+                    notifyItemRemoved(pozicija)
+                    namirnicaList.add(pozicija, azurnaNamirnica)
+                    notifyItemInserted(pozicija)
                 }
                 .show()
 
@@ -139,7 +143,11 @@ class NamirnicaAdapter(private val namirnicaList: MutableList<Namirnica>) :
                 .setPositiveButton(R.string.oduzmi_kolicinu_namirnice) { _, _ ->
                     val pozicija = this.adapterPosition
                     val odabranaNamirnica = namirnicaList[pozicija]
-                    pomagacOduzimanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
+                    val azurnaNamirnica = pomagacOduzimanjaKolicine.azurirajNamirnicu(odabranaNamirnica)
+                    namirnicaList.removeAt(pozicija)
+                    notifyItemRemoved(pozicija)
+                    namirnicaList.add(pozicija, azurnaNamirnica)
+                    notifyItemInserted(pozicija)
                 }
                 .show()
 
@@ -167,7 +175,11 @@ class NamirnicaAdapter(private val namirnicaList: MutableList<Namirnica>) :
                 .setView(urediNamirnicuDialog)
                 .setTitle("Uredi namirnicu $nazivNamirnice")
                 .setPositiveButton("Uredi") { _, _ ->
-                    pomagacUredivanjaNamirnice.azurirajPodatke(odabranaNamirnica)
+                    val azurnaNamirnica = pomagacUredivanjaNamirnice.azurirajPodatke(odabranaNamirnica)
+                    namirnicaList.removeAt(pozicija)
+                    notifyItemRemoved(pozicija)
+                    namirnicaList.add(pozicija, azurnaNamirnica)
+                    notifyItemInserted(pozicija)
                 }
                 .setNeutralButton(favBtn) { _, _ ->
                     Log.d("FAV", favBtn)

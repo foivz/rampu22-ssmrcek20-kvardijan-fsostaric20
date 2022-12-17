@@ -32,11 +32,18 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         nazivNamirnice.setText(naziv)
     }
 
-    fun azurirajPodatke(namirnica: Namirnica) {
-        namirnica.mjernaJedinica = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
-        namirnica.naziv = nazivNamirnice.text.toString()
-        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar { it.uppercaseChar() }
-        rest.azurirajNamirnicuNazivMJ(namirnica).enqueue(
+    fun azurirajPodatke(namirnica: Namirnica): Namirnica {
+        val naziv = nazivNamirnice.text.toString().lowercase().replaceFirstChar { it.uppercaseChar() }
+
+        val azuriranaNamirnica = Namirnica(
+            namirnica.id,
+            naziv,
+            namirnica.kolicina_hladnjak,
+            mjernaJedinicaSpinner.selectedItem as MjernaJedinica,
+            namirnica.kolicina_kupovina,
+        )
+
+        rest.azurirajNamirnicuNazivMJ(azuriranaNamirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
@@ -51,6 +58,7 @@ class UredivanjeNamirniceDialogHelper(view: View) {
 
             }
         )
+        return azuriranaNamirnica
     }
 
     fun popuniMJSpinner(mjerneJedinice: List<MjernaJedinica>, namirnicaZaSpinner: Namirnica) {

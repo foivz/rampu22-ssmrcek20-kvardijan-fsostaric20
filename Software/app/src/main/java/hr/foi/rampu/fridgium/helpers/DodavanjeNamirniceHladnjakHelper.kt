@@ -40,7 +40,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
         val odabranaMJ = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
         return Namirnica(
             0,
-            nazivNamirnice.text.toString(),
+            nazivNamirnice.text.toString().lowercase().replaceFirstChar { it.uppercaseChar() },
             kolicinaNamirnice.text.toString().toFloat(),
             odabranaMJ,
             0f
