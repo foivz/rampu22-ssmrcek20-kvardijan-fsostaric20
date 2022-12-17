@@ -19,7 +19,8 @@ class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
     val pomagacFavorita = FavoritiHelper(pogled)
 
     fun azurirajNamirnicu(namirnica: Namirnica){
-        val kol = namirnica.kolicina_hladnjak + trenutnaKolicina.text.toString().toFloat()
+        var kol = namirnica.kolicina_hladnjak + trenutnaKolicina.text.toString().toFloat()
+        if (kol < 0f) kol = 0f
         val azuriranaNamirnica = Namirnica(
             namirnica.id,
             namirnica.naziv,
