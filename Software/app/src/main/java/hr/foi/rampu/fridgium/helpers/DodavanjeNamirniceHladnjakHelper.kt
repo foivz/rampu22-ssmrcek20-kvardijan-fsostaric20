@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import hr.foi.rampu.fridgium.R
+import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
@@ -85,7 +86,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
         )
     }
 
-    fun provjeriNamirnicu(novaNamirnica: Namirnica) {
+    fun provjeriNamirnicu(novaNamirnica: Namirnica, namirnicaAdapter: NamirnicaAdapter) {
         rest.dohvatiNamirnice().enqueue(
             object : Callback<RestNamirnicaResponse> {
                 override fun onResponse(
@@ -99,6 +100,10 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
                         for (namirnica in namirnice) {
                             if (namirnica.naziv == novaNamirnica.naziv) {
                                 postoji = true
+
+                                namirnica.kolicina_hladnjak = novaNamirnica.kolicina_hladnjak
+                                namirnicaAdapter.dodajNamirnicu(namirnica)
+
                                 break
                             }
                         }
@@ -107,6 +112,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
                             azurirajNamirnicuUBazi(novaNamirnica)
                         } else {
                             dodajNamirnicuUBazu(novaNamirnica)
+                            namirnicaAdapter.dodajNamirnicu(novaNamirnica)
                         }
                     }
                 }

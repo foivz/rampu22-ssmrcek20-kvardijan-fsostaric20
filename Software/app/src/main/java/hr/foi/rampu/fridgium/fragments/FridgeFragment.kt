@@ -163,8 +163,9 @@ class FridgeFragment : Fragment() {
             .setView(dodajNamirnicuDialog)
             .setTitle("Dodavanje namirnice")
             .setPositiveButton("Dodaj namirnicu") { _, _ ->
+                val hladnjakAdapter = (recyclerView.adapter as NamirnicaAdapter)
                 val novaNamirnica = pomagacDodavanjaNamirnica.izgradiObjektNoveNamirnice()
-                pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica)
+                pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica, hladnjakAdapter)
             }
             .show()
         dialogDodajNamirnicu.getButton(AlertDialog.BUTTON_POSITIVE)

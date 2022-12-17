@@ -17,7 +17,7 @@ import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.*
 
 
-class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
+class NamirnicaAdapter(private val namirnicaList: MutableList<Namirnica>) :
     RecyclerView.Adapter<NamirnicaAdapter.NamirnicaViewHolder>() {
 
     inner class NamirnicaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -200,4 +200,20 @@ class NamirnicaAdapter(private val namirnicaList: List<Namirnica>) :
         return namirnicaList.size
     }
 
+    fun dodajNamirnicu(namirnica: Namirnica){
+        var index = -1
+        for(namirnicaIzListe in namirnicaList){
+            if (namirnicaIzListe.naziv == namirnica.naziv){
+                index = namirnicaList.indexOf(namirnicaIzListe)
+                namirnicaList.removeAt(index)
+                notifyItemRemoved(index)
+                break
+            }
+        }
+        if(index == -1){
+            index = namirnicaList.size
+        }
+        namirnicaList.add(index,namirnica)
+        notifyItemInserted(index)
+    }
 }
