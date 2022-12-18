@@ -59,5 +59,15 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
         return namirnice.size
     }
 
+    fun imaNamirnicaUHladnjaku() : Boolean {
+        var ima = true
+        for (namirnica in namirnice){
+            if(namirnica.kolicina>namirnica.kolicina_hladnjak){
+                ima = false
+                break
+            }
+        }
+        return ima
+    }
 
 }

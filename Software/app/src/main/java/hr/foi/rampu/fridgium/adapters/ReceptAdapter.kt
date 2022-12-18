@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
@@ -69,6 +70,13 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                     dialog.cancel()
                 }
 
+                val napraviRecept = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                napraviRecept.setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
+                if(!receptAdapter.imaNamirnicaUHladnjaku()){
+                    napraviRecept.isEnabled = false
+                    napraviRecept.isVisible = false
+                }
             }
         }
 
@@ -80,7 +88,7 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                 val recept : Recept = ReceptList[this.adapterPosition]
                 val servisn = RestNamirnicaRecepta.namirnicaReceptaServis
                 val servis = RestRecept.ReceptService
-                    servisn.deleteNamirniceRecepta(recept.id).enqueue(object : Callback<Boolean>{
+                servisn.deleteNamirniceRecepta(recept.id).enqueue(object : Callback<Boolean>{
                         override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                             Log.d("brisanje","Namirnice ${recept.naziv} obrisane")
 
@@ -147,7 +155,12 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             val prikaziVise = LayoutInflater.from(view.context)
                 .inflate(R.layout.fragment_prikazi_vise_recept, null)
             noviView = prikaziVise
-            return AlertDialog.Builder(view.context).setView(prikaziVise).show()
+            return AlertDialog.Builder(view.context)
+                .setView(prikaziVise)
+                .setPositiveButton("Napravi recept"){ _, _ ->
+                    Toast.makeText(view.context,":)", Toast.LENGTH_SHORT).show()
+                }
+                .show()
 
 
         }
