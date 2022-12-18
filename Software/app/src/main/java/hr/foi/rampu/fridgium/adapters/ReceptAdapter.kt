@@ -77,6 +77,13 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                     napraviRecept.isEnabled = false
                     napraviRecept.isVisible = false
                 }
+                val nabaviNamirnice = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                nabaviNamirnice.setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                if(receptAdapter.imaNamirnicaUHladnjaku()){
+                    nabaviNamirnice.isEnabled = false
+                    nabaviNamirnice.isVisible = false
+                }
+
             }
         }
 
@@ -159,6 +166,9 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                 .setView(prikaziVise)
                 .setPositiveButton("Napravi recept"){ _, _ ->
                     Toast.makeText(view.context,":)", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Nabavi namirnice"){ _, _ ->
+                    Toast.makeText(view.context,":-)", Toast.LENGTH_SHORT).show()
                 }
                 .show()
 
