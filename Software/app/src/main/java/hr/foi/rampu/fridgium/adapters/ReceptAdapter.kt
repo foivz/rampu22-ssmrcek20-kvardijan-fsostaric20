@@ -165,7 +165,8 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             return AlertDialog.Builder(view.context)
                 .setView(prikaziVise)
                 .setPositiveButton("Napravi recept"){ _, _ ->
-                    Toast.makeText(view.context,":)", Toast.LENGTH_SHORT).show()
+                    val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
+                    receptAdapter.napraviRecept(view)
                 }
                 .setNegativeButton("Nabavi namirnice"){ _, _ ->
                     val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)

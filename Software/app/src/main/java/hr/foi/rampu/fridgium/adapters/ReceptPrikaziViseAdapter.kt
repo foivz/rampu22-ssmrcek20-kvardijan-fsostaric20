@@ -109,5 +109,37 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
         ).show()
     }
 
+    fun napraviRecept(view: View) {
+        val rest = RestNamirnice.namirnicaServis
+        for(namirnica in namirnice){
+                val kolicinaPrava = namirnica.kolicina_hladnjak-namirnica.kolicina
+                val namirnicaPrava = Namirnica(namirnica.id, namirnica.naziv, kolicinaPrava, namirnica.mjernaJedinica, -1f)
+                rest.azurirajNamirnicu(namirnicaPrava).enqueue(
+                    object : Callback<Boolean> {
+                        override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                            if (response != null) {
+                                Log.d("BAZA", response.message().toString())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                            Toast.makeText(
+                                view.context,
+                                "Došlo je do greške sa servisom!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    }
+                )
+
+        }
+        Toast.makeText(
+            view.context,
+            "Namirnice maknute iz hladnjaka",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
 
 }
