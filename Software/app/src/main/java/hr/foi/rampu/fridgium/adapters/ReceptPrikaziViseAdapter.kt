@@ -8,9 +8,15 @@ import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
+import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.entities.NamirnicaPrikaz
+import hr.foi.rampu.fridgium.rest.RestNamirnice
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
@@ -69,5 +75,39 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
         }
         return ima
     }
+
+    fun nabaviNamirnice(view: View) {
+        val rest = RestNamirnice.namirnicaServis
+        for(namirnica in namirnice){
+            if(namirnica.kolicina>namirnica.kolicina_hladnjak){
+                val kolicinaPrava = namirnica.kolicina_kupovina+(namirnica.kolicina-namirnica.kolicina_hladnjak)
+                val namirnicaPrava = Namirnica(namirnica.id, namirnica.naziv, -1f, namirnica.mjernaJedinica, kolicinaPrava)
+                rest.azurirajNamirnicu(namirnicaPrava).enqueue(
+                    object : Callback<Boolean> {
+                        override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
+                            if (response != null) {
+                                Log.d("BAZA", response.message().toString())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
+                            Toast.makeText(
+                                view.context,
+                                "Došlo je do greške sa servisom!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    }
+                )
+            }
+        }
+        Toast.makeText(
+            view.context,
+            "Namirnice dodane u popis za kupnju",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
 
 }

@@ -168,7 +168,8 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                     Toast.makeText(view.context,":)", Toast.LENGTH_SHORT).show()
                 }
                 .setNegativeButton("Nabavi namirnice"){ _, _ ->
-                    Toast.makeText(view.context,":-)", Toast.LENGTH_SHORT).show()
+                    val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
+                    receptAdapter.nabaviNamirnice(view)
                 }
                 .show()
 
