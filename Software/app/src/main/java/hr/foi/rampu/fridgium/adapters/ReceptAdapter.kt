@@ -24,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ReceptAdapter(private val ReceptList: List<Recept>) :
+class ReceptAdapter(private var ReceptList: MutableList<Recept>, val ovjezi: () -> Unit) :
     RecyclerView.Adapter<ReceptAdapter.ReceptViewHolder>() {
     inner class ReceptViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val nazivRecept: TextView
@@ -157,7 +157,6 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             Log.d("errorimidolaze","${recept.namirnice}")
 
         }
-
         private fun inflateDialog(view: View): AlertDialog {
             val prikaziVise = LayoutInflater.from(view.context)
                 .inflate(R.layout.fragment_prikazi_vise_recept, null)
@@ -167,6 +166,7 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                 .setPositiveButton("Napravi recept"){ _, _ ->
                     val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
                     receptAdapter.napraviRecept(view)
+                    ovjezi()
                 }
                 .setNegativeButton("Nabavi namirnice"){ _, _ ->
                     val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
