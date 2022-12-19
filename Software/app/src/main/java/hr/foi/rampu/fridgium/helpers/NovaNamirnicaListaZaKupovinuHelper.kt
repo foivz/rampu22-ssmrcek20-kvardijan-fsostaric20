@@ -79,7 +79,7 @@ class NovaNamirnicaListaZaKupovinuHelper(private val view: View) {
 
     fun napraviNamirnicu(): Namirnica {
 
-        val namirnicaNaziv = naziv.text.toString()
+        val namirnicaNaziv = naziv.text.toString().lowercase().replaceFirstChar { it.uppercaseChar() }
         val namirnicaKolicina = kolicina.text.toString().toFloat();
         val odabranaJedinica = spinNamirnica.selectedItem as MjernaJedinica
 
