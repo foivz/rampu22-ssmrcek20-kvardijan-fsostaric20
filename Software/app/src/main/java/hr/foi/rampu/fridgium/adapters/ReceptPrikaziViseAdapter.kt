@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.entities.NamirnicaPrikaz
+import hr.foi.rampu.fridgium.helpers.FavoritiHelper
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
 import retrofit2.Callback
@@ -123,6 +124,7 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
     fun napraviRecept(view: View, osvjezi: () -> Unit) {
         val rest = RestNamirnice.namirnicaServis
         val countDownLatch = CountDownLatch(namirnice.size)
+        val helper = FavoritiHelper(view)
         for(namirnica in namirnice){
                 val kolicinaPrava = namirnica.kolicina_hladnjak-namirnica.kolicina
                 val namirnicaPrava = Namirnica(namirnica.id, namirnica.naziv, kolicinaPrava, namirnica.mjernaJedinica, -1f)
@@ -131,7 +133,9 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
                         override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                             if (response != null) {
                                 Log.d("BAZA", response.message().toString())
-
+                                if(helper.provjeriFavorit(namirnica.naziv)){
+                                    helper.dodajFavoritNaShoppingListu(namirnica.naziv)
+                                }
 
                             }
                         }
