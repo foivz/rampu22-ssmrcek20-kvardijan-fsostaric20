@@ -19,12 +19,14 @@ import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Recept
 import hr.foi.rampu.fridgium.rest.RestNamirnicaRecepta
 import hr.foi.rampu.fridgium.rest.RestRecept
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class ReceptAdapter(private var ReceptList: MutableList<Recept>, val ovjezi: () -> Unit) :
+class ReceptAdapter(private var ReceptList: MutableList<Recept>, val osvjezi: () -> Unit) :
     RecyclerView.Adapter<ReceptAdapter.ReceptViewHolder>() {
     inner class ReceptViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val nazivRecept: TextView
@@ -165,13 +167,11 @@ class ReceptAdapter(private var ReceptList: MutableList<Recept>, val ovjezi: () 
                 .setView(prikaziVise)
                 .setPositiveButton("Napravi recept"){ _, _ ->
                     val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
-                    receptAdapter.napraviRecept(view)
-                    ovjezi()
+                    GlobalScope.launch { receptAdapter.napraviRecept(view,osvjezi) }
                 }
                 .setNegativeButton("Nabavi namirnice"){ _, _ ->
                     val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
-                    receptAdapter.nabaviNamirnice(view)
-                    ovjezi()
+                    GlobalScope.launch { receptAdapter.nabaviNamirnice(view,osvjezi) }
                 }
                 .show()
 
