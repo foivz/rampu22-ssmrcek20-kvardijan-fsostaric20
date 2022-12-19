@@ -1,17 +1,19 @@
 package hr.foi.rampu.fridgium.adapters
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.helpers.DisplayHelper
+import hr.foi.rampu.fridgium.helpers.KolicinaHelper
 import hr.foi.rampu.fridgium.helpers.NovaNamirnicaListaZaKupovinuHelper
 
 class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : RecyclerView.Adapter<ShoppingListaAdapter.ShoppingListViewHolder>() {
@@ -53,6 +55,28 @@ class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : R
                 shoppingList.removeAt(pozicija)
                 notifyItemRemoved(pozicija)
             }
+            view.setOnLongClickListener {
+                prikaziDialogUredivanjaKolicine(view)
+                return@setOnLongClickListener true
+            }
+        }
+
+        private fun prikaziDialogUredivanjaKolicine(view: View) {
+            val kolicinaHelper = LayoutInflater.from(view.context)
+                .inflate(R.layout.forma_za_promjenu_kolicine, null)
+            val helper = KolicinaHelper(kolicinaHelper)
+            val pozicija = this.adapterPosition
+            var odabranaNamirnica = shoppingList[pozicija]
+            val dialog: AlertDialog = AlertDialog.Builder(view.context)
+                .setView(kolicinaHelper)
+                .setTitle("Promijeni količinu:")
+                .setPositiveButton("Promjeni") { _, _ ->
+
+                }
+                .show()
+            helper.prikaziMJ(odabranaNamirnica)
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
         }
 
         @SuppressLint("SetTextI18n")
