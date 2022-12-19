@@ -71,7 +71,11 @@ class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : R
                 .setView(kolicinaHelper)
                 .setTitle("Promijeni količinu:")
                 .setPositiveButton("Promjeni") { _, _ ->
-
+                    odabranaNamirnica = helper.azurirajKolicinu(odabranaNamirnica)
+                    shoppingList.removeAt(pozicija)
+                    notifyItemRemoved(pozicija)
+                    shoppingList.add(pozicija,odabranaNamirnica)
+                    notifyItemInserted(pozicija)
                 }
                 .show()
             helper.prikaziMJ(odabranaNamirnica)
