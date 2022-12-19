@@ -54,4 +54,16 @@ class KolicinaHelper(private val view: View) {
             Toast.LENGTH_LONG
         ).show()
     }
+
+    fun prikazGreskeUpisa() {
+        Toast.makeText(
+            view.context,
+            "Upišite sve podatke!",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    fun provjeriUpis(): Boolean {
+        return !kolicina.text.isEmpty()
+    }
 }
