@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/iv_spinner_odabrana_namirnica"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_spinner_prikaz_namirnice"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editText_spinner_kolicina"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:autofillHints="no"
+            android:ems="10"
+            android:hint="@string/kolicina"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/tv_spinner_mjernajedinica"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_spinner_odabrana_namirnica"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:padding="5dp"
+        android:src="@android:drawable/checkbox_on_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/odabrano_da_ne"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

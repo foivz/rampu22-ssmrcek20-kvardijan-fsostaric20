@@ -23,4 +23,11 @@
     <string name="slika_recepta">Slika recepta</string>
     <string name="tu_sam">tu sam</string>
     <string name="dodaj_novi_recept">Dodaj novi recept</string>
+    <string name="kolicina">Kolicina</string>
+    <string name="nazivnovogrecepta">Naziv:</string>
+    <string name="dodavanje_novog_recepta">Dodavanje novog recepta</string>
+    <string name="opis">Opis:</string>
+    <string name="sarma">Sarma</string>
+    <string name="sarma_je_nezaobilazno_tradicionalno_zimsko_jelo_a_mi_donosimo_najbolje_savjete_chefa_berislava_lackovi_a_kako_da_svoju_sarmu_podigne_na_jo_vi_u_razinu">Sarma je nezaobilazno tradicionalno zimsko jelo, a mi donosimo najbolje savjete chefa Berislava Lackovića kako da svoju sarmu podigneš na još višu razinu</string>
+    <string name="odabrano_da_ne">Odabrano,da/ne</string>
 </resources>

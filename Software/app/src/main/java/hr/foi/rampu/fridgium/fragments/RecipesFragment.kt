@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.ReceptAdapter
 import hr.foi.rampu.fridgium.entities.NamirnicaPrikaz
@@ -21,8 +23,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RecipesFragment : Fragment() {
+    private lateinit var refreshLayout : SwipeRefreshLayout
     private lateinit var loading: ProgressBar
     private lateinit var recyclerView: RecyclerView
+    private lateinit var gumbDodaj : FloatingActionButton
     private val servis = RestRecept.ReceptService
     private val servisnr = RestNamirnicaRecepta.namirnicaReceptaServis
     private val servisn = RestNamirnice.namirnicaServis
@@ -40,12 +44,32 @@ class RecipesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.rv_recepti)
+        refreshLayout = view.findViewById(R.id.fragment_recept_swiperefresh)
         loading = view.findViewById(R.id.fragment_recept_loading)
+        gumbDodaj = view.findViewById(R.id.fragment_recept_dodaj_recept)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
+                    gumbDodaj.hide()
+                }
+                else gumbDodaj.show()
+            }
+        })
+        refreshLayout.setOnRefreshListener {
+            refreshLayout.isRefreshing = false
+            popisnamirnica = arrayListOf()
+            popisrecepta = arrayListOf()
+            loadNamirnice()
+            recyclerView.adapter!!.notifyDataSetChanged()
+        }
+
+        gumbDodaj.setOnClickListener{
+
+        }
+
         loadNamirnice()
-
-
-
     }
 
 
@@ -84,9 +108,17 @@ class RecipesFragment : Fragment() {
 
                                                 for (n in popisnamirnica) {
                                                     if (pn.namirnica_id == n.id) {
-                                                        n.kolicina = pn.kolicina
+                                                        val namirnica = NamirnicaPrikaz(
+                                                            n.id,
+                                                            n.naziv,
+                                                            n.kolicina_hladnjak,
+                                                            n.mjernaJedinica,
+                                                            n.kolicina_kupovina,
+                                                            pn.kolicina
+                                                        )
 
-                                                        r.namirnice.add(n)
+
+                                                        r.namirnice.add(namirnica)
 
                                                     }
 

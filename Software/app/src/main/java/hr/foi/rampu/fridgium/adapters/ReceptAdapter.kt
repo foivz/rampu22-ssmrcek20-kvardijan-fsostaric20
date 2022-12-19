@@ -80,7 +80,7 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                 val recept : Recept = ReceptList[this.adapterPosition]
                 val servisn = RestNamirnicaRecepta.namirnicaReceptaServis
                 val servis = RestRecept.ReceptService
-                    servisn.deleteNamirniceRecepta(recept.id).enqueue(object : Callback<Boolean>{
+                servisn.deleteNamirniceRecepta(recept.id).enqueue(object : Callback<Boolean>{
                         override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                             Log.d("brisanje","Namirnice ${recept.naziv} obrisane")
 
@@ -112,17 +112,23 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
 
 
         fun bind(recept: Recept) {
+            var ImaSastojaka = true
             var string = ""
             nazivRecept.text = recept.naziv
             opisRecept.text = recept.opis
             for (n in recept.namirnice) {
                 string += if (n.kolicina_hladnjak < n.kolicina) {
-                    bojaRecept.setBackgroundColor(Color.RED)
-                    n.naziv + " " + n.kolicina + n.mjernaJedinica.naziv + "\n"
+                    ImaSastojaka = false
+                    n.naziv + " " + n.kolicina.toInt() + n.mjernaJedinica.naziv + "\n"
                 } else {
-                    bojaRecept.setBackgroundColor(Color.GREEN)
-                    n.naziv + " " + n.kolicina + n.mjernaJedinica.naziv + "\n"
+
+                    n.naziv + " " + n.kolicina.toInt() + n.mjernaJedinica.naziv + "\n"
                 }
+            }
+            if(ImaSastojaka == true){
+                bojaRecept.setBackgroundColor(Color.GREEN)
+            }else {
+                bojaRecept.setBackgroundColor(Color.RED)
             }
 
             namirniceRecept.text = string

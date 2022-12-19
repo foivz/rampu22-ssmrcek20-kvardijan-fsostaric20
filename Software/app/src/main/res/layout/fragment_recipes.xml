@@ -5,16 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RecipesFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_recept_swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recepti"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
     <ProgressBar
         android:id="@+id/fragment_recept_loading"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_recepti"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fragment_recept_dodaj_recept"
@@ -24,5 +33,7 @@
         android:contentDescription="@string/dodaj_novi_recept"
         android:src="@drawable/ic_baseline_add_24"
         android:layout_gravity="bottom|end"/>
+
+
 </FrameLayout>
 
