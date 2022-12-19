@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Namirnica
+import hr.foi.rampu.fridgium.helpers.DisplayHelper
 import hr.foi.rampu.fridgium.helpers.NovaNamirnicaListaZaKupovinuHelper
 
 class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : RecyclerView.Adapter<ShoppingListaAdapter.ShoppingListViewHolder>() {
@@ -19,8 +21,10 @@ class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : R
         private val namirnicaKolicina: TextView
         private val namirnicaDelete: ImageButton
         private val namirnicaFridge: ImageButton
+        private val pomagacPrikaza: DisplayHelper
 
         init {
+            pomagacPrikaza = DisplayHelper()
             namirnicaNaziv = view.findViewById(R.id.tv_naziv)
             namirnicaKolicina = view.findViewById(R.id.tv_kolicina)
             namirnicaDelete = view.findViewById(R.id.img_delete)
@@ -51,9 +55,14 @@ class ShoppingListaAdapter(private val shoppingList: MutableList<Namirnica>) : R
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(namirnica: Namirnica) {
             namirnicaNaziv.text = namirnica.naziv
-            namirnicaKolicina.text = namirnica.kolicina_kupovina.toString() + " " + namirnica.mjernaJedinica.naziv
+            if (pomagacPrikaza.provjeriBroj(namirnica.kolicina_kupovina)) {
+                namirnicaKolicina.text = pomagacPrikaza.dajBroj(namirnica.kolicina_kupovina).toString() + " " + namirnica.mjernaJedinica.naziv
+            } else {
+                namirnicaKolicina.text = namirnica.kolicina_kupovina.toString() + " " + namirnica.mjernaJedinica.naziv
+            }
         }
     }
 
