@@ -171,6 +171,7 @@ class ReceptAdapter(private var ReceptList: MutableList<Recept>, val ovjezi: () 
                 .setNegativeButton("Nabavi namirnice"){ _, _ ->
                     val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
                     receptAdapter.nabaviNamirnice(view)
+                    ovjezi()
                 }
                 .show()
 
