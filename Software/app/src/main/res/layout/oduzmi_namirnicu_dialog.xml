@@ -9,13 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/et_oduzmi_kolicinu_namirnice"
-        android:text="Odaberite količinu koju želite oduzeti:"/>
+        android:text="@string/odaberite_koli_inu_koju_elite_oduzeti"/>
 
     <EditText
         android:id="@+id/et_oduzmi_kolicinu_namirnice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
-        android:importantForAutofill="no"/>
+        android:minHeight="48dp" />
 
 </LinearLayout>

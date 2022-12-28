@@ -20,7 +20,7 @@
             android:id="@+id/img_ikona_namirnice_hladnjak"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:contentDescription="Slika namirnice"
+            android:contentDescription="@string/slika_namirnice"
             android:padding="3dp"
             />
 
@@ -55,9 +55,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_kolicina_hladnjak"
-                android:maxLength="3"
+                android:maxLength="5"
                 android:layout_weight="1"
-                android:text="3"
                 android:gravity="center"
                 android:layout_marginStart="10dp"
                 android:textSize="14sp"/>
@@ -68,7 +67,6 @@
                 android:id="@+id/tv_mjernaJedinica_hladnjak"
                 android:maxLength="3"
                 android:layout_weight="1.2"
-                android:text="kg"
                 android:gravity="center"
                 android:layout_marginEnd="10dp"
                 android:textSize="14sp"/>

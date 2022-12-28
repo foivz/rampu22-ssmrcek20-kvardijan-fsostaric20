@@ -30,4 +30,18 @@
     <string name="sarma">Sarma</string>
     <string name="sarma_je_nezaobilazno_tradicionalno_zimsko_jelo_a_mi_donosimo_najbolje_savjete_chefa_berislava_lackovi_a_kako_da_svoju_sarmu_podigne_na_jo_vi_u_razinu">Sarma je nezaobilazno tradicionalno zimsko jelo, a mi donosimo najbolje savjete chefa Berislava Lackovića kako da svoju sarmu podigneš na još višu razinu</string>
     <string name="odabrano_da_ne">Odabrano,da/ne</string>
+    <string name="odaberite_koli_inu_koju_elite_dodati">Odaberite količinu koju želite dodati:</string>
+    <string name="unesi_naziv_namirnice">Unesi naziv namirnice:</string>
+    <string name="odaberite_koli_inu_namirnice_koju_elite_dodati">Odaberite količinu namirnice koju želite dodati:</string>
+    <string name="odaberi_mjernu_jedinicu_namirnice">Odaberi mjernu jedinicu namirnice:</string>
+    <string name="hladnjak_je_prazan">Hladnjak je prazan.</string>
+    <string name="dodaj_namirnicu_u_hladnjak">Dodaj namirnicu u hladnjak.</string>
+    <string name="slika_namirnice">Slika namirnice</string>
+    <string name="odaberite_koli_inu_koju_elite_oduzeti">Odaberite količinu koju želite oduzeti:</string>
+    <string name="ure_ivanje_namirnice">Uređivanje namirnice</string>
+    <string name="naziv_namirnice">Naziv namirnice:</string>
+    <string name="mjerna_jedinica_namirnice">Mjerna jedinica namirnice:</string>
+    <string name="postavke_favorita">Postavke favorita</string>
+    <string name="min_koli_ina">Min količina :</string>
+    <string name="_0">0</string>
 </resources>

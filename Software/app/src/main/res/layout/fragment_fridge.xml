@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:text="Hladnjak je prazan."
+        android:text="@string/hladnjak_je_prazan"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_add_24"
         android:layout_margin="20dp"
-        android:contentDescription="Dodaj namirnicu u frižider"
+        android:contentDescription="@string/dodaj_namirnicu_u_hladnjak"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

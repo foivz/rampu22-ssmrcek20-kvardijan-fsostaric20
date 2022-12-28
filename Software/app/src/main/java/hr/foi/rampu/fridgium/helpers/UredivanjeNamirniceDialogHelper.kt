@@ -1,5 +1,6 @@
 package hr.foi.rampu.fridgium.helpers
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -15,25 +16,34 @@ import retrofit2.Response
 
 class UredivanjeNamirniceDialogHelper(view: View) {
     val pogled = view
-    val nazivNamirnice = view.findViewById<EditText>(R.id.et_naziv_namirnice_uredi)
-    val mjernaJedinicaSpinner = view.findViewById<Spinner>(R.id.spn_kategorija_namirnice_uredi)
-    val restMJ = RestMJedinica.mJedinicaServis
+    private val nazivNamirnice: EditText = view.findViewById(R.id.et_naziv_namirnice_uredi)
+    private val mjernaJedinicaSpinner: Spinner =
+        view.findViewById(R.id.spn_kategorija_namirnice_uredi)
+    private val restMJ = RestMJedinica.mJedinicaServis
     val rest = RestNamirnice.namirnicaServis
 
-    val pomagacFavorita = FavoritiHelper(pogled)
-    val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
-    val minKolLablela = view.findViewById<TextView>(R.id.et_minimalna_kolicina_favorit_tekst)
-    val favoritiNaslov = view.findViewById<TextView>(R.id.tv_postavke_favorita)
+    private val pomagacFavorita = FavoritiHelper(pogled)
+    private val pomagacPrikaza = DisplayHelper()
+    private val minKol = view.findViewById<EditText>(R.id.et_minimalna_kolicina_favorit)
+    private val minKolLablela =
+        view.findViewById<TextView>(R.id.et_minimalna_kolicina_favorit_tekst)
 
-    fun popuniNaziv(naziv: String){
+    fun popuniNaziv(naziv: String) {
         nazivNamirnice.setText(naziv)
     }
 
-    fun azurirajPodatke(namirnica: Namirnica){
-        val azurnaNamirnica = namirnica
-        azurnaNamirnica.mjernaJedinica = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
-        azurnaNamirnica.naziv = nazivNamirnice.text.toString()
-        rest.azurirajNamirnicuNazivMJ(azurnaNamirnica).enqueue(
+    fun azurirajPodatke(namirnica: Namirnica): Namirnica {
+        val naziv = nazivNamirnice.text.toString().lowercase().replaceFirstChar { it.uppercaseChar() }
+
+        val azuriranaNamirnica = Namirnica(
+            namirnica.id,
+            naziv,
+            namirnica.kolicina_hladnjak,
+            mjernaJedinicaSpinner.selectedItem as MjernaJedinica,
+            namirnica.kolicina_kupovina,
+        )
+
+        rest.azurirajNamirnicuNazivMJ(azuriranaNamirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
@@ -42,14 +52,16 @@ class UredivanjeNamirniceDialogHelper(view: View) {
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Neuspjesno azuriranje", Toast.LENGTH_LONG).show()
+                    Toast.makeText(pogled.context, "Neuspjesno ažuriranje", Toast.LENGTH_LONG)
+                        .show()
                 }
 
             }
         )
+        return azuriranaNamirnica
     }
 
-    fun popuniMJSpinner(mjerneJedinice: List<MjernaJedinica>, namirnicaZaSpinner: Namirnica){
+    fun popuniMJSpinner(mjerneJedinice: List<MjernaJedinica>, namirnicaZaSpinner: Namirnica) {
         val spinnerAdapter = ArrayAdapter(
             pogled.context,
             android.R.layout.simple_spinner_item,
@@ -58,17 +70,17 @@ class UredivanjeNamirniceDialogHelper(view: View) {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         mjernaJedinicaSpinner.adapter = spinnerAdapter
         var index = 0
-        for (mj in mjerneJedinice){
-            if (mj == namirnicaZaSpinner.mjernaJedinica){
+        for (mj in mjerneJedinice) {
+            if (mj == namirnicaZaSpinner.mjernaJedinica) {
                 break
-            }else{
+            } else {
                 index++
             }
         }
         mjernaJedinicaSpinner.setSelection(index)
     }
 
-    fun dohvatiMJ(namirnica: Namirnica){
+    fun dohvatiMJ(namirnica: Namirnica) {
         restMJ.dohvatiMJedinice().enqueue(
             object : Callback<RestMJedinicaResponse> {
                 override fun onResponse(
@@ -84,26 +96,37 @@ class UredivanjeNamirniceDialogHelper(view: View) {
                 }
 
                 override fun onFailure(call: Call<RestMJedinicaResponse>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Neuspjesno dohvacanje mjernih jedinica", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        pogled.context,
+                        "Neuspješno dohvaćanje mjernih jedinica",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
             }
         )
     }
 
-    fun DodajiliMakniFavorit(nazivNamirnice: String){
-        if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
-            pomagacFavorita.MakniIzFavorita(nazivNamirnice)
-        }else{
-            pomagacFavorita.DodajUFavorite(nazivNamirnice, minKol.text.toString().toFloat())
+    fun dodajiliMakniFavorit(nazivNamirnice: String) {
+        if (pomagacFavorita.provjeriFavorit(nazivNamirnice)) {
+            pomagacFavorita.makniIzFavorita(nazivNamirnice)
+        } else {
+            pomagacFavorita.dodajUFavorite(nazivNamirnice, minKol.text.toString().toFloat())
         }
     }
 
-    fun DodajiliMakniMinKolUpis(nazivNamirnice: String){
-        if (pomagacFavorita.ProvjeriFavorit(nazivNamirnice)){
+    @SuppressLint("SetTextI18n")
+    fun dodajiliMakniMinKolUpis(nazivNamirnice: String) {
+        if (pomagacFavorita.provjeriFavorit(nazivNamirnice)) {
+            val vrijednost = pomagacFavorita.dajVrijednostFavorita(nazivNamirnice)
             minKol.visibility = View.GONE
-            minKolLablela.visibility = View.GONE
-            favoritiNaslov.visibility = View.GONE
+            if (pomagacPrikaza.provjeriBroj(vrijednost)) {
+                val vrijednostInt = pomagacPrikaza.dajBroj(vrijednost)
+                minKolLablela.text = "Minimalna količina u hladnjaku je trenutno $vrijednostInt"
+            } else {
+                minKolLablela.text = "Minimalna količina u hladnjaku je trenutno $vrijednost"
+            }
+
         }
     }
 }

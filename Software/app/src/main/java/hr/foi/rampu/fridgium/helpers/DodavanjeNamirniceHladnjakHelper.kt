@@ -7,9 +7,11 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import hr.foi.rampu.fridgium.R
+import hr.foi.rampu.fridgium.adapters.NamirnicaAdapter
 import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.Namirnica
 import hr.foi.rampu.fridgium.rest.RestNamirnicaResponse
+import hr.foi.rampu.fridgium.rest.RestNamirnicaServis
 import hr.foi.rampu.fridgium.rest.RestNamirnice
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +23,8 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     private val nazivNamirnice = view.findViewById<EditText>(R.id.et_naziv_nove_namirnice)
     private val kolicinaNamirnice = view.findViewById<EditText>(R.id.et_kolicina_nove_namirnice)
     val pogled = view
-    val rest = RestNamirnice.namirnicaServis
+    val rest: RestNamirnicaServis = RestNamirnice.namirnicaServis
+    val pomagacFavorita = FavoritiHelper(pogled)
 
     fun popuniSpinner(mjerneJedinice: List<MjernaJedinica>) {
         val spinnerAdapter = ArrayAdapter(
@@ -37,7 +40,7 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
         val odabranaMJ = mjernaJedinicaSpinner.selectedItem as MjernaJedinica
         return Namirnica(
             0,
-            nazivNamirnice.text.toString(),
+            nazivNamirnice.text.toString().lowercase().replaceFirstChar { it.uppercaseChar() },
             kolicinaNamirnice.text.toString().toFloat(),
             odabranaMJ,
             0f
@@ -45,16 +48,18 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     }
 
     fun dodajNamirnicuUBazu(namirnica: Namirnica) {
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar { it.uppercaseChar() }
+        if (namirnica.kolicina_hladnjak < 0f) namirnica.kolicina_hladnjak = 0f
         rest.dodajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
+                    Toast.makeText(pogled.context, "Dodavanje neuspješno", Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -62,55 +67,61 @@ class DodavanjeNamirniceHladnjakHelper(view: View) {
     }
 
     fun azurirajNamirnicuUBazi(namirnica: Namirnica) {
+        namirnica.naziv = namirnica.naziv.lowercase().replaceFirstChar { it.uppercaseChar() }
+        if (namirnica.kolicina_hladnjak < 0f) namirnica.kolicina_hladnjak = 0f
         rest.azurirajNamirnicu(namirnica).enqueue(
             object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
+                        pomagacFavorita.dodajFavoritNaShoppingListu(namirnica.naziv)
                     }
                 }
 
                 override fun onFailure(call: Call<Boolean>?, t: Throwable?) {
-                    Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
+                    Toast.makeText(pogled.context, "Ažuriranje neušpjesno", Toast.LENGTH_LONG).show()
                 }
 
             }
         )
     }
 
-    fun provjeriNamirnicu(novaNamirnica: Namirnica){
-       rest.dohvatiNamirnice().enqueue(
-           object : Callback<RestNamirnicaResponse>{
-               override fun onResponse(
-                   call: Call<RestNamirnicaResponse>?,
-                   response: Response<RestNamirnicaResponse>?
-               ) {
-                   if (response?.isSuccessful == true) {
-                       var postoji = false
-                       val responseBody = response.body()
-                       val namirnice = responseBody.results
-                       for (namirnica in namirnice) {
-                           if (namirnica.naziv == novaNamirnica.naziv) {
-                               postoji = true
-                               break
-                           }
-                       }
-                       if(postoji){
-                           novaNamirnica.kolicina_kupovina = -1f
-                           azurirajNamirnicuUBazi(novaNamirnica)
-                       } else{
-                           dodajNamirnicuUBazu(novaNamirnica)
-                       }
-                   } else {
-                       Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
-                   }
-               }
+    fun provjeriNamirnicu(novaNamirnica: Namirnica, namirnicaAdapter: NamirnicaAdapter) {
+        rest.dohvatiNamirnice().enqueue(
+            object : Callback<RestNamirnicaResponse> {
+                override fun onResponse(
+                    call: Call<RestNamirnicaResponse>?,
+                    response: Response<RestNamirnicaResponse>?
+                ) {
+                    if (response?.isSuccessful == true) {
+                        var postoji = false
+                        val responseBody = response.body()
+                        val namirnice = responseBody.results
+                        for (namirnica in namirnice) {
+                            if (namirnica.naziv == novaNamirnica.naziv) {
+                                postoji = true
 
-               override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
-                   Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
-               }
+                                namirnica.kolicina_hladnjak = novaNamirnica.kolicina_hladnjak
+                                namirnicaAdapter.dodajNamirnicu(namirnica)
 
-           }
-       )
+                                break
+                            }
+                        }
+                        if (postoji) {
+                            novaNamirnica.kolicina_kupovina = -1f
+                            azurirajNamirnicuUBazi(novaNamirnica)
+                        } else {
+                            dodajNamirnicuUBazu(novaNamirnica)
+                            namirnicaAdapter.dodajNamirnicu(novaNamirnica)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<RestNamirnicaResponse>?, t: Throwable?) {
+                    Toast.makeText(pogled.context, "Dodavanje neušpjesno", Toast.LENGTH_LONG).show()
+                }
+
+            }
+        )
     }
 }

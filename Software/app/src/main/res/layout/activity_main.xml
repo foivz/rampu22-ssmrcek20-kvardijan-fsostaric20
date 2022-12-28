@@ -10,15 +10,16 @@
         android:id="@+id/tabs"
         android:layout_width="0dp"
         android:layout_height="75dp"
-        app:tabMode="fixed"
-        app:tabGravity="fill"
         android:backgroundTint="?attr/colorPrimary"
-        app:tabIndicatorColor="?attr/colorAccent"
-        app:tabTextColor="@color/white"
-        app:tabIconTint="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
+        app:tabIconTint="@color/white"
+        app:tabIndicatorColor="?attr/colorAccent"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"

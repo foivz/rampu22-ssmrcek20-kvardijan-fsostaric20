@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tv_kolicina_lista_za_kupovinu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/koli_ina"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_kolicina_lista_za_kupovinu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/tv_mjerna_jedninica_lista_za_kupovinu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_kolicina_lista_za_kupovinu" />
+
+    <TextView
+        android:id="@+id/tv_mjerna_jedninica_lista_za_kupovinu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/koli_ina"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_kolicina_lista_za_kupovinu" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,10 +28,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import hr.foi.rampu.fridgium.helpers.FavoritiHelper
 
 class FridgeFragment : Fragment() {
 
-    private val probneNamirnice = MockDataLoader.DajProbnePodatke()
+    private val probneNamirnice = MockDataLoader.dajProbnePodatke()
     private lateinit var recyclerView: RecyclerView
     private lateinit var hladnjakLoading: ProgressBar
     private lateinit var hladnjakPrazanTekst: TextView
@@ -53,12 +54,14 @@ class FridgeFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rv_namirnice_hladnjaka)
         dodajNamirnicuUFrizider = view.findViewById(R.id.fab_dodaj_namirnicu_u_hladnjak)
         osvjezi = view.findViewById(R.id.srl_hladnjak)
-        //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
-        //promjeniZaslon(false)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         ucitajSadrzajHladnjaka()
 
-        dodajNamirnicuUFrizider.setOnClickListener{
+        //MOCK PODACI
+        //recyclerView.adapter = NamirnicaAdapter(MockDataLoader.DajProbnePodatke())
+        //promjeniZaslon(false)
+
+        dodajNamirnicuUFrizider.setOnClickListener {
             prikaziDialogDodavanjaNamirnice()
         }
 
@@ -70,45 +73,49 @@ class FridgeFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
+                if (!recyclerView.canScrollVertically(1)
+                    && recyclerView.canScrollVertically(-1)
+                ) {
                     dodajNamirnicuUFrizider.hide()
-                }
-                else dodajNamirnicuUFrizider.show()
+                } else dodajNamirnicuUFrizider.show()
             }
         })
     }
 
-    private fun ucitajSadrzajHladnjaka(){
+    private fun ucitajSadrzajHladnjaka() {
         promjeniZaslon(true)
-
+        val pomagacFavorita = FavoritiHelper(requireView())
         rest.dohvatiNamirnice().enqueue(
-            object : Callback<RestNamirnicaResponse>{
+            object : Callback<RestNamirnicaResponse> {
                 override fun onResponse(
                     call: Call<RestNamirnicaResponse>?,
                     response: Response<RestNamirnicaResponse>?
                 ) {
-                    if (response?.isSuccessful == true){
+                    if (response?.isSuccessful == true) {
                         val responseBody = response.body()
                         val namirnice = responseBody.results
                         val namirniceHladnjaka = mutableListOf<Namirnica>()
 
-                        for (namirnica in namirnice){
-                            if (namirnica.kolicina_hladnjak > 0){
+                        for (namirnica in namirnice) {
+                            if (namirnica.kolicina_hladnjak > 0 || pomagacFavorita.provjeriFavorit(
+                                    namirnica.naziv
+                                )
+                            ) {
                                 namirniceHladnjaka.add(namirnica)
                             }
                         }
 
-                        if (namirniceHladnjaka.isEmpty()){
+                        if (namirniceHladnjaka.isEmpty()) {
                             recyclerView.visibility = View.INVISIBLE
                             hladnjakPrazanTekst.visibility = View.VISIBLE
-                        }else{
+                        } else {
                             recyclerView.visibility = View.VISIBLE
                             hladnjakPrazanTekst.visibility = View.INVISIBLE
 
                             recyclerView.adapter = NamirnicaAdapter(namirniceHladnjaka)
                         }
                         hladnjakLoading.isVisible = false
-                    }else{
+                    } else {
                         pokaziPorukuGreske()
                     }
                     promjeniZaslon(false)
@@ -122,26 +129,28 @@ class FridgeFragment : Fragment() {
         )
     }
 
-    private fun pokaziPorukuGreske(){
+    private fun pokaziPorukuGreske() {
         Toast.makeText(
             context,
             getString(R.string.poruka_greske_hladnjak),
-            Toast.LENGTH_LONG).show()
+            Toast.LENGTH_LONG
+        ).show()
     }
 
-    private fun pokaziPorukuGreskeSpinneraMjernihJedinica(){
+    private fun pokaziPorukuGreskeSpinneraMjernihJedinica() {
         Toast.makeText(
             context,
             getString(R.string.poruka_greske_spinner_mj),
-            Toast.LENGTH_LONG).show()
+            Toast.LENGTH_LONG
+        ).show()
     }
 
-    private fun promjeniZaslon(ucitavanje: Boolean){
+    private fun promjeniZaslon(ucitavanje: Boolean) {
         recyclerView.isVisible = !ucitavanje
         hladnjakLoading.isVisible = ucitavanje
     }
 
-    private fun prikaziDialogDodavanjaNamirnice(){
+    private fun prikaziDialogDodavanjaNamirnice() {
         val restMJ = RestMJedinica.mJedinicaServis
 
         val dodajNamirnicuDialog = LayoutInflater
@@ -153,15 +162,17 @@ class FridgeFragment : Fragment() {
         val dialogDodajNamirnicu = AlertDialog.Builder(context)
             .setView(dodajNamirnicuDialog)
             .setTitle("Dodavanje namirnice")
-            .setPositiveButton("Dodaj namirnicu"){ _, _ ->
+            .setPositiveButton("Dodaj namirnicu") { _, _ ->
+                val hladnjakAdapter = (recyclerView.adapter as NamirnicaAdapter)
                 val novaNamirnica = pomagacDodavanjaNamirnica.izgradiObjektNoveNamirnice()
-                pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica)
+                pomagacDodavanjaNamirnica.provjeriNamirnicu(novaNamirnica, hladnjakAdapter)
             }
             .show()
-        dialogDodajNamirnicu.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.color_accent))
+        dialogDodajNamirnicu.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.color_accent))
 
         restMJ.dohvatiMJedinice().enqueue(
-            object : Callback<RestMJedinicaResponse>{
+            object : Callback<RestMJedinicaResponse> {
                 override fun onResponse(
                     call: Call<RestMJedinicaResponse>?,
                     response: Response<RestMJedinicaResponse>?

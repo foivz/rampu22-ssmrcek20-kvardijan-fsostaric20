@@ -213,7 +213,7 @@ class RecipesFragment : Fragment() {
                                         brojac++
                                         if (brojac == recept.size) {
                                             Log.d("async", "ZAVRSIL2")
-                                            recyclerView.adapter = ReceptAdapter(popisrecepta)
+                                            recyclerView.adapter = ReceptAdapter(popisrecepta, ::refreshDisplay)
                                             prikaziLoading(true)
                                         }
                                     }

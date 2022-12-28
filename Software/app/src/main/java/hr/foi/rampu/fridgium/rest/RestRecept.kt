@@ -11,5 +11,5 @@ object RestRecept {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val ReceptService = instance.create(RestReceptService::class.java)
+    val ReceptService: RestReceptService = instance.create(RestReceptService::class.java)
 }

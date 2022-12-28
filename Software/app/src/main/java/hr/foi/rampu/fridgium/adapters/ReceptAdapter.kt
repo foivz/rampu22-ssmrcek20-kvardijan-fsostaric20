@@ -12,18 +12,21 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Recept
 import hr.foi.rampu.fridgium.rest.RestNamirnicaRecepta
 import hr.foi.rampu.fridgium.rest.RestRecept
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class ReceptAdapter(private val ReceptList: List<Recept>) :
+class ReceptAdapter(private var ReceptList: MutableList<Recept>, val osvjezi: () -> Unit) :
     RecyclerView.Adapter<ReceptAdapter.ReceptViewHolder>() {
     inner class ReceptViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val nazivRecept: TextView
@@ -66,6 +69,20 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                 imgbutton = dialog.findViewById(R.id.imgbtn)
                 imgbutton.setOnClickListener{
                     dialog.cancel()
+                }
+
+                val napraviRecept = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                napraviRecept.setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
+                if(!receptAdapter.imaNamirnicaUHladnjaku()){
+                    napraviRecept.isEnabled = false
+                    napraviRecept.isVisible = false
+                }
+                val nabaviNamirnice = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                nabaviNamirnice.setTextColor(ContextCompat.getColor(view.context, R.color.color_accent))
+                if(receptAdapter.imaNamirnicaUHladnjaku()){
+                    nabaviNamirnice.isEnabled = false
+                    nabaviNamirnice.isVisible = false
                 }
 
             }
@@ -147,12 +164,21 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             Log.d("errorimidolaze","${recept.namirnice}")
 
         }
-
         private fun inflateDialog(view: View): AlertDialog {
             val prikaziVise = LayoutInflater.from(view.context)
                 .inflate(R.layout.fragment_prikazi_vise_recept, null)
             noviView = prikaziVise
-            return AlertDialog.Builder(view.context).setView(prikaziVise).show()
+            return AlertDialog.Builder(view.context)
+                .setView(prikaziVise)
+                .setPositiveButton("Napravi recept"){ _, _ ->
+                    val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
+                    GlobalScope.launch { receptAdapter.napraviRecept(view,osvjezi) }
+                }
+                .setNegativeButton("Nabavi namirnice"){ _, _ ->
+                    val receptAdapter = (recyclerView.adapter as ReceptPrikaziViseAdapter)
+                    GlobalScope.launch { receptAdapter.nabaviNamirnice(view,osvjezi) }
+                }
+                .show()
 
 
         }

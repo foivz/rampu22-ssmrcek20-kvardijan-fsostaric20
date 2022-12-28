@@ -12,8 +12,8 @@ import hr.foi.rampu.fridgium.fragments.ShoppingListFragment
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var tabLayout: TabLayout
-    lateinit var viewPager2: ViewPager2
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager2: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +48,10 @@ class MainActivity : AppCompatActivity() {
 
         viewPager2.adapter = mainPagerAdapter
 
-        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.setText(mainPagerAdapter.fragmentItems[position].titleRes)
-            tab.setIcon(mainPagerAdapter.fragmentItems[position].iconRes)
-        }.attach()
+        TabLayoutMediator(tabLayout, viewPager2,true,false,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                tab.setText(mainPagerAdapter.fragmentItems[position].titleRes)
+                tab.setIcon(mainPagerAdapter.fragmentItems[position].iconRes)
+            }).attach()
     }
 }

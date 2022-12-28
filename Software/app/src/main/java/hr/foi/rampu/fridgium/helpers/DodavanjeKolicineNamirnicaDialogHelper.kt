@@ -13,16 +13,14 @@ import retrofit2.Response
 
 class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
 
-    val trenutnaKolicina = view.findViewById<EditText>(R.id.et_dodaj_kolicinu_namirnice)
+    private val trenutnaKolicina: EditText = view.findViewById(R.id.et_dodaj_kolicinu_namirnice)
     private val rest = RestNamirnice.namirnicaServis
-    val pogled = view
+    private val pogled = view
+    val pomagacFavorita = FavoritiHelper(pogled)
 
-    fun popuniKolicinu(kolicina: Int){
-        trenutnaKolicina.setText(kolicina.toString())
-    }
-
-    fun azurirajNamirnicu(namirnica: Namirnica){
-        val kol = namirnica.kolicina_hladnjak + trenutnaKolicina.text.toString().toFloat()
+    fun azurirajNamirnicu(namirnica: Namirnica): Namirnica {
+        var kol = namirnica.kolicina_hladnjak + trenutnaKolicina.text.toString().toFloat()
+        if (kol < 0f) kol = 0f
         val azuriranaNamirnica = Namirnica(
             namirnica.id,
             namirnica.naziv,
@@ -32,10 +30,11 @@ class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
         )
 
         rest.azurirajNamirnicu(azuriranaNamirnica).enqueue(
-            object : Callback<Boolean>{
+            object : Callback<Boolean> {
                 override fun onResponse(call: Call<Boolean>?, response: Response<Boolean>?) {
                     if (response != null) {
-                        Log.d("BAZA",response.message().toString())
+                        Log.d("BAZA", response.message().toString())
+                        pomagacFavorita.dodajFavoritNaShoppingListu(azuriranaNamirnica.naziv)
                     }
                 }
 
@@ -44,9 +43,11 @@ class DodavanjeKolicineNamirnicaDialogHelper(view: View) {
                 }
             }
         )
+        azuriranaNamirnica.kolicina_kupovina = namirnica.kolicina_kupovina
+        return azuriranaNamirnica
     }
 
-    fun prikaziPorukuGreske(){
+    fun prikaziPorukuGreske() {
         Toast.makeText(pogled.context, "Dodavanje neuspjesno", Toast.LENGTH_LONG).show()
     }
 }
