@@ -64,7 +64,6 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
                 recyclerView.layoutManager = LinearLayoutManager(dialog.context)
                 recyclerView.adapter = ReceptPrikaziViseAdapter(recept.namirnice)
                 imgbutton = dialog.findViewById(R.id.imgbtn)
-                Log.d("errorimidolaze", "${recyclerView.adapter}")
                 imgbutton.setOnClickListener{
                     dialog.cancel()
                 }
@@ -112,20 +111,20 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
 
 
         fun bind(recept: Recept) {
-            var ImaSastojaka = true
+            var imaSastojaka = true
             var string = ""
             nazivRecept.text = recept.naziv
             opisRecept.text = recept.opis
             for (n in recept.namirnice) {
                 string += if (n.kolicina_hladnjak < n.kolicina) {
-                    ImaSastojaka = false
+                    imaSastojaka = false
                     n.naziv + " " + n.kolicina.toInt() + n.mjernaJedinica.naziv + "\n"
                 } else {
 
                     n.naziv + " " + n.kolicina.toInt() + n.mjernaJedinica.naziv + "\n"
                 }
             }
-            if(ImaSastojaka == true){
+            if(imaSastojaka){
                 bojaRecept.setBackgroundColor(Color.GREEN)
             }else {
                 bojaRecept.setBackgroundColor(Color.RED)

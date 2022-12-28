@@ -44,13 +44,13 @@
     </LinearLayout>
 
 
-    <ImageView
+    <CheckBox
         android:id="@+id/iv_spinner_odabrana_namirnica"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:padding="5dp"
-        android:src="@android:drawable/checkbox_on_background"
+        android:button="@android:drawable/checkbox_off_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

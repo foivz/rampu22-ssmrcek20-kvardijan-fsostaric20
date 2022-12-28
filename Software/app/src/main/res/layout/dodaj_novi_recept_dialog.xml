@@ -87,7 +87,7 @@
         <EditText
             android:id="@+id/editText_opis_dialog_novi_recept"
             android:layout_width="match_parent"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:layout_height="wrap_content"
             android:hint="@string/sarma_je_nezaobilazno_tradicionalno_zimsko_jelo_a_mi_donosimo_najbolje_savjete_chefa_berislava_lackovi_a_kako_da_svoju_sarmu_podigne_na_jo_vi_u_razinu"
             app:layout_constraintEnd_toEndOf="parent"
