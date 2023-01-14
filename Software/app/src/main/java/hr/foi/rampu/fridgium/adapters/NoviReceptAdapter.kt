@@ -31,30 +31,33 @@ class NoviReceptAdapter(private val ListNamirnica: List<NamirnicaPrikaz>) :
             editTextKolicina.isEnabled = false
             checkbox.isClickable = false
             view.setOnClickListener {
+                var postoji = false
                 namirnica = ListNamirnica[this.adapterPosition]
-                Log.d("checkbox", checkbox.isChecked.toString())
-                when(namirnice.size){
-                    0 -> {
-                        namirnice.add(namirnica)
-                        checkbox.isChecked = true
-                        editTextKolicina.isEnabled =true
-                        }
-                    else -> {
-                        for(n in namirnice){
-                            if (n.id == namirnica.id){
-                                namirnice.remove(namirnica)
-                                checkbox.isChecked = false
-                                Log.d("checkbox", checkbox.isChecked.toString())
-                                editTextKolicina.isEnabled =false
-                            }else{
-                                namirnice.add(namirnica)
-                                checkbox.isChecked = true
-                                Log.d("checkbox", checkbox.isChecked.toString())
-                                editTextKolicina.isEnabled =true
-                            }
+                val copy = namirnice.listIterator()
+                if(copy.hasNext()==false){
+                    copy.add(namirnica)
+                    checkbox.isChecked = true
+                    editTextKolicina.isEnabled = true
+                }
+
+                    while (copy.hasNext()) {
+                        val n = copy.next()
+                        if (n.id == namirnica.id) {
+                            copy.remove()
+                            checkbox.isChecked = false
+                            editTextKolicina.isEnabled = false
+                            postoji = true
+                            break
                         }
                     }
+                if(postoji==false){
+                        copy.add(namirnica)
+                        checkbox.isChecked = true
+                        editTextKolicina.isEnabled = true
                 }
+
+                Log.d("lista","$copy")
+                Log.d("lista","$namirnice")
             }
             editTextKolicina.addTextChangedListener(object : TextWatcher{
                 override fun beforeTextChanged(
