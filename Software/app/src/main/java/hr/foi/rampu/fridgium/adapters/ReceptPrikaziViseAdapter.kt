@@ -2,7 +2,6 @@ package hr.foi.rampu.fridgium.adapters
 
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
@@ -19,7 +18,6 @@ class ReceptPrikaziViseAdapter(private val namirnice : List<NamirnicaPrikaz>) :
         private var namirnicaRecept : TextView
         private var bojaDostupnost : SurfaceView
         init {
-            Log.d("errorimidolaze", "Tu samerr")
             namirnicaRecept = view.findViewById(R.id.PV_Namirnica)
             bojaDostupnost = view.findViewById(R.id.SV_boja_prikazi_vise_item)
 

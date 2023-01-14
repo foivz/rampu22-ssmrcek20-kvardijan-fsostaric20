@@ -44,7 +44,6 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             btnPrikaziVise = view.findViewById(R.id.btn_prikazi_vise)
             view.setOnLongClickListener{
                 val recept : Recept = ReceptList[this.adapterPosition]
-                Log.d("errorimidolaze", "Tu samerr")
                 dialogObrisi(view)
                 val naslov = dialog.findViewById<TextView>(R.id.tvIme_Recepta)
                 val tekst = dialog.findViewById<TextView>(R.id.tv_opis_recepta_prikazi_vise)
@@ -59,7 +58,6 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             btnPrikaziVise.setOnClickListener{
                 val recept : Recept = ReceptList[this.adapterPosition]
                 otvoriDialog(recept, view)
-                Log.d("errorimidolaze","${ReceptPrikaziViseAdapter(recept.namirnice).itemCount}")
                 recyclerView = dialog.findViewById(R.id.PV_recyclerview_namirnice)
                 recyclerView.layoutManager = LinearLayoutManager(dialog.context)
                 recyclerView.adapter = ReceptPrikaziViseAdapter(recept.namirnice)
@@ -75,7 +73,6 @@ class ReceptAdapter(private val ReceptList: List<Recept>) :
             val prikaziVise = LayoutInflater.from(view.context)
                 .inflate(R.layout.fragment_prikazi_vise_recept, null)
             dialog = AlertDialog.Builder(view.context).setView(prikaziVise).setPositiveButton("Obriši"){_,_->
-                Log.d("dolazemierrori", "AAA obrisal bum ga")
                 val recept : Recept = ReceptList[this.adapterPosition]
                 val servisn = RestNamirnicaRecepta.namirnicaReceptaServis
                 val servis = RestRecept.ReceptService
