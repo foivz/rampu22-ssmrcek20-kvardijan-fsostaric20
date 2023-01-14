@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.entities.Recept
+import hr.foi.rampu.fridgium.helpers.DisplayHelper
 import hr.foi.rampu.fridgium.rest.RestNamirnicaRecepta
 import hr.foi.rampu.fridgium.rest.RestRecept
 import kotlinx.coroutines.GlobalScope
@@ -38,6 +39,7 @@ class ReceptAdapter(private var ReceptList: MutableList<Recept>, val osvjezi: ()
         private lateinit var recyclerView: RecyclerView
         private lateinit var dialog: AlertDialog
         private lateinit var noviView : View
+        private var displayHelper: DisplayHelper = DisplayHelper()
 
         init {
             nazivRecept = view.findViewById(R.id.tv_naziv_recept)
@@ -127,15 +129,20 @@ class ReceptAdapter(private var ReceptList: MutableList<Recept>, val osvjezi: ()
         fun bind(recept: Recept) {
             var imaSastojaka = true
             var string = ""
+            var kolicina : String
             nazivRecept.text = recept.naziv
             opisRecept.text = recept.opis
             for (n in recept.namirnice) {
+                if(displayHelper.provjeriBroj(n.kolicina)){
+                    kolicina = displayHelper.dajBroj(n.kolicina).toString()
+                }else {kolicina = n.kolicina.toString()}
                 string += if (n.kolicina_hladnjak < n.kolicina) {
                     imaSastojaka = false
-                    n.naziv + " " + n.kolicina.toInt() + n.mjernaJedinica.naziv + "\n"
+
+                    n.naziv + " " + kolicina + n.mjernaJedinica.naziv + "\n"
                 } else {
 
-                    n.naziv + " " + n.kolicina.toInt() + n.mjernaJedinica.naziv + "\n"
+                    n.naziv + " " + kolicina + n.mjernaJedinica.naziv + "\n"
                 }
             }
             if(imaSastojaka){

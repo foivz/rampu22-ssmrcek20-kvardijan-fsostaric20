@@ -6,11 +6,11 @@ import kotlin.math.floor
 class DisplayHelper {
 
     fun provjeriBroj(brojFloat: Float): Boolean{
-        if (ceil(brojFloat) == floor(brojFloat)) return true
-        return false
+        if (ceil(brojFloat) == floor(brojFloat)) return true //true cijeli
+        return false //false nije cijeli
     }
 
     fun dajBroj(brojFloat: Float): Int{
-        return brojFloat.toInt()
+        return brojFloat.toInt() //daje int
     }
 }
