@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +31,7 @@ class RecipesFragment : Fragment() {
     private lateinit var recyclerViewNamirnice: RecyclerView
     private lateinit var gumbDodaj : FloatingActionButton
     private lateinit var imgbutton: ImageButton
+    private lateinit var namirniceSpinenr : Spinner
     private val servis = RestRecept.ReceptService
     private val servisnr = RestNamirnicaRecepta.namirnicaReceptaServis
     private val servisn = RestNamirnice.namirnicaServis
@@ -57,7 +55,7 @@ class RecipesFragment : Fragment() {
         loading = view.findViewById(R.id.fragment_recept_loading)
         gumbDodaj = view.findViewById(R.id.fragment_recept_dodaj_recept)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
-
+        namirniceSpinenr = view.findViewById(R.id.fragment_recept_spinner_namirnice)
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -202,17 +200,11 @@ class RecipesFragment : Fragment() {
 
                                                 }
                                             }
-                                            Log.d(
-                                                "async",
-                                                "Namirnice u receptu" + r.namirnice.toString()
-                                            )
-
                                             popisrecepta.add(r)
 
                                         }
                                         brojac++
                                         if (brojac == recept.size) {
-                                            Log.d("async", "ZAVRSIL2")
                                             recyclerView.adapter = ReceptAdapter(popisrecepta, ::refreshDisplay)
                                             prikaziLoading(true)
                                         }
@@ -266,6 +258,7 @@ class RecipesFragment : Fragment() {
 
                         popisnamirnica.add(np)
                     }
+                    populirajSpinner()
                     loadRecept()
                 }
             }
@@ -281,6 +274,17 @@ class RecipesFragment : Fragment() {
 
     fun prikaziLoading(bool : Boolean){
         loading.isVisible = !bool
+    }
+
+    fun populirajSpinner(){
+        val spinnerAdapter = ArrayAdapter(
+            requireView().context,
+            android.R.layout.simple_spinner_item,
+            popisnamirnica.map {it.naziv}
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        namirniceSpinenr.adapter = spinnerAdapter
+        namirniceSpinenr.setSelection(1)
     }
 
 }
