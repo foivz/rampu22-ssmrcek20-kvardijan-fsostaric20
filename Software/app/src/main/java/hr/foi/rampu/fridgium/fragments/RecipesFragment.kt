@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rampu.fridgium.R
 import hr.foi.rampu.fridgium.adapters.NoviReceptAdapter
 import hr.foi.rampu.fridgium.adapters.ReceptAdapter
+import hr.foi.rampu.fridgium.entities.MjernaJedinica
 import hr.foi.rampu.fridgium.entities.NamirnicaPrikaz
 import hr.foi.rampu.fridgium.entities.Recept
 import hr.foi.rampu.fridgium.rest.*
@@ -56,6 +57,28 @@ class RecipesFragment : Fragment() {
         gumbDodaj = view.findViewById(R.id.fragment_recept_dodaj_recept)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         namirniceSpinenr = view.findViewById(R.id.fragment_recept_spinner_namirnice)
+        namirniceSpinenr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position == 0){
+                    recyclerView.adapter = ReceptAdapter(popisrecepta, ::refreshDisplay)
+                    return
+                }
+                val filtriranipopis : MutableList<Recept> = arrayListOf()
+                for(r in popisrecepta){
+                    for(n in r.namirnice){
+                        if(n.id == popisnamirnica[position].id){
+                            filtriranipopis.add(r)
+                        }
+                    }
+
+                }
+                recyclerView.adapter = ReceptAdapter(filtriranipopis, ::refreshDisplay)
+                recyclerView.adapter!!.notifyDataSetChanged()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Code to be executed when nothing is selected
+            }
+        }
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -258,7 +281,7 @@ class RecipesFragment : Fragment() {
 
                         popisnamirnica.add(np)
                     }
-                    populirajSpinner()
+                    populirajSpinner(popisnamirnica)
                     loadRecept()
                 }
             }
@@ -276,15 +299,18 @@ class RecipesFragment : Fragment() {
         loading.isVisible = !bool
     }
 
-    fun populirajSpinner(){
+    fun populirajSpinner(popis : MutableList<NamirnicaPrikaz>){
+        val default = NamirnicaPrikaz(0, "Ne filtriraj po namirnicama",0f,
+            MjernaJedinica(0,"default"),0f,0f)
+        popis.add(0, default)
         val spinnerAdapter = ArrayAdapter(
             requireView().context,
             android.R.layout.simple_spinner_item,
-            popisnamirnica.map {it.naziv}
+            popis.map { it.naziv }
         )
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         namirniceSpinenr.adapter = spinnerAdapter
-        namirniceSpinenr.setSelection(1)
+        namirniceSpinenr.setSelection(0)
     }
 
 }
