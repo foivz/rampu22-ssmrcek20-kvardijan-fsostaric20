@@ -28,3 +28,5 @@ F09 | Praćenje dabranih namirnica | Aplikacija će sama stavljati odabrane nami
 ## Tehnologije i oprema
 Za izradu aplikacije koristit će se Android studio te razvojni jezik Kotlin. Uz Kotlin će se koristiti i XML za izradu dizajna aplikacije te kao sustav za verzioniranje koristit će se Git te GitHub.
 
+## Repozitorij za REST servis koji poslužuje aplikaciju
+https://github.com/FSostaric20/RAMPUBackend
